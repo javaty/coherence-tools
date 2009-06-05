@@ -231,13 +231,14 @@
   </component>
   <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectKey">
-    <option name="state" value="project:///Users/aseovic/Projects/coherence-tools/coherence-tools.ipr" />
+    <option name="state" value="https://aleks%40seovic.com@coherence-tools.googlecode.com/svn/trunk/coherence-tools.ipr" />
   </component>
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CoherenceLoader/java/CoherenceLoader.iml" filepath="$PROJECT_DIR$/CoherenceLoader/java/CoherenceLoader.iml" />
       <module fileurl="file://$PROJECT_DIR$/CoherenceTesting/java/CoherenceTesting.iml" filepath="$PROJECT_DIR$/CoherenceTesting/java/CoherenceTesting.iml" />
       <module fileurl="file://$PROJECT_DIR$/IdentityGenerator/java/IdentityGenerator.iml" filepath="$PROJECT_DIR$/IdentityGenerator/java/IdentityGenerator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LookupValuesProvider/java/LookupValuesProvider.iml" filepath="$PROJECT_DIR$/LookupValuesProvider/java/LookupValuesProvider.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="JDK 1.6" project-jdk-type="JavaSDK">
@@ -262,7 +263,7 @@
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="VcsDirectoryMappings">
-    <mapping directory="" vcs="" />
+    <mapping directory="" vcs="svn" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <component name="libraryTable">
