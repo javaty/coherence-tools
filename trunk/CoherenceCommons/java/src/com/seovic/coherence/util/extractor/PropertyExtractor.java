@@ -111,15 +111,11 @@ public class PropertyExtractor
                 }
             return method.invoke(o);
             }
-        catch (NullPointerException e)
+        catch (Exception e)
             {
             throw new RuntimeException("Property " + m_propertyName +
                                        " of the class " + targetClass +
-                                       " cannot be read");
-            }
-        catch (Exception e)
-            {
-            throw new WrapperException(e);
+                                       " either does not exist or it cannot be read");
             }
         }
 

@@ -21,13 +21,23 @@ import com.tangosol.util.ValueExtractor;
 import com.tangosol.util.WrapperException;
 import com.tangosol.util.SimpleMapEntry;
 import com.tangosol.util.InvocableMapHelper;
+import com.tangosol.util.Binary;
+import com.tangosol.util.ExternalizableHelper;
+
 import com.tangosol.util.extractor.KeyExtractor;
+
+import com.tangosol.io.DefaultSerializer;
+
+import com.tangosol.io.pof.SimplePofContext;
+import com.tangosol.io.pof.PortableObjectSerializer;
 
 import com.seovic.coherence.test.domain.Country;
 
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
 import java.util.Map;
 
 
@@ -82,7 +92,7 @@ public class PropertyExtractorTests
         assertNull(ex.extract(null));
         }
 
-    @Test(expected = WrapperException.class)
+    @Test(expected = RuntimeException.class)
     public void testMissingProperty()
         {
         Country serbia = new Country("SRB", "Serbia");
@@ -91,25 +101,42 @@ public class PropertyExtractorTests
         ex.extract(serbia);
         }
 
-    @Test(expected = RuntimeException.class)
-    public void testNonReadableProperty()
+    @Test
+    public void testDefaultSerialization()
         {
-        Object obj = new ClassWithNonReadableProperty();
-        ValueExtractor ex = new PropertyExtractor("nonReadable");
+        Object original = new PropertyExtractor("xyz");
+        Binary bin      = ExternalizableHelper.toBinary(original, new DefaultSerializer());
+        Object copy     = ExternalizableHelper.fromBinary(bin, new DefaultSerializer());
 
-        ex.extract(obj);
+        assertEquals(original, copy);
+        assertEquals(original.hashCode(), copy.hashCode());
+        assertEquals(original.toString(), copy.toString());
         }
 
-
-    // --- Inner class: ClassWithNonReadableProperty ------------------------
-
-    private static class ClassWithNonReadableProperty
+    @Test
+    public void testPofSerialization()
         {
-        private Object nonReadable;
+        SimplePofContext ctx = new SimplePofContext();
+        ctx.registerUserType(1, PropertyExtractor.class, new PortableObjectSerializer(1));
 
-        public void setNonReadable(Object nonReadable)
-            {
-            this.nonReadable = nonReadable;
-            }
+        Object original = new PropertyExtractor("xyz");
+        Binary bin      = ExternalizableHelper.toBinary(original, ctx);
+        Object copy     = ExternalizableHelper.fromBinary(bin, ctx);
+
+        assertEquals(original, copy);
+        assertEquals(original.hashCode(), copy.hashCode());
+        assertEquals(original.toString(), copy.toString());
+        }
+
+    @Test
+    @SuppressWarnings("ObjectEqualsNull")
+    public void testEquals()
+        {
+        Object o = new PropertyExtractor("xyz");
+
+        assertTrue(o.equals(o));
+        assertFalse(o.equals(null));
+        assertFalse(o.equals("invalid class"));
+        assertFalse(o.equals(new PropertyExtractor("abc")));
         }
     }

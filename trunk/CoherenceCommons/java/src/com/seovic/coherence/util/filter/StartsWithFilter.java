@@ -22,36 +22,41 @@ import com.seovic.coherence.util.extractor.PropertyExtractor;
 import com.tangosol.util.Filter;
 import com.tangosol.util.MapIndex;
 import com.tangosol.util.ValueExtractor;
+
 import com.tangosol.util.filter.ComparisonFilter;
 import com.tangosol.util.filter.IndexAwareFilter;
+
+import com.tangosol.io.pof.PofReader;
+import com.tangosol.io.pof.PofWriter;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.HashSet;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.DataInput;
+import java.io.DataOutput;
+
 
 /**
  * A {@link Filter} implementation that evaluates to <tt>true</tt> if the
  * extracted property value starts with a specified string.
  * <p/>
- * This filter is somewhat similar to the built-in <tt>LikeFilter</tt>, but
- * is significantly lighter and faster as it only evaluates one special case
- * supported by the <tt>LikeFilter</tt>
+ * This filter provides a subset of the functionality provided by the built-in
+ * <tt>LikeFilter</tt>, but is slightly lighter and faster as it only has to
+ * evaluate one special, although very common case supported by the
+ * <tt>LikeFilter</tt>.
  * 
  * @author Aleksandar Seovic  2009.06.07
  */
 @SuppressWarnings("unchecked")
 public class StartsWithFilter
         extends    ComparisonFilter
-        implements IndexAwareFilter
+        implements IndexAwareFilter, Serializable
     {
     // ---- data members ----------------------------------------------------
-
-    /**
-     * Search string.
-     */
-    private String m_filter;
 
     /**
      * Flag specifying if case should be ignored when comparing strings.
@@ -92,7 +97,6 @@ public class StartsWithFilter
     public StartsWithFilter(ValueExtractor extractor, String filter, boolean ignoreCase)
         {
         super(extractor, filter);
-        m_filter     = filter;
         m_ignoreCase = ignoreCase;
         }
 
@@ -136,7 +140,7 @@ public class StartsWithFilter
 
         if (!m_ignoreCase && index.isOrdered())
             {
-            candidates     = ((SortedMap) candidates).tailMap(m_filter);
+            candidates     = ((SortedMap) candidates).tailMap(getFilterString());
             abortIfNoMatch = true;
             }
 
@@ -161,11 +165,126 @@ public class StartsWithFilter
 
     // ---- helper methods --------------------------------------------------
 
+    /**
+     * Return filter string.
+     *
+     * @return filter string
+     */
+    protected String getFilterString()
+        {
+        return (String) getValue();
+        }
+
+    /**
+     * Return <tt>true</tt> if the specified value matches this filter.
+     *
+     * @param value  value to check for a match
+     *
+     * @return <tt>true</tt> if the specified value matches this filter,
+     *         <tt>false</tt> otherwise
+     */
     protected boolean isMatch(String value)
         {
-        String filter = m_filter;
+        String filter = getFilterString();
         int    len    = filter.length();
 
         return value.regionMatches(m_ignoreCase, 0, filter, 0, len);
+        }
+
+
+    // ---- ExternalizableLite implementation -------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    public void readExternal(DataInput in)
+            throws IOException
+        {
+        super.readExternal(in);
+
+        m_ignoreCase = in.readBoolean();
+        }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void writeExternal(DataOutput out)
+            throws IOException
+        {
+        super.writeExternal(out);
+
+        out.writeBoolean(m_ignoreCase);
+        }
+
+    // ---- PortableObject implementation -----------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    public void readExternal(PofReader reader)
+            throws IOException
+        {
+        super.readExternal(reader);
+
+        m_ignoreCase = reader.readBoolean(2);
+        }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void writeExternal(PofWriter writer)
+            throws IOException
+        {
+        super.writeExternal(writer);
+        
+        writer.writeBoolean(2, m_ignoreCase);
+        }
+
+
+    // ---- Object methods implementation -----------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o)
+        {
+        if (this == o)
+            {
+            return true;
+            }
+        if (o == null || getClass() != o.getClass())
+            {
+            return false;
+            }
+
+        StartsWithFilter that = (StartsWithFilter) o;
+
+        return m_ignoreCase == that.m_ignoreCase
+                && super.equals(o);
+        }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode()
+        {
+        int result = super.hashCode();
+        result = 31 * result + (m_ignoreCase ? 1 : 0);
+        return result;
+        }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+        {
+        return "StartsWithFilter{" +
+               "extractor=" + getValueExtractor() +
+               ", filterString=" + getFilterString() +
+               ", ignoreCase=" + m_ignoreCase +
+               '}';
         }
     }
