@@ -22,10 +22,11 @@ import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 
 public class Country
-        implements PortableObject, Comparable
+        implements PortableObject, Serializable, Comparable
     {
     String code;
     String name;
