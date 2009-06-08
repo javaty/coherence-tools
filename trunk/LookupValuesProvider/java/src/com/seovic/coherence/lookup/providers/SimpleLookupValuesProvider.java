@@ -24,11 +24,8 @@ import com.seovic.coherence.lookup.LookupValuesAggregator;
 
 import com.seovic.coherence.util.filter.StartsWithFilter;
 
-import com.tangosol.net.NamedCache;
-
 import com.tangosol.util.Filter;
 import com.tangosol.util.InvocableMap;
-import com.tangosol.util.filter.AlwaysFilter;
 
 import java.util.Collection;
 
@@ -45,12 +42,13 @@ public class SimpleLookupValuesProvider<TId, TDesc>
     // ---- data members ----------------------------------------------------
 
     /**
-     * Cache that lookup values should be retrieved from.
+     * InvocableMap that lookup values should be retrieved from.
      */
-    private InvocableMap m_cache;
+    private InvocableMap m_map;
 
     /**
-     * Cache that lookup values should be retrieved from.
+     * Extractor that should be used to extract {@link LookupValue}s from
+     * map entries.
      */
     private LookupValueExtractor<TId, TDesc> m_extractor;
 
@@ -60,17 +58,30 @@ public class SimpleLookupValuesProvider<TId, TDesc>
     /**
      * Construct <tt>SimpleLookupValuesProvider</tt> instance.
      *
-     * @param cache      cache that lookup values should be retrieved from
+     * @param map        map that lookup values should be retrieved from
      * @param extractor  lookup value extractor to use
      */
-    public SimpleLookupValuesProvider(NamedCache cache,
+    public SimpleLookupValuesProvider(InvocableMap map,
                                       LookupValueExtractor<TId, TDesc> extractor)
         {
-        m_cache     = cache;
+        m_map       = map;
         m_extractor = extractor;
         }
 
 
+    // ---- getters and setters ---------------------------------------------
+
+    public InvocableMap getMap()
+        {
+        return m_map;
+        }
+
+    public LookupValueExtractor<TId, TDesc> getExtractor()
+        {
+        return m_extractor;
+        }
+
+    
     // ---- LookupValuesProvider implementation -----------------------------
 
     /**
@@ -78,7 +89,7 @@ public class SimpleLookupValuesProvider<TId, TDesc>
      */
     public Collection<LookupValue<TId, TDesc>> getValues()
         {
-        return getValuesInternal(AlwaysFilter.INSTANCE);
+        return getValuesInternal(null);
         }
 
     /**
@@ -87,10 +98,7 @@ public class SimpleLookupValuesProvider<TId, TDesc>
     public Collection<LookupValue<TId, TDesc>> getValues(String filter,
                                                          boolean ignoreCase)
         {
-        Filter descFilter =
-                new StartsWithFilter(m_extractor.getDescriptionExtractor(),
-                                     filter, ignoreCase);
-        return getValuesInternal(descFilter);
+        return getValuesInternal(instantiateDescriptionFilter(filter, ignoreCase));
         }
 
     /**
@@ -105,6 +113,23 @@ public class SimpleLookupValuesProvider<TId, TDesc>
     // ---- helper methods --------------------------------------------------
 
     /**
+     * Create an instance of a description filter to use.
+     *
+     * @param filter      description filter
+     * @param ignoreCase  flag specifying whether to ignore case during
+     *                    comparison
+     *
+     * @return a description that should be used to narrow down the aggregation
+     *         scope
+     */
+    protected Filter instantiateDescriptionFilter(String filter,
+                                                  boolean ignoreCase)
+        {
+        return new StartsWithFilter(m_extractor.getDescriptionExtractor(),
+                                    filter, ignoreCase);
+        }
+
+    /**
      * Performs aggregation of lookup values from the underlying cache.
      *
      * @param filter  aggregation filter
@@ -114,7 +139,7 @@ public class SimpleLookupValuesProvider<TId, TDesc>
     protected Collection<LookupValue<TId, TDesc>> getValuesInternal(Filter filter)
         {
         return (Collection<LookupValue<TId, TDesc>>)
-                m_cache.aggregate(filter,
+                m_map.aggregate(filter,
                                   new LookupValuesAggregator<TId, TDesc>(m_extractor));
         }
     }
