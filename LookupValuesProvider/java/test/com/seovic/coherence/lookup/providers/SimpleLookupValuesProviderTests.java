@@ -25,7 +25,7 @@ import com.tangosol.net.NamedCache;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.util.filter.InFilter;
 
-import com.seovic.coherence.test.domain.Country;
+import com.seovic.coherence.test.objects.Country;
 
 import com.seovic.coherence.lookup.LookupValuesProvider;
 import com.seovic.coherence.lookup.LookupValueExtractor;
@@ -38,6 +38,8 @@ import java.util.HashSet;
 
 
 /**
+ * Tests for SimpleLookupValuesProvider.
+ * 
  * @author Aleksandar Seovic  2009.06.07
  */
 @SuppressWarnings("unchecked")
