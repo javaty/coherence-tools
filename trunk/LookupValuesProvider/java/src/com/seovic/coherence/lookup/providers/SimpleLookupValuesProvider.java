@@ -140,6 +140,6 @@ public class SimpleLookupValuesProvider<TId, TDesc>
         {
         return (Collection<LookupValue<TId, TDesc>>)
                 m_map.aggregate(filter,
-                                  new LookupValuesAggregator<TId, TDesc>(m_extractor));
+                                new LookupValuesAggregator<TId, TDesc>(m_extractor));
         }
     }
