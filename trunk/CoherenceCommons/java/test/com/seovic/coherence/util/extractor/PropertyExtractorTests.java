@@ -18,7 +18,6 @@ package com.seovic.coherence.util.extractor;
 
 
 import com.tangosol.util.ValueExtractor;
-import com.tangosol.util.WrapperException;
 import com.tangosol.util.SimpleMapEntry;
 import com.tangosol.util.InvocableMapHelper;
 import com.tangosol.util.Binary;
@@ -31,7 +30,7 @@ import com.tangosol.io.DefaultSerializer;
 import com.tangosol.io.pof.SimplePofContext;
 import com.tangosol.io.pof.PortableObjectSerializer;
 
-import com.seovic.coherence.test.domain.Country;
+import com.seovic.coherence.test.objects.Country;
 
 import org.junit.Test;
 
@@ -92,13 +91,20 @@ public class PropertyExtractorTests
         assertNull(ex.extract(null));
         }
 
+    @Test
+    public void testGetIsHas()
+        {
+        PropertyTester obj = new PropertyTester();
+        assertEquals("get", new PropertyExtractor("get").extract(obj));
+        assertEquals("is", new PropertyExtractor("is").extract(obj));
+        assertEquals("has", new PropertyExtractor("has").extract(obj));
+        }
+
     @Test(expected = RuntimeException.class)
     public void testMissingProperty()
         {
         Country serbia = new Country("SRB", "Serbia");
-        ValueExtractor ex = new PropertyExtractor("xyz");
-
-        ex.extract(serbia);
+        new PropertyExtractor("xyz").extract(serbia);
         }
 
     @Test
@@ -138,5 +144,26 @@ public class PropertyExtractorTests
         assertFalse(o.equals(null));
         assertFalse(o.equals("invalid class"));
         assertFalse(o.equals(new PropertyExtractor("abc")));
+        }
+
+
+    // ---- Inner class: PropertyTester -------------------------------------
+
+    private static class PropertyTester
+        {
+        public String getGet()
+            {
+            return "get";
+            }
+
+        public String isIs()
+            {
+            return "is";
+            }
+
+        public String hasHas()
+            {
+            return "has";
+            }
         }
     }

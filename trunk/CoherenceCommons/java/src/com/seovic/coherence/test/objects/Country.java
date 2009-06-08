@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package com.seovic.coherence.test.domain;
+package com.seovic.coherence.test.objects;
 
 
 import com.tangosol.io.pof.PortableObject;
@@ -28,14 +28,19 @@ import java.io.Serializable;
 public class Country
         implements PortableObject, Serializable, Comparable
     {
-    String code;
-    String name;
-    String formalName;
-    String capital;
-    String currencySymbol;
-    String currencyName;
-    String telephonePrefix;
-    String domain;
+    // ---- data members ----------------------------------------------------
+
+    private String code;
+    private String name;
+    private String formalName;
+    private String capital;
+    private String currencySymbol;
+    private String currencyName;
+    private String telephonePrefix;
+    private String domain;
+
+
+    // ---- constructors ----------------------------------------------------
 
     public Country()
         {
@@ -46,6 +51,9 @@ public class Country
         this.code = code;
         this.name = name;
         }
+
+
+    // ---- getters and setters ---------------------------------------------
 
     public String getCode()
         {
@@ -128,6 +136,8 @@ public class Country
         }
 
 
+    // ---- PortableObject implementation -----------------------------------
+
     public void readExternal(PofReader pofReader)
             throws IOException
         {
@@ -153,6 +163,9 @@ public class Country
         pofWriter.writeString(6, telephonePrefix);
         pofWriter.writeString(7, domain);
         }
+
+
+    // ---- Object methods implementation -----------------------------------
 
     public boolean equals(Object o)
         {
@@ -206,6 +219,9 @@ public class Country
                "TelephonePrefix = " + telephonePrefix + ", " +
                "Domain = " + domain + ")";
         }
+
+
+    // ---- Comparable implementation ---------------------------------------
 
     public int compareTo(Object o)
         {

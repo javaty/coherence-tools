@@ -25,8 +25,6 @@ import com.tangosol.io.pof.PortableObject;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
 
-import java.beans.PropertyDescriptor;
-
 import java.io.IOException;
 
 import java.lang.reflect.Method;
@@ -86,6 +84,7 @@ public class PropertyExtractor
         m_nTarget      = target;
         }
 
+
     // ---- ValueExtractor implementation -----------------------------------
 
     /**
@@ -105,18 +104,56 @@ public class PropertyExtractor
             if (method == null
                 || method.getDeclaringClass() != targetClass)
                 {
-                PropertyDescriptor pd =
-                        new PropertyDescriptor(m_propertyName, o.getClass());
-                m_readMethod = method = pd.getReadMethod();
+                m_readMethod = method = findReadMethod(m_propertyName, o.getClass());
                 }
             return method.invoke(o);
             }
-        catch (Exception e)
+        catch (NullPointerException e)
             {
             throw new RuntimeException("Property " + m_propertyName +
-                                       " of the class " + targetClass +
-                                       " either does not exist or it cannot be read");
+                                       " does not exist" +
+                                       " in the class " + targetClass);
             }
+        catch (Exception e)
+            {
+            throw new WrapperException(e);
+            }
+        }
+
+
+    // ---- helper methods --------------------------------------------------
+
+    /**
+     * Attempt to find a read method for the specified property name.
+     * <p/>
+     * This method attempts to find a read method by prepending prefixes 'get',
+     * 'is' and 'has' to the specified property name, in that order.
+     *
+     * @param propertyName  property name
+     * @param cls           class containing the property
+     *
+     * @return read method for the property, or <tt>null</tt> if the method
+     *         cannot be found
+     */
+    protected Method findReadMethod(String propertyName, Class cls)
+        {
+        String name = Character.toUpperCase(propertyName.charAt(0)) + propertyName.substring(1);
+
+        final Class[]  EMPTY_ARGS = new Class[0];
+        final String[] prefixes   = new String[] {"get", "is", "has"};
+
+        for (String prefix : prefixes)
+            {
+            try
+                {
+                return cls.getMethod(prefix + name, EMPTY_ARGS);
+                }
+            catch (NoSuchMethodException ignore)
+                {
+                }
+            }
+
+        return null;
         }
 
 
