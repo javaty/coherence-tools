@@ -20,13 +20,14 @@ package com.seovic.coherence.test.objects;
 import com.tangosol.io.pof.PortableObject;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
+import com.seovic.coherence.Entity;
 
 import java.io.IOException;
 import java.io.Serializable;
 
 
 public class Country
-        implements PortableObject, Serializable, Comparable
+        implements Entity<String>, PortableObject, Serializable, Comparable
     {
     // ---- data members ----------------------------------------------------
 
@@ -50,6 +51,14 @@ public class Country
         {
         this.code = code;
         this.name = name;
+        }
+
+
+    // ---- Entity implementation -------------------------------------------
+
+    public String getId()
+        {
+        return code;
         }
 
 
