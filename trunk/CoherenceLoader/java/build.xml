@@ -15,6 +15,7 @@
   <path id="classpath">
     <pathelement path="${env.COHERENCE_HOME}/lib/coherence.jar"/>
     <pathelement location="${build.dir}/classes"/>
+    
     <fileset dir="${lib.dir}">
       <include name="**/*.jar"/>
     </fileset>
