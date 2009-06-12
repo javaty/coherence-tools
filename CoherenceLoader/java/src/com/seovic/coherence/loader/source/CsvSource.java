@@ -4,14 +4,17 @@ import com.seovic.coherence.loader.Source;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
 
 import java.io.Reader;
 import java.io.IOException;
 
-import org.supercsv.io.CsvMapReader;
-import org.supercsv.io.ICsvMapReader;
+import org.supercsv.io.CsvListReader;
+import org.supercsv.io.ICsvListReader;
 
 import org.supercsv.prefs.CsvPreference;
+
 
 /**
  * @author ic  2009.06.09
@@ -26,7 +29,7 @@ public class CsvSource implements Source {
     }
 
     public Iterator iterator() {
-        return new CsvIterator(new CsvMapReader(reader, preferences));
+        return new CsvIterator(new CsvListReader(reader, preferences));
     }
 
     public void setDelimiterChar(char delimiter) {
@@ -42,11 +45,11 @@ public class CsvSource implements Source {
     }
 
     public class CsvIterator implements Iterator {
-        private Map<String, String> currentLine;
-        private ICsvMapReader reader;
-        private String[]      header;
+        private List<String>   currentLine;
+        private ICsvListReader reader;
+        private String[]       header;
 
-        public CsvIterator(ICsvMapReader reader) {
+        public CsvIterator(ICsvListReader reader) {
             try {
                 this.reader = reader;
                 this.header = reader.getCSVHeader(false);
@@ -58,7 +61,7 @@ public class CsvSource implements Source {
 
         public boolean hasNext() {
             try {
-                currentLine = reader.read(header);
+                currentLine = reader.read();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -66,7 +69,16 @@ public class CsvSource implements Source {
         }
 
         public Object next() {
-            return currentLine;
+            return createMap(header, currentLine);
+        }
+
+        private Map<String, String> createMap(String[] keys, List<String> values) {
+            Map<String, String> mapValues = new HashMap<String, String>();
+            for (int i = 0, count = values.size(); i<count; i++) {
+                String value = values.get(i);
+                mapValues.put(keys[i], value.length() > 0 ? value : null);
+            }
+            return mapValues;
         }
 
         public void remove() {

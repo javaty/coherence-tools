@@ -1,7 +1,11 @@
 package com.seovic.coherence.loader;
 
-import com.seovic.coherence.loader.source.XmlSource;
+import com.seovic.coherence.loader.source.CsvSource;
 import com.seovic.coherence.loader.target.AbstractBaseTarget;
+import com.seovic.coherence.loader.target.CoherenceCacheTarget;
+import com.seovic.coherence.test.objects.Country;
+import com.tangosol.net.CacheFactory;
+import com.tangosol.net.NamedCache;
 import org.w3c.dom.Document;
 
 import javax.xml.transform.Transformer;
@@ -9,9 +13,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
+import java.io.*;
 
 /**
  * @author ic  2009.06.09
@@ -35,12 +37,12 @@ public class Loader {
 
     public static void main(String[] args) throws Exception {
 
-        Reader countriesReader = new InputStreamReader(Loader.class.getClassLoader().getResourceAsStream("countries-ns.xml"));
+        Reader countriesReader = new InputStreamReader(Loader.class.getClassLoader().getResourceAsStream("countries.csv"));
 
-        Source source = new XmlSource(countriesReader);
+        Source source = new CsvSource(countriesReader);
 
 
-        //CoherenceCacheTarget target = new CoherenceCacheTarget("countries", Country.class);
+        CoherenceCacheTarget target = new CoherenceCacheTarget("countries", Country.class);
         //target.registerPropertyMapper("name", new ExpressionPropertyMapper("code + ':' + ime.toUpperCase()"));
 //        Writer writer = new FileWriter("countries-out.xml", false);
 //        Map<String, String> nmsp = new HashMap<String, String>();
@@ -54,13 +56,13 @@ public class Loader {
 //        target.registerPropertyMapper("name", new ExpressionPropertyMapper("ime"));
 
 
-        Loader loader = new Loader(source, new XmlReporterTarget());
+        Loader loader = new Loader(source,target);
         loader.load();
 
-//        NamedCache cache = CacheFactory.getCache("countries");
-//        System.out.println("Imported " + cache.size() + " items.");
-//        System.out.println(cache.get("SRB"));
-//        System.out.println(cache.get("ESH"));
+        NamedCache cache = CacheFactory.getCache("countries");
+        System.out.println("Imported " + cache.size() + " items.");
+        System.out.println(cache.get("SRB"));
+        System.out.println(cache.get("ESH"));
 //
 //        Source source2 = new CoherenceCacheSource("countries");
 
