@@ -1,17 +1,22 @@
 package com.seovic.coherence.loader.target;
 
-import com.seovic.coherence.loader.PropertyMapper;
+
+import com.seovic.coherence.loader.PropertySetter;
 
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
+
 import java.io.Writer;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 /**
  * @author ic  2009.06.10
@@ -62,6 +67,10 @@ public class XmlTarget extends AbstractBaseTarget {
         }
     }
 
+    protected PropertySetter createDefaultSetter(String propertyName) {
+        return null;
+    }
+
     @Override
     public void beginImport() {
         try {
@@ -75,7 +84,8 @@ public class XmlTarget extends AbstractBaseTarget {
         }
     }
 
-    public void importSingle(Object item) {
+    @SuppressWarnings({"unchecked"})
+    public void importItem(Object item) {
         try {
             boolean hasDecendants = !elements.isEmpty();
             if (hasDecendants) {
@@ -83,7 +93,7 @@ public class XmlTarget extends AbstractBaseTarget {
             } else {
                 writer.writeEmptyElement(itemElementName);
             }
-            Map<String, Object> convertedItem = map(item);
+            Map<String, Object> convertedItem = (Map<String, Object>) item;
             for (Property property : attributes) {
                 String prefix = property.getNamespacePrefix();
                 if (prefix == null) {
@@ -126,18 +136,13 @@ public class XmlTarget extends AbstractBaseTarget {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private Map<String, Object> map(Object source) {
-        Map<String, Object> target = new HashMap<String, Object>();
-        for (Property property : attributes) {
-            PropertyMapper pm = getPropertyMapper(property.getLocalName());
-            target.put(property.getLocalName(), pm.getValue(source));
-        }
-        for (Property property : elements) {
-            PropertyMapper pm = getPropertyMapper(property.getLocalName());
-            target.put(property.getLocalName(), pm.getValue(source));
-        }
-        return target;
+    public String[] getPropertyNames() {
+        // todo: implement
+        return new String[0];
+    }
+
+    public Object createTargetInstance() {
+        return new HashMap<String, Object>();
     }
 
     private void initAttributesAndElements(String... propertyNames) {

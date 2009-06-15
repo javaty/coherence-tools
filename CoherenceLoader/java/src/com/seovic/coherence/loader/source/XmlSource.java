@@ -1,6 +1,7 @@
 package com.seovic.coherence.loader.source;
 
-import com.seovic.coherence.loader.Source;
+
+import com.seovic.coherence.loader.PropertyGetter;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -12,16 +13,19 @@ import java.io.StringReader;
 import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamConstants;
+
 import javax.xml.namespace.QName;
+
 
 /**
  * @author ic  2009.06.10
  */
-public class XmlSource implements Source {
+public class XmlSource extends AbstractBaseSource {
     private XMLStreamReader reader;
 
 
@@ -35,6 +39,10 @@ public class XmlSource implements Source {
 
     public Iterator iterator() {
         return new XmlIterator(reader);
+    }
+
+    protected PropertyGetter createDefaultGetter(String propertyName) {
+        return null;
     }
 
     public static class XmlIterator implements Iterator {

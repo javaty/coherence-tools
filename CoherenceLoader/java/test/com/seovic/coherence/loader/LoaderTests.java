@@ -62,8 +62,8 @@ public class LoaderTests {
     @SuppressWarnings({"unchecked"})
     protected static void prepareCache() {
         countriesCache.put("SRB", createCountry("SRB,Serbia,Republic of Serbia,Belgrade,RSD,Dinar,+381,.rs and .yu"));
-        countriesCache.put("SRB", createCountry("SGP,Singapore,Republic of Singapore,Singapore,SGD,Dollar,+65,.sg"));
-        countriesCache.put("SRB", createCountry("CHL,Chile,Republic of Chile,Santiago (administrative/judical) and Valparaiso (legislative),CLP,Peso,+56,.cl"));
+        countriesCache.put("SGP", createCountry("SGP,Singapore,Republic of Singapore,Singapore,SGD,Dollar,+65,.sg"));
+        countriesCache.put("CHL", createCountry("CHL,Chile,Republic of Chile,Santiago (administrative/judical) and Valparaiso (legislative),CLP,Peso,+56,.cl"));
     }
 
     protected static Country createCountry(String properties) {

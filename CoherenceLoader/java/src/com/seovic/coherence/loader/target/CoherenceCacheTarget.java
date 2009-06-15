@@ -1,5 +1,6 @@
 package com.seovic.coherence.loader.target;
 
+
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.CacheFactory;
 
@@ -7,19 +8,22 @@ import com.seovic.coherence.identity.IdentityGenerator;
 import com.seovic.coherence.identity.IdentityExtractor;
 import com.seovic.coherence.identity.extractor.EntityIdentityExtractor;
 
-import com.seovic.coherence.loader.PropertyMapper;
+import com.seovic.coherence.loader.PropertySetter;
+import com.seovic.coherence.loader.properties.BeanWrapperPropertySetter;
 
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
+
 import java.beans.PropertyDescriptor;
 
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
+import java.lang.reflect.Constructor;
+
 
 /**
  * @author ic  2009.06.09
  */
+@SuppressWarnings("unchecked")
 public class CoherenceCacheTarget extends AbstractBaseTarget {
     public static final int DEFAULT_BATCH_SIZE = 1000;
 
@@ -30,7 +34,7 @@ public class CoherenceCacheTarget extends AbstractBaseTarget {
     private Map               batch;
     private int               batchSize = DEFAULT_BATCH_SIZE;
 
-    private transient List<PropertyDescriptor> writeableProperties;
+    private transient Constructor itemCtor;
 
     public CoherenceCacheTarget(String cacheName, Class itemClass) {
         this(cacheName, itemClass, null, new EntityIdentityExtractor());
@@ -49,26 +53,36 @@ public class CoherenceCacheTarget extends AbstractBaseTarget {
         this.itemClass   = itemClass;
         this.idGenerator = idGenerator;
         this.idExtractor = idExtractor;
-
-        this.writeableProperties = getWriteableProperties(itemClass);
     }
 
     public void setBatchSize(int batchSize) {
         this.batchSize = batchSize;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    protected PropertySetter createDefaultSetter(String propertyName) {
+        return new BeanWrapperPropertySetter(propertyName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void beginImport() {
         batch = new HashMap();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
-    public void importSingle(Object item) {
-        Object convertedItem = mapItem(item);
+    public void importItem(Object item) {
         Object id = idGenerator != null
                 ? idGenerator.generateIdentity()
-                : idExtractor.extractIdentity(convertedItem);
+                : idExtractor.extractIdentity(item);
 
-        batch.put(id, convertedItem);
+        batch.put(id, item);
         if (batch.size() % batchSize == 0) {
             cache.putAll(batch);
             batch.clear();
@@ -76,6 +90,9 @@ public class CoherenceCacheTarget extends AbstractBaseTarget {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     public void endImport() {
         if (!batch.isEmpty()) {
@@ -84,13 +101,33 @@ public class CoherenceCacheTarget extends AbstractBaseTarget {
         }
     }
 
-    private Object mapItem(Object source) {
-       BeanWrapper beanWrapper = new BeanWrapperImpl(itemClass);
-       for (PropertyDescriptor property : writeableProperties) {
-            String propertyName = property.getName();
-            PropertyMapper pm = getPropertyMapper(propertyName);
-            beanWrapper.setPropertyValue(propertyName, pm.getValue(source));
+    /**
+     * {@inheritDoc}
+     */
+    public String[] getPropertyNames() {
+        List<PropertyDescriptor> properties    = getWriteableProperties(itemClass);
+        String[]                 propertyNames = new String[properties.size()];
+
+        int i = 0;
+        for (PropertyDescriptor pd : properties) {
+            propertyNames[i++] = pd.getName();
         }
-        return beanWrapper.getWrappedInstance();
+
+        return propertyNames;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object createTargetInstance() {
+        try {
+            if (itemCtor == null) {
+                itemCtor = itemClass.getConstructor();
+            }
+            return itemCtor.newInstance();
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
