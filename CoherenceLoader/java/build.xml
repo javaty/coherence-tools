@@ -47,6 +47,13 @@
            target="1.5">
     </javac>
 
+    <copy todir="${build.dir}/tests">
+      <fileset dir="${test.dir}">
+        <include name="*.xml"/>
+        <include name="*.csv"/>
+      </fileset>
+    </copy>
+
     <junit haltonfailure="yes" printsummary="on">
       <classpath>
         <pathelement path="${env.COHERENCE_HOME}/lib/coherence.jar"/>

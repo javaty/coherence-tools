@@ -54,6 +54,7 @@ public class LoaderTests {
         assertEquals(244, countriesCache.size());
 
         Country srb = (Country) countriesCache.get("SRB");
+        assertEquals("Serbia", srb.getName());
         assertEquals("Belgrade", srb.getCapital());
         assertEquals("RSD", srb.getCurrencySymbol());
     }
