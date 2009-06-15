@@ -49,8 +49,11 @@ public class XmlSource extends AbstractBaseSource {
     public static class XmlIterator implements Iterator {
         private XMLStreamReader reader;
         private Map<String, String> namespaceMap = new HashMap<String, String>();
+        private DocumentBuilderFactory documentFactory;
 
         public XmlIterator(XMLStreamReader reader) {
+            this.documentFactory = DocumentBuilderFactory.newInstance();
+            this.documentFactory.setNamespaceAware(true);
             this.reader = reader;
             // skip document element
             try {
@@ -86,7 +89,7 @@ public class XmlSource extends AbstractBaseSource {
         public Object next() {
             try {
                 String elementStr = getNextElement(reader);
-                return DocumentBuilderFactory.newInstance()
+                return documentFactory
                         .newDocumentBuilder()
                         .parse(new InputSource(new StringReader(elementStr)));
             } catch (Exception e) {

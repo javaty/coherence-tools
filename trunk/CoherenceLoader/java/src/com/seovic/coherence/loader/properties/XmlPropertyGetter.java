@@ -10,19 +10,28 @@ import org.w3c.dom.NodeList;
  */
 public class XmlPropertyGetter implements PropertyGetter {
     private String propertyName;
-
+    private String namespace;
 
     public XmlPropertyGetter(String propertyName) {
         this.propertyName = propertyName;
     }
 
+    public XmlPropertyGetter(String propertyName, String nsUri) {
+        this.propertyName = propertyName;
+        this.namespace    = nsUri;
+    }
+
     public Object getValue(Object sourceItem) {
-        Element sourceElement = ((Document) sourceItem).getDocumentElement();
-        if (sourceElement.hasAttribute(propertyName)) {
-            return sourceElement.getAttribute(propertyName);
+        Document sourceDoc     = (Document) sourceItem;
+        Element  sourceElement = sourceDoc.getDocumentElement();
+        String nsUri = namespace == null
+                       ? sourceElement.getNamespaceURI()
+                       : namespace; 
+        if (sourceElement.hasAttributeNS(nsUri, propertyName)) {
+            return sourceElement.getAttributeNS(nsUri, propertyName);
         }
         else {
-            NodeList candidates = sourceElement.getElementsByTagName(propertyName);
+            NodeList candidates = sourceElement.getElementsByTagNameNS(nsUri, propertyName);
             if (candidates.getLength() > 0) {
                 return candidates.item(0).getTextContent();
             }
