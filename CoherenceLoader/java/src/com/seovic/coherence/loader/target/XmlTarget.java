@@ -2,6 +2,7 @@ package com.seovic.coherence.loader.target;
 
 
 import com.seovic.coherence.loader.PropertySetter;
+import com.seovic.coherence.loader.properties.MapPropertySetter;
 
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.XMLOutputFactory;
@@ -58,7 +59,9 @@ public class XmlTarget extends AbstractBaseTarget {
                      String... propertyNames) {
         try {
             this.writer = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
-            this.namespacesMap   = namespaces;
+            this.namespacesMap   = namespaces == null
+                                    ? new HashMap<String, String>()
+                                    : namespaces;
             this.rootElementName = rootElementName;
             this.itemElementName = itemElementName;
             initAttributesAndElements(propertyNames);
@@ -68,7 +71,7 @@ public class XmlTarget extends AbstractBaseTarget {
     }
 
     protected PropertySetter createDefaultSetter(String propertyName) {
-        return null;
+        return new MapPropertySetter(propertyName);
     }
 
     @Override
@@ -137,8 +140,15 @@ public class XmlTarget extends AbstractBaseTarget {
     }
 
     public String[] getPropertyNames() {
-        // todo: implement
-        return new String[0];
+        String[] propertyNames = new String[attributes.size() + elements.size()];
+        int i = 0;
+        for(Property property : attributes) {
+            propertyNames[i++] = property.getLocalName();
+        }
+        for(Property property : elements) {
+            propertyNames[i++] = property.getLocalName();
+        }
+        return propertyNames;
     }
 
     public Object createTargetInstance() {

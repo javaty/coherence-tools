@@ -28,24 +28,5 @@ public class Loader {
         }
         target.endImport();
     }
-
-    //public static class XmlReporterTarget extends AbstractBaseTarget {
-    //
-    //    public void importItem(Object item) {
-    //        try {
-    //            DOMSource domSource = new DOMSource((Document) item);
-    //            StringWriter writer = new StringWriter();
-    //            StreamResult result = new StreamResult(writer);
-    //            TransformerFactory tf = TransformerFactory.newInstance();
-    //            Transformer transformer = tf.newTransformer();
-    //            transformer.transform(domSource, result);
-    //            System.out.println(writer.toString());
-    //        }
-    //        catch (TransformerException ignore) {
-    //        }
-    //    }
-    //}
-
-
 }
 
