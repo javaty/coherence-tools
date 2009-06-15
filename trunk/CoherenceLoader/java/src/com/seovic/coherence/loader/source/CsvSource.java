@@ -1,6 +1,8 @@
 package com.seovic.coherence.loader.source;
 
-import com.seovic.coherence.loader.Source;
+
+import com.seovic.coherence.loader.PropertyGetter;
+import com.seovic.coherence.loader.properties.MapPropertyGetter;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -19,7 +21,7 @@ import org.supercsv.prefs.CsvPreference;
 /**
  * @author ic  2009.06.09
  */
-public class CsvSource implements Source {
+public class CsvSource extends AbstractBaseSource {
 
     private Reader reader;
     private CsvPreference preferences = CsvPreference.STANDARD_PREFERENCE;
@@ -42,6 +44,10 @@ public class CsvSource implements Source {
 
     public void setEndOfLineSymbols(String endOfLineSymbols) {
         preferences.setEndOfLineSymbols(endOfLineSymbols);  
+    }
+
+    protected PropertyGetter createDefaultGetter(String propertyName) {
+        return new MapPropertyGetter(propertyName);
     }
 
     public class CsvIterator implements Iterator {

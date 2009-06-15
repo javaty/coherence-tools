@@ -1,15 +1,19 @@
 package com.seovic.coherence.loader.source;
 
-import com.seovic.coherence.loader.Source;
+
+import com.seovic.coherence.loader.PropertyGetter;
+import com.seovic.coherence.loader.properties.ExpressionPropertyGetter;
+
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.CacheFactory;
 
 import java.util.Iterator;
 
+
 /**
  * @author ic  2009.06.09
  */
-public class CoherenceCacheSource implements Source {
+public class CoherenceCacheSource extends AbstractBaseSource {
     private NamedCache cache;
 
     public CoherenceCacheSource(String cacheName) {
@@ -18,5 +22,9 @@ public class CoherenceCacheSource implements Source {
 
     public Iterator iterator() {
         return cache.values().iterator();
+    }
+
+    protected PropertyGetter createDefaultGetter(String propertyName) {
+        return new ExpressionPropertyGetter(propertyName);
     }
 }
