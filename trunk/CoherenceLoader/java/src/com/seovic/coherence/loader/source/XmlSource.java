@@ -2,6 +2,7 @@ package com.seovic.coherence.loader.source;
 
 
 import com.seovic.coherence.loader.PropertyGetter;
+import com.seovic.coherence.loader.properties.XmlPropertyGetter;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class XmlSource extends AbstractBaseSource {
     }
 
     protected PropertyGetter createDefaultGetter(String propertyName) {
-        return null;
+        return new XmlPropertyGetter(propertyName);
     }
 
     public static class XmlIterator implements Iterator {
