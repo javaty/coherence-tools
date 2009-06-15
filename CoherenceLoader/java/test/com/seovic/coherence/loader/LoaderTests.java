@@ -77,6 +77,26 @@ public class LoaderTests {
         assertEquals("RSD", srb.getCurrencySymbol());
     }
 
+     @Test
+    public void testXmlWithNamespacesToCoherenceLoader() {
+        Reader countriesReader = new InputStreamReader(Loader.class.getClassLoader().getResourceAsStream("countries-ns.xml"));
+        Source source = new XmlSource(countriesReader);
+
+        Target target = new CoherenceCacheTarget("countries", Country.class);
+        Loader loader = new Loader(source, target);
+        loader.load();
+
+        // asserts
+        for (Object country : countriesCache.values())  {
+            System.out.println(country);
+        }
+        assertEquals(244, countriesCache.size());
+
+        Country srb = (Country) countriesCache.get("SRB");
+        assertEquals("Belgrade", srb.getCapital());
+        assertEquals("RSD", srb.getCurrencySymbol());
+    }
+
     @SuppressWarnings({"unchecked"})
     protected static void prepareCache() {
         countriesCache.put("SRB", createCountry("SRB,Serbia,Republic of Serbia,Belgrade,RSD,Dinar,+381,.rs and .yu"));
