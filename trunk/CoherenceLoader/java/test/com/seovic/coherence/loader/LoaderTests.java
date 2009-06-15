@@ -62,14 +62,14 @@ public class LoaderTests {
     public void testCoherenceToCsvLoader() throws IOException {
         prepareCache();
         Source source = new CoherenceCacheSource("countries");
-        Writer countriesWriter = new FileWriter("countries-out.csv", false);
-        Target target = new CsvTarget(countriesWriter, "code,formalName,capital,currencySymbol,currencyName,telephonePrefix,domain");
+        Writer writer = new StringWriter();
+        Target target = new CsvTarget(writer, "code,formalName,capital,currencySymbol,currencyName,telephonePrefix,domain");
 
         Loader loader = new Loader(source, target);
         loader.load();
 
         // asserts
-        BufferedReader reader = new BufferedReader(new FileReader("countries-out.csv"));
+        BufferedReader reader = new BufferedReader(new StringReader(writer.toString()));
         int count = 0;
         while (reader.readLine()!=null) count++;
         assertEquals(4, count);
