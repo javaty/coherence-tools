@@ -36,6 +36,7 @@ import java.lang.reflect.Method;
  *
  * @author Aleksandar Seovic  2008.12.19
  */
+@SuppressWarnings("unchecked")
 public class PropertyExtractor
         extends    AbstractExtractor
         implements ValueExtractor, PortableObject
