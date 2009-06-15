@@ -9,7 +9,7 @@ public interface Target {
     void endImport();
 
     String[] getPropertyNames();
-    Object createTargetInstance();
+    Object createTargetInstance(Source source, Object sourceItem);
 
     PropertySetter getPropertySetter(String property);
     void setPropertySetter(String property, PropertySetter setter);

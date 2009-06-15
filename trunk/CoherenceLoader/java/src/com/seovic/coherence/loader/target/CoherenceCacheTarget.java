@@ -9,6 +9,7 @@ import com.seovic.coherence.identity.IdentityExtractor;
 import com.seovic.coherence.identity.extractor.EntityIdentityExtractor;
 
 import com.seovic.coherence.loader.PropertySetter;
+import com.seovic.coherence.loader.Source;
 import com.seovic.coherence.loader.properties.BeanWrapperPropertySetter;
 
 import java.util.Map;
@@ -118,8 +119,10 @@ public class CoherenceCacheTarget extends AbstractBaseTarget {
 
     /**
      * {@inheritDoc}
+     * @param source
+     * @param sourceItem
      */
-    public Object createTargetInstance() {
+    public Object createTargetInstance(Source source, Object sourceItem) {
         try {
             if (itemCtor == null) {
                 itemCtor = itemClass.getConstructor();

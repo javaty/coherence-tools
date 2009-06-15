@@ -9,6 +9,7 @@ import com.seovic.coherence.loader.target.CsvTarget;
 import com.seovic.coherence.loader.target.XmlTarget;
 
 import com.seovic.coherence.loader.properties.XmlPropertyGetter;
+import com.seovic.coherence.loader.properties.ExpressionPropertyGetter;
 
 import com.seovic.coherence.test.objects.Country;
 
@@ -138,6 +139,23 @@ public class LoaderTests {
         assertEquals("CHL", ((Element) countries.item(1)).getAttribute("code"));
         assertEquals("SRB", ((Element) countries.item(2)).getAttribute("code"));
     }
+
+    @Test
+    public void testCsvToCoherenceWithExpressionsLoader() {
+        Reader countriesReader = new InputStreamReader(Loader.class.getClassLoader().getResourceAsStream("countries.csv"));
+        Source source = new CsvSource(countriesReader);
+        Target target = new CoherenceCacheTarget("countries", Country.class);
+        Loader loader = new Loader(source, target);
+        source.setPropertyGetter("name", new ExpressionPropertyGetter("code + ':' + name+ ':' + formalName"));
+        loader.load();
+
+        // asserts
+        assertEquals(244, countriesCache.size());
+
+        Country srb = (Country) countriesCache.get("SRB");
+        assertEquals("SRB:Serbia:Republic of Serbia", srb.getName());
+    }
+
 
     @SuppressWarnings({"unchecked"})
     protected static void prepareCache() {

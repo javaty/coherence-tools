@@ -2,6 +2,7 @@ package com.seovic.coherence.loader.target;
 
 
 import com.seovic.coherence.loader.PropertySetter;
+import com.seovic.coherence.loader.Source;
 import com.seovic.coherence.loader.properties.MapPropertySetter;
 
 import javax.xml.stream.XMLStreamWriter;
@@ -151,7 +152,7 @@ public class XmlTarget extends AbstractBaseTarget {
         return propertyNames;
     }
 
-    public Object createTargetInstance() {
+    public Object createTargetInstance(Source source, Object sourceItem) {
         return new HashMap<String, Object>();
     }
 
