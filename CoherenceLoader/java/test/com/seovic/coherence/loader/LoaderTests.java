@@ -2,6 +2,7 @@ package com.seovic.coherence.loader;
 
 import com.seovic.coherence.loader.source.CsvSource;
 import com.seovic.coherence.loader.source.CoherenceCacheSource;
+import com.seovic.coherence.loader.source.XmlSource;
 import com.seovic.coherence.loader.target.CoherenceCacheTarget;
 import com.seovic.coherence.loader.target.CsvTarget;
 import com.seovic.coherence.test.objects.Country;
@@ -57,6 +58,23 @@ public class LoaderTests {
         int count = 0;
         while (reader.readLine()!=null) count++;
         assertEquals(4, count);
+    }
+
+    @Test
+    public void testXmlToCoherenceLoader() {
+        Reader countriesReader = new InputStreamReader(Loader.class.getClassLoader().getResourceAsStream("countries.xml"));
+        Source source = new XmlSource(countriesReader);
+        
+        Target target = new CoherenceCacheTarget("countries", Country.class);
+        Loader loader = new Loader(source, target);
+        loader.load();
+
+        // asserts
+        assertEquals(244, countriesCache.size());
+
+        Country srb = (Country) countriesCache.get("SRB");
+        assertEquals("Belgrade", srb.getCapital());
+        assertEquals("RSD", srb.getCurrencySymbol());
     }
 
     @SuppressWarnings({"unchecked"})
