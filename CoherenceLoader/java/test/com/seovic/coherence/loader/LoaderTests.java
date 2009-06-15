@@ -3,9 +3,15 @@ package com.seovic.coherence.loader;
 import com.seovic.coherence.loader.source.CsvSource;
 import com.seovic.coherence.loader.source.CoherenceCacheSource;
 import com.seovic.coherence.loader.source.XmlSource;
+
 import com.seovic.coherence.loader.target.CoherenceCacheTarget;
 import com.seovic.coherence.loader.target.CsvTarget;
+import com.seovic.coherence.loader.target.XmlTarget;
+
+import com.seovic.coherence.loader.properties.XmlPropertyGetter;
+
 import com.seovic.coherence.test.objects.Country;
+
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 
@@ -14,6 +20,14 @@ import java.io.*;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
+
+import org.xml.sax.InputSource;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+
 
 /**
  * @author ic  2009.06.15
@@ -81,20 +95,47 @@ public class LoaderTests {
     public void testXmlWithNamespacesToCoherenceLoader() {
         Reader countriesReader = new InputStreamReader(Loader.class.getClassLoader().getResourceAsStream("countries-ns.xml"));
         Source source = new XmlSource(countriesReader);
+        source.setPropertyGetter("code",            new XmlPropertyGetter("code",            "http://schemas.seovic.com/id"));
+        source.setPropertyGetter("formalName",      new XmlPropertyGetter("formalName",      "http://schemas.seovic.com/config"));
+        source.setPropertyGetter("capital",         new XmlPropertyGetter("capital",         "http://schemas.seovic.com/config"));
+        source.setPropertyGetter("telephonePrefix", new XmlPropertyGetter("telephonePrefix", "http://schemas.seovic.com/validation"));
+        source.setPropertyGetter("domain",          new XmlPropertyGetter("domain",          "http://schemas.seovic.com/validation"));
 
         Target target = new CoherenceCacheTarget("countries", Country.class);
         Loader loader = new Loader(source, target);
         loader.load();
 
         // asserts
-        for (Object country : countriesCache.values())  {
-            System.out.println(country);
-        }
         assertEquals(244, countriesCache.size());
 
         Country srb = (Country) countriesCache.get("SRB");
         assertEquals("Belgrade", srb.getCapital());
         assertEquals("RSD", srb.getCurrencySymbol());
+    }
+
+    @Test
+    public void testCoherenceToXmlLoader() throws Exception {
+        prepareCache();
+        Source source = new CoherenceCacheSource("countries");
+        StringWriter writer = new StringWriter();
+        Target target = new XmlTarget(writer, "countries", "country", "@code,name,formalName,capital,currencySymbol,currencyName,telephonePrefix,domain");
+
+        Loader loader = new Loader(source, target);
+        loader.load();
+
+        // asserts
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        Document doc = factory.newDocumentBuilder().parse(
+                        new InputSource(new StringReader(writer.toString())));
+
+        Element  root = doc.getDocumentElement();
+        NodeList countries = root.getElementsByTagName("country");
+
+        assertEquals(3, countries.getLength());
+        assertEquals("SRB", ((Element) countries.item(0)).getAttribute("code"));
+        assertEquals("SGP", ((Element) countries.item(1)).getAttribute("code"));
+        assertEquals("CHL", ((Element) countries.item(2)).getAttribute("code"));
     }
 
     @SuppressWarnings({"unchecked"})

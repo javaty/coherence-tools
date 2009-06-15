@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!--suppress CheckTagEmptyBody -->
-<countries xmlns:id="idUri" xmlns="defaultNs" xmlns:v="validationUri"
-           xmlns:c="jstlUri" xmlns:config="sigfeConfigUri">
+<countries xmlns="http://schemas.seovic.com/default" xmlns:id="http://schemas.seovic.com/id"  
+           xmlns:v="http://schemas.seovic.com/validation" xmlns:config="http://schemas.seovic.com/config">
     <country id:code="AFG" name="Afghanistan">
         <config:formalName>Islamic State of Afghanistan</config:formalName>
         <config:capital>Kabul</config:capital>
