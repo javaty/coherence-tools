@@ -18,7 +18,7 @@ public class Loader {
         String[] propertyNames = target.getPropertyNames();
 
         for (Object sourceItem : source) {
-            Object targetItem = target.createTargetInstance();
+            Object targetItem = target.createTargetInstance(source, sourceItem);
             for (String property : propertyNames) {
                 PropertyGetter getter = source.getPropertyGetter(property);
                 PropertySetter setter = target.getPropertySetter(property);
