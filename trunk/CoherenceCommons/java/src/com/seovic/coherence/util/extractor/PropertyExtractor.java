@@ -93,32 +93,32 @@ public class PropertyExtractor
      */
     public Object extract(Object o)
         {
-        if (o == null)
-            {
-            return null;
-            }
-
-        Class targetClass = o.getClass();
-        try
-            {
-            Method method = m_readMethod;
-            if (method == null
-                || method.getDeclaringClass() != targetClass)
+            if (o == null)
                 {
-                m_readMethod = method = findReadMethod(m_propertyName, o.getClass());
+                return null;
                 }
-            return method.invoke(o);
-            }
-        catch (NullPointerException e)
-            {
-            throw new RuntimeException("Property " + m_propertyName +
-                                       " does not exist" +
-                                       " in the class " + targetClass);
-            }
-        catch (Exception e)
-            {
-            throw new WrapperException(e);
-            }
+
+            Class targetClass = o.getClass();
+            try
+                {
+                Method method = m_readMethod;
+                if (method == null
+                    || method.getDeclaringClass() != targetClass)
+                    {
+                    m_readMethod = method = findReadMethod(m_propertyName, o.getClass());
+                    }
+                return method.invoke(o);
+                }
+            catch (NullPointerException e)
+                {
+                throw new RuntimeException("Property " + m_propertyName +
+                                           " does not exist" +
+                                           " in the class " + targetClass);
+                }
+            catch (Exception e)
+                {
+                throw new WrapperException(e);
+                }
         }
 
 
@@ -161,28 +161,43 @@ public class PropertyExtractor
     // ---- PortableObject implementation -----------------------------------
 
     /**
-     * {@inheritDoc}
+     * Deserialize this object from a POF stream.
+     *
+     * @param reader  POF reader to use
+     *
+     * @throws IOException  if an error occurs during deserialization
      */
-    public void readExternal(PofReader pofReader)
+    public void readExternal(PofReader reader)
             throws IOException
         {
-        m_propertyName = pofReader.readString(0);
+        m_propertyName = reader.readString(0);
+        m_nTarget      = reader.readInt(   1);
         }
 
     /**
-     * {@inheritDoc}
+     * Serialize this object into a POF stream.
+     *
+     * @param writer  POF writer to use
+     *
+     * @throws IOException  if an error occurs during serialization
      */
-    public void writeExternal(PofWriter pofWriter)
+    public void writeExternal(PofWriter writer)
             throws IOException
         {
-        pofWriter.writeString(0, m_propertyName);
+        writer.writeString(0, m_propertyName);
+        writer.writeInt(   1, m_nTarget);
         }
 
 
     // ---- Object methods --------------------------------------------------
 
     /**
-     * {@inheritDoc}
+     * Test objects for equality.
+     *
+     * @param o  object to compare this object with
+     *
+     * @return <tt>true</tt> if the specified object is equal to this object
+     *         <tt>false</tt> otherwise
      */
     @Override
     public boolean equals(Object o)
@@ -197,24 +212,34 @@ public class PropertyExtractor
             }
 
         PropertyExtractor that = (PropertyExtractor) o;
-        return m_propertyName.equals(that.m_propertyName);
+        return m_nTarget == that.m_nTarget
+                && m_propertyName.equals(that.m_propertyName);
         }
 
-    /**
-     * {@inheritDoc}
+     /**
+     * Return hash code for this object.
+     *
+     * @return this object's hash code
      */
     @Override
     public int hashCode()
         {
-        return m_propertyName.hashCode();
+        int result = m_propertyName.hashCode();
+        result = 31 * result + m_nTarget;
+        return result;
         }
 
     /**
-     * {@inheritDoc}
+     * Return string representation of this object.
+     *
+     * @return string representation of this object
      */
     @Override
     public String toString()
         {
-        return "PropertyExtractor(propertyName = " + m_propertyName + ")";
+            return "PropertyExtractor{" +
+                   "propertyName='" + m_propertyName + '\'' +
+                   ", target=" + (m_nTarget == KEY ? "KEY" : "VALUE") +
+                   '}';
         }
     }

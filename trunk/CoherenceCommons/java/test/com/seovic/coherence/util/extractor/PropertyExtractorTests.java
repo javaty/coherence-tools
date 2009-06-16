@@ -96,7 +96,7 @@ public class PropertyExtractorTests
         {
         PropertyTester obj = new PropertyTester();
         assertEquals("get", new PropertyExtractor("get").extract(obj));
-        assertEquals("is", new PropertyExtractor("is").extract(obj));
+        assertEquals("is",  new PropertyExtractor("is").extract(obj));
         assertEquals("has", new PropertyExtractor("has").extract(obj));
         }
 
