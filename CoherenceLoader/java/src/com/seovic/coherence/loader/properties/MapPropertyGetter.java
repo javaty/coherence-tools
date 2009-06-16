@@ -9,14 +9,21 @@ import java.util.Map;
  * @author Aleksandar Seovic  2009.06.15
  */
 public class MapPropertyGetter
-        implements PropertyGetter {
+        implements PropertyGetter
+    {
     private String propertyName;
 
-    public MapPropertyGetter(String propertyName) {
+    public MapPropertyGetter(String propertyName)
+        {
         this.propertyName = propertyName;
-    }
+        }
 
-    public Object getValue(Object sourceItem) {
+    public Object getValue(Object sourceItem)
+        {
+        if (sourceItem == null)
+            {
+            throw new IllegalArgumentException("Source item to extract value from cannot be null.");
+            }
         return ((Map) sourceItem).get(propertyName);
+        }
     }
-}
