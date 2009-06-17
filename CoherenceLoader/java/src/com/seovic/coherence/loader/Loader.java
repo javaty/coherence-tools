@@ -18,6 +18,7 @@ public class Loader
 
     public void load()
         {
+        source.beginExport();
         target.beginImport();
         String[] propertyNames = target.getPropertyNames();
 
@@ -32,6 +33,7 @@ public class Loader
                 }
             target.importItem(targetItem);
             }
+        source.endExport();
         target.endImport();
         }
     }
