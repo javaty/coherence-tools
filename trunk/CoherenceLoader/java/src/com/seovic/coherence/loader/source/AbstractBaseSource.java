@@ -8,7 +8,7 @@ import java.util.Map;
 
 
 /**
- * @author Aleksandar Seovic  2009.06.15
+ * @author ic  2009.06.15
  */
 public abstract class AbstractBaseSource
         implements Source
@@ -34,5 +34,13 @@ public abstract class AbstractBaseSource
                                   PropertyGetter propertyGetter)
         {
         propertyGetters.put(propertyName, propertyGetter);
+        }
+
+    public void beginExport()
+        {
+        }
+
+    public void endExport()
+        {
         }
     }

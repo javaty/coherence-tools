@@ -10,4 +10,8 @@ public interface Source
     PropertyGetter getPropertyGetter(String propertyName);
 
     void setPropertyGetter(String propertyName, PropertyGetter propertyGetter);
+
+    void beginExport();
+
+    void endExport();
     }
