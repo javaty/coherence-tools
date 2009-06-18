@@ -1,13 +1,17 @@
 package com.seovic.coherence.loader.target;
 
 
-import com.seovic.coherence.loader.PropertySetter;
 import com.seovic.coherence.loader.Source;
-import com.seovic.coherence.loader.properties.MapPropertySetter;
+
+import com.seovic.util.Updater;
+import com.seovic.util.updaters.MapUpdater;
+
 import java.io.IOException;
 import java.io.Writer;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import org.supercsv.io.CsvMapWriter;
 import org.supercsv.io.ICsvMapWriter;
 import org.supercsv.prefs.CsvPreference;
@@ -35,9 +39,9 @@ public class CsvTarget
         this.propertyNames = propertyNames;
         }
 
-    protected PropertySetter createDefaultSetter(String propertyName)
+    protected Updater createDefaultUpdater(String propertyName)
         {
-        return new MapPropertySetter(propertyName);
+        return new MapUpdater(propertyName);
         }
 
     public void beginImport()

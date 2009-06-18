@@ -1,6 +1,10 @@
 package com.seovic.coherence.loader;
 
 
+import com.seovic.util.Extractor;
+import com.seovic.util.Updater;
+
+
 /**
  * @author ic  2009.06.09
  */
@@ -27,9 +31,9 @@ public class Loader
             Object targetItem = target.createTargetInstance(source, sourceItem);
             for (String property : propertyNames)
                 {
-                PropertyGetter getter = source.getPropertyGetter(property);
-                PropertySetter setter = target.getPropertySetter(property);
-                setter.setValue(targetItem, getter.getValue(sourceItem));
+                Extractor extractor = source.getExtractor(property);
+                Updater   updater   = target.getUpdater(property);
+                updater.update(targetItem, extractor.extract(sourceItem));
                 }
             target.importItem(targetItem);
             }

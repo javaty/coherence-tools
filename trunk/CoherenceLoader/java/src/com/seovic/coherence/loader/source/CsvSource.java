@@ -1,14 +1,17 @@
 package com.seovic.coherence.loader.source;
 
 
-import com.seovic.coherence.loader.PropertyGetter;
-import com.seovic.coherence.loader.properties.MapPropertyGetter;
+import com.seovic.util.Extractor;
+import com.seovic.util.extractors.MapExtractor;
+
 import java.io.IOException;
 import java.io.Reader;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.supercsv.io.CsvListReader;
 import org.supercsv.io.ICsvListReader;
 import org.supercsv.prefs.CsvPreference;
@@ -50,12 +53,12 @@ public class CsvSource
         preferences.setEndOfLineSymbols(endOfLineSymbols);
         }
 
-    protected PropertyGetter createDefaultGetter(String propertyName)
+    protected Extractor createDefaultExtractor(String propertyName)
         {
-        return new MapPropertyGetter(propertyName);
+        return new MapExtractor(propertyName);
         }
 
-    public class CsvIterator
+        public class CsvIterator
             implements Iterator
         {
         private List<String> currentLine;

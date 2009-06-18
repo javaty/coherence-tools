@@ -1,8 +1,8 @@
 package com.seovic.coherence.loader.source;
 
 
-import com.seovic.coherence.loader.PropertyGetter;
 import com.seovic.coherence.loader.Source;
+import com.seovic.util.Extractor;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,27 +13,26 @@ import java.util.Map;
 public abstract class AbstractBaseSource
         implements Source
     {
-    private Map<String, PropertyGetter> propertyGetters;
+    private Map<String, Extractor> extractors;
 
     protected AbstractBaseSource()
         {
-        propertyGetters = new HashMap<String, PropertyGetter>();
+        extractors = new HashMap<String, Extractor>();
         }
 
-    protected abstract PropertyGetter createDefaultGetter(String propertyName);
+    protected abstract Extractor createDefaultExtractor(String propertyName);
 
-    public PropertyGetter getPropertyGetter(String propertyName)
+    public Extractor getExtractor(String propertyName)
         {
-        PropertyGetter getter = propertyGetters.get(propertyName);
-        return getter != null
-               ? getter
-               : createDefaultGetter(propertyName);
+        Extractor extractor = extractors.get(propertyName);
+        return extractor != null
+               ? extractor
+               : createDefaultExtractor(propertyName);
         }
 
-    public void setPropertyGetter(String propertyName,
-                                  PropertyGetter propertyGetter)
+    public void setExtractor(String propertyName, Extractor extractor)
         {
-        propertyGetters.put(propertyName, propertyGetter);
+        extractors.put(propertyName, extractor);
         }
 
     public void beginExport()

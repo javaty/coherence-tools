@@ -1,10 +1,12 @@
 package com.seovic.coherence.loader.source;
 
 
-import com.seovic.coherence.loader.PropertyGetter;
-import com.seovic.coherence.loader.properties.ExpressionPropertyGetter;
+import com.seovic.util.extractors.OgnlExtractor;
+import com.seovic.util.Extractor;
+
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
+
 import java.util.Iterator;
 
 
@@ -26,8 +28,8 @@ public class CoherenceCacheSource
         return cache.values().iterator();
         }
 
-    protected PropertyGetter createDefaultGetter(String propertyName)
+    protected Extractor createDefaultExtractor(String propertyName)
         {
-        return new ExpressionPropertyGetter(propertyName);
+        return new OgnlExtractor(propertyName);
         }
     }
