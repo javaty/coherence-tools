@@ -1,13 +1,17 @@
 package com.seovic.coherence.loader.target;
 
 
-import com.seovic.coherence.loader.PropertySetter;
 import com.seovic.coherence.loader.Target;
+
+import com.seovic.util.Updater;
+
 import java.beans.PropertyDescriptor;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
@@ -15,14 +19,14 @@ import org.springframework.beans.BeanWrapperImpl;
 public abstract class AbstractBaseTarget
         implements Target
     {
-    private Map<String, PropertySetter> propertySetters =
-            new HashMap<String, PropertySetter>();
+    private Map<String, Updater> updaters =
+            new HashMap<String, Updater>();
 
     protected AbstractBaseTarget()
-        {
-        }
+    {
+    }
 
-    protected abstract PropertySetter createDefaultSetter(String propertyName);
+    protected abstract Updater createDefaultUpdater(String propertyName);
 
     public void beginImport()
         {
@@ -34,17 +38,17 @@ public abstract class AbstractBaseTarget
         // default implementation
         }
 
-    public PropertySetter getPropertySetter(String propertyName)
+    public Updater getUpdater(String propertyName)
         {
-        PropertySetter setter = propertySetters.get(propertyName);
-        return setter != null
-               ? setter
-               : createDefaultSetter(propertyName);
+        Updater updater = updaters.get(propertyName);
+        return updater != null
+               ? updater
+               : createDefaultUpdater(propertyName);
         }
 
-    public void setPropertySetter(String targetProperty, PropertySetter mapper)
+    public void setUpdater(String targetProperty, Updater updater)
         {
-        propertySetters.put(targetProperty, mapper);
+        updaters.put(targetProperty, updater);
         }
 
     protected static List<PropertyDescriptor> getWriteableProperties(Class cls)

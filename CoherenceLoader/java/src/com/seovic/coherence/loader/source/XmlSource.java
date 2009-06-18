@@ -1,19 +1,24 @@
 package com.seovic.coherence.loader.source;
 
 
-import com.seovic.coherence.loader.PropertyGetter;
-import com.seovic.coherence.loader.properties.XmlPropertyGetter;
+import com.seovic.util.Extractor;
+import com.seovic.util.extractors.XmlExtractor;
+
 import java.io.Reader;
 import java.io.StringReader;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+
 import org.xml.sax.InputSource;
 
 
@@ -44,12 +49,12 @@ public class XmlSource
         return new XmlIterator(reader);
         }
 
-    protected PropertyGetter createDefaultGetter(String propertyName)
+    protected Extractor createDefaultExtractor(String propertyName)
         {
-        return new XmlPropertyGetter(propertyName);
+        return new XmlExtractor(propertyName);
         }
 
-    public static class XmlIterator
+        public static class XmlIterator
             implements Iterator
         {
         private XMLStreamReader reader;

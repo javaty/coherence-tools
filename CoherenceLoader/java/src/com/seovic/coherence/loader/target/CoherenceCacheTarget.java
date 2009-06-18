@@ -4,13 +4,19 @@ package com.seovic.coherence.loader.target;
 import com.seovic.coherence.identity.IdentityExtractor;
 import com.seovic.coherence.identity.IdentityGenerator;
 import com.seovic.coherence.identity.extractor.EntityIdentityExtractor;
-import com.seovic.coherence.loader.PropertySetter;
+
 import com.seovic.coherence.loader.Source;
-import com.seovic.coherence.loader.properties.BeanWrapperPropertySetter;
+
+import com.seovic.util.Updater;
+import com.seovic.util.updaters.OgnlUpdater;
+
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
+
 import java.beans.PropertyDescriptor;
+
 import java.lang.reflect.Constructor;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,9 +80,9 @@ public class CoherenceCacheTarget
     /**
      * {@inheritDoc}
      */
-    protected PropertySetter createDefaultSetter(String propertyName)
+    protected Updater createDefaultUpdater(String propertyName)
         {
-        return new BeanWrapperPropertySetter(propertyName);
+        return new OgnlUpdater(propertyName);
         }
 
     /**

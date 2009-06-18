@@ -1,6 +1,9 @@
 package com.seovic.coherence.loader;
 
 
+import com.seovic.util.Updater;
+
+
 /**
  * @author ic  2009.06.09
  */
@@ -16,7 +19,7 @@ public interface Target
 
     Object createTargetInstance(Source source, Object sourceItem);
 
-    PropertySetter getPropertySetter(String property);
+    Updater getUpdater(String propertyName);
 
-    void setPropertySetter(String property, PropertySetter setter);
+    void setUpdater(String propertyName, Updater updater);
     }

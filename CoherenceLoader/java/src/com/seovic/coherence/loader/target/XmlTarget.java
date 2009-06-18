@@ -1,16 +1,21 @@
 package com.seovic.coherence.loader.target;
 
 
-import com.seovic.coherence.loader.PropertySetter;
 import com.seovic.coherence.loader.Source;
-import com.seovic.coherence.loader.properties.MapPropertySetter;
+
+import com.seovic.util.Updater;
+import com.seovic.util.updaters.MapUpdater;
+
 import java.io.Writer;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -83,9 +88,9 @@ public class XmlTarget
             }
         }
 
-    protected PropertySetter createDefaultSetter(String propertyName)
+    protected Updater createDefaultUpdater(String propertyName)
         {
-        return new MapPropertySetter(propertyName);
+        return new MapUpdater(propertyName);
         }
 
     @Override
@@ -215,7 +220,7 @@ public class XmlTarget
             }
         }
 
-    private static class Property
+        private static class Property
         {
         private static final Pattern PATTERN = Pattern.compile(
                 "((.*):)?(@)?(.+)");

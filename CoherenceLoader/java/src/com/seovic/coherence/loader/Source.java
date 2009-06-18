@@ -1,17 +1,19 @@
 package com.seovic.coherence.loader;
 
 
+import com.seovic.util.Extractor;
+
+
 /**
  * @author ic  2009.06.09
  */
-public interface Source
-        extends Iterable
+public interface Source extends Iterable
     {
-    PropertyGetter getPropertyGetter(String propertyName);
-
-    void setPropertyGetter(String propertyName, PropertyGetter propertyGetter);
-
     void beginExport();
 
     void endExport();
+
+    Extractor getExtractor(String propertyName);
+
+    void setExtractor(String propertyName, Extractor extractor);
     }
