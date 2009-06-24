@@ -32,6 +32,9 @@ namespace Seovic.Coherence.Util.Extractor
     {
         #region Data members
 
+        private const BindingFlags BINDING_FLAGS =
+            BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase;
+
         private String m_propertyName;
 
         [NonSerialized]
@@ -55,8 +58,8 @@ namespace Seovic.Coherence.Util.Extractor
         /// The name of the property to extract.
         /// </param>
         public PropertyExtractor(String propertyName)
+            : this(propertyName, VALUE)
         {
-            m_propertyName = propertyName;
         }
 
         /// <summary>
@@ -70,6 +73,12 @@ namespace Seovic.Coherence.Util.Extractor
         /// </param>
         public PropertyExtractor(String propertyName, int target)
         {
+            if (String.IsNullOrEmpty(propertyName))
+            {
+                throw new ArgumentNullException(
+                    "propertyName", "Property name cannot be null");
+            }
+
             m_propertyName = propertyName;
             m_target       = target;
         }
@@ -102,16 +111,15 @@ namespace Seovic.Coherence.Util.Extractor
                 if (property == null
                     || property.DeclaringType != targetType)
                 {
-                    m_property = property = targetType.GetProperty(m_propertyName, 
-                        BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+                    m_property = property 
+                        = targetType.GetProperty(m_propertyName, BINDING_FLAGS);
                 }
                 return property.GetValue(target, null);
             }
             catch (NullReferenceException)
             {
-                throw new Exception("Property " + m_propertyName +
-                                           " does not exist" +
-                                           " in the class " + targetType);
+                throw new Exception("Property [" + m_propertyName +
+                                    "] does not exist in the class [" + targetType + ']');
             }
         }
 

@@ -44,8 +44,10 @@
     <Compile Include="IO\Pof\EnumPofSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\Objects\Country.cs" />
+    <Compile Include="Util\Aggregator\TopAggregator.cs" />
     <Compile Include="Util\Extractor\PropertyExtractor.cs" />
     <Compile Include="Util\Filter\StartsWithFilter.cs" />
+    <Compile Include="Util\Processor\RemoveProcessor.cs" />
     <Compile Include="Util\SerializationHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
