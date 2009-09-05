@@ -85,7 +85,7 @@ public class SequenceBlockAllocator
         {
         Sequence sequence = entry.isPresent()
                             ? (Sequence) entry.getValue()
-                            : new Sequence();
+                            : new Sequence((String) entry.getKey());
 
         SequenceBlock block = sequence.allocateBlock(m_blockSize);
         entry.setValue(sequence);

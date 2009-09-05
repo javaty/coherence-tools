@@ -12,12 +12,13 @@
     <orderEntry type="module" module-name="CoherenceCommons" />
     <orderEntry type="module" module-name="CoherenceTesting" />
     <orderEntry type="module-library">
-      <library>
+      <library name="lib">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/junit-4.6.jar!/" />
+          <root url="file://$MODULE_DIR$/lib" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
       </library>
     </orderEntry>
   </component>
