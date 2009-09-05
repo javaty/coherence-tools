@@ -24,22 +24,57 @@ import com.tangosol.io.pof.PofWriter;
 import java.io.IOException;
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.AccessType;
+import javax.persistence.Access;
+
 
 /**
  * Represents a named sequence.
  *
  * @author Aleksandar Seovic  2009.05.27
  */
+@Entity
+@Table(name = "COH_TOOLS_SEQUENCES")
+@Access(AccessType.FIELD)
 public class Sequence
         implements Serializable, PortableObject
     {
     // ---- data members ----------------------------------------------------
 
     /**
+     * Sequence name.
+     */
+    @Id
+    @Column(name = "NAME", nullable = false)
+    private String m_name;
+
+    /**
      * The last allocated number from this sequence.
      */
+    @Column(name = "LAST_SEQ", nullable = false)
     private long m_last;
 
+
+    // ---- constructors --------------------------------------------------
+
+    /**
+     * Deserialization constructor (for internal use only).
+     */
+    public Sequence() {
+    }
+
+    /**
+     * Sequence constructor.
+     *
+     * @param name  sequence name
+     */
+    public Sequence(String name) {
+        m_name = name;
+    }
 
     // ---- public methods --------------------------------------------------
 
@@ -69,6 +104,16 @@ public class Sequence
         return m_last;
         }
 
+    /**
+     * Return the sequence name.
+     *
+     * @return the sequence name
+     */
+    public String name()
+        {
+        return m_name;
+        }
+
     // ---- PortableObject implementation -----------------------------------
 
     /**
@@ -81,7 +126,8 @@ public class Sequence
     public void readExternal(PofReader pofReader)
             throws IOException
         {
-        m_last = pofReader.readLong(0);
+        m_name = pofReader.readString(0);
+        m_last = pofReader.readLong(1);
         }
 
     /**
@@ -94,6 +140,7 @@ public class Sequence
     public void writeExternal(PofWriter pofWriter)
             throws IOException
         {
-        pofWriter.writeLong(0, m_last);
+        pofWriter.writeString(0, m_name);
+        pofWriter.writeLong(1, m_last);
         }
     }
