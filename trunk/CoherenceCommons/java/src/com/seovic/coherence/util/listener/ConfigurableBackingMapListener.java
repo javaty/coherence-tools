@@ -30,7 +30,7 @@ public class ConfigurableBackingMapListener
 
     // ---- data members ----------------------------------------------------
 
-    private AbstractBackingMapListener delegate;
+    private ManagedBackingMapListener delegate;
 
 
     // ---- constructors ----------------------------------------------------
