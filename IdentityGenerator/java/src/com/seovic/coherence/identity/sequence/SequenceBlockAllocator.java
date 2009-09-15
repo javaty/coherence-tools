@@ -83,9 +83,10 @@ public class SequenceBlockAllocator
      */
     public Object process(InvocableMap.Entry entry)
         {
-        Sequence sequence = entry.isPresent()
-                            ? (Sequence) entry.getValue()
-                            : new Sequence((String) entry.getKey());
+        Sequence sequence = (Sequence) entry.getValue();
+        if (sequence == null) {
+            sequence = new Sequence((String) entry.getKey());
+        }
 
         SequenceBlock block = sequence.allocateBlock(m_blockSize);
         entry.setValue(sequence);
