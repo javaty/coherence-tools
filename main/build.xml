@@ -1,6 +1,7 @@
-<project name="Coherence Commons" default="dist">
+<project name="Coherence Tools" default="dist">
 
-  <property name="jar.name"     value="coherence-commons"/>
+  <property name="jar.name"     value="coherence-tools"/>
+  <property name="jar.version"  value="1.0"/>
   <property name="base.package" value="com.seovic.coherence"/>
 
   <property environment="env"/>
@@ -46,6 +47,13 @@
            target="1.5">
     </javac>
 
+    <copy todir="${build.dir}/tests">
+      <fileset dir="${test.dir}">
+        <include name="*.xml"/>
+        <include name="*.csv"/>
+      </fileset>
+    </copy>
+
     <junit haltonfailure="yes" printsummary="on">
       <classpath>
         <pathelement path="${env.COHERENCE_HOME}/lib/coherence.jar"/>
@@ -78,20 +86,20 @@
   <target name="dist" depends="clean, test, doc">
     <mkdir dir="${dist.dir}"/>
 
-    <jar destfile="${dist.dir}/${jar.name}.jar" basedir="${basedir}">
+    <jar destfile="${dist.dir}/${jar.name}-${jar.version}.jar" basedir="${basedir}">
       <include name="LICENSE"/>
     </jar>
 
-    <jar destfile="${dist.dir}/${jar.name}.jar"
+    <jar destfile="${dist.dir}/${jar.name}-${jar.version}.jar"
          basedir="${build.dir}/classes" update="true"/>
 
   </target>
 
   <target name="package" depends="dist">
-    <delete file="${jar.name}.zip"/>
+    <delete file="${jar.name}-${jar.version}.zip"/>
     <delete dir="${build.dir}"/>
     
-    <zip destfile="${jar.name}.zip" basedir="${basedir}">
+    <zip destfile="${jar.name}-${jar.version}.zip" basedir="${basedir}">
       <exclude name="*.log"/>
       <exclude name="*.iml"/>
       <exclude name="*.iws"/>

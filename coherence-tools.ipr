@@ -2,39 +2,7 @@
 <project relativePaths="false" version="4">
   <component name="AntConfiguration">
     <defaultAnt bundledAnt="true" />
-    <buildFile url="file://$PROJECT_DIR$/CoherenceTesting/java/build.xml">
-      <additionalClassPath />
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
-      <maximumStackSize value="32" />
-      <properties />
-    </buildFile>
-    <buildFile url="file://$PROJECT_DIR$/IdentityGenerator/java/build.xml">
-      <additionalClassPath />
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
-      <maximumStackSize value="32" />
-      <properties />
-    </buildFile>
-    <buildFile url="file://$PROJECT_DIR$/CoherenceCommons/java/build.xml">
-      <additionalClassPath />
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
-      <maximumStackSize value="32" />
-      <properties />
-    </buildFile>
-    <buildFile url="file://$PROJECT_DIR$/LookupValuesProvider/java/build.xml">
-      <additionalClassPath />
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
-      <maximumStackSize value="32" />
-      <properties />
-    </buildFile>
-    <buildFile url="file://$PROJECT_DIR$/CoherenceLoader/java/build.xml">
+    <buildFile url="file://$PROJECT_DIR$/main/build.xml">
       <additionalClassPath />
       <antReference projectDefault="true" />
       <customJdkName value="" />
@@ -260,15 +228,37 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CoherenceCommons/java/CoherenceCommons.iml" filepath="$PROJECT_DIR$/CoherenceCommons/java/CoherenceCommons.iml" />
-      <module fileurl="file://$PROJECT_DIR$/CoherenceLoader/java/CoherenceLoader.iml" filepath="$PROJECT_DIR$/CoherenceLoader/java/CoherenceLoader.iml" />
-      <module fileurl="file://$PROJECT_DIR$/CoherenceTesting/java/CoherenceTesting.iml" filepath="$PROJECT_DIR$/CoherenceTesting/java/CoherenceTesting.iml" />
-      <module fileurl="file://$PROJECT_DIR$/IdentityGenerator/java/IdentityGenerator.iml" filepath="$PROJECT_DIR$/IdentityGenerator/java/IdentityGenerator.iml" />
-      <module fileurl="file://$PROJECT_DIR$/LookupValuesProvider/java/LookupValuesProvider.iml" filepath="$PROJECT_DIR$/LookupValuesProvider/java/LookupValuesProvider.iml" />
+      <module fileurl="file://$PROJECT_DIR$/main/coherence-tools.iml" filepath="$PROJECT_DIR$/main/coherence-tools.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="JDK 1.6" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="All in coherence-tools" type="JUnit" factoryName="JUnit" enabled="false" merge="false" sample_coverage="true" runner="emma">
+      <module name="coherence-tools" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="ADDITIONAL_CLASS_PATH" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method>
+        <option name="Make" value="true" />
+      </method>
+    </configuration>
   </component>
   <component name="ResourceManagerContainer">
     <option name="myResourceBundles">
