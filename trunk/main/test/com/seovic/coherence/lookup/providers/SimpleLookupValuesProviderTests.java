@@ -17,7 +17,7 @@ limitations under the License.
 package com.seovic.coherence.lookup.providers;
 
 import org.junit.Test;
-import org.junit.BeforeClass;
+import org.junit.Before;
 
 import static org.junit.Assert.*;
 
@@ -47,9 +47,11 @@ public class SimpleLookupValuesProviderTests
     {
     private static NamedCache countries = CacheFactory.getCache("countries");
 
-    @BeforeClass
-    public static void createTestData()
+    @Before
+    public void createTestData()
         {
+        countries.clear();
+
         countries.put("SRB", new Country("SRB", "Serbia"));
         countries.put("SUI", new Country("SUI", "Switzerland"));
         countries.put("SWE", new Country("SWE", "Sweden"));
