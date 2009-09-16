@@ -1,0 +1,16 @@
+<?xml version='1.0'?>
+
+<coherence xml-override="/tangosol-coherence-override.xml">
+  <cluster-config>
+    <unicast-listener>
+      <well-known-addresses>
+        <socket-address id="1">
+          <address>localhost</address>
+        </socket-address>
+      </well-known-addresses>
+    </unicast-listener>
+    <multicast-listener>
+      <join-timeout-milliseconds>1000</join-timeout-milliseconds>
+    </multicast-listener>
+  </cluster-config>
+</coherence>
