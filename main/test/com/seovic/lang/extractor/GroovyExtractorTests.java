@@ -21,20 +21,23 @@ import com.seovic.lang.Extractor;
 
 
 /**
- * Tests for {@link OgnlExtractor}.
+ * Tests for {@link GroovyExtractor}.
  *
  * @author ic  2009.06.16
  */
-public class OgnlExtractorTests
+public class GroovyExtractorTests
         extends AbstractExtractorTests
     {
     protected Extractor createExtractor(String expression)
         {
-        return new OgnlExtractor(expression);
+        if ("name".equals(expression))         expression = "target.name";
+        if ("address.city".equals(expression)) expression = "target.address.city";
+
+        return new GroovyExtractor(expression);
         }
 
     protected String getName()
         {
-        return "OgnlExtractor";
+        return "GroovyExtractor";
         }
     }

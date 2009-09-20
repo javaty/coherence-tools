@@ -20,8 +20,10 @@ package com.seovic.lang.expression;
 import com.seovic.lang.Expression;
 
 import org.mvel2.MVEL;
-import org.mvel2.compiler.CompiledExpression;
+
 import java.util.Map;
+
+import java.io.Serializable;
 
 
 /**
@@ -71,13 +73,13 @@ public class MvelExpression
      *
      * @return compiled MVEL expression
      */
-    protected CompiledExpression getCompiledExpression()
+    protected Serializable getCompiledExpression()
         {
-        CompiledExpression compiledExpression = m_compiledExpression;
+        Serializable compiledExpression = m_compiledExpression;
         if (compiledExpression == null)
             {
             m_compiledExpression = compiledExpression =
-                    (CompiledExpression) MVEL.compileExpression(m_expression);
+                    MVEL.compileExpression(m_expression);
             }
         return compiledExpression;
         }
@@ -88,5 +90,5 @@ public class MvelExpression
     /**
      * Compiled MVEL expression
      */
-    private transient CompiledExpression m_compiledExpression;
+    private transient Serializable m_compiledExpression;
     }

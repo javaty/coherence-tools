@@ -31,6 +31,7 @@ import com.tangosol.io.pof.SimplePofContext;
 import com.tangosol.io.pof.PortableObjectSerializer;
 
 import com.seovic.test.objects.Country;
+import com.seovic.lang.extractor.PropertyExtractor;
 
 import org.junit.Test;
 
@@ -66,7 +67,7 @@ public class PropertyExtractorTests
         Map.Entry entry = new SimpleMapEntry(null, new Country("SRB", "Serbia"));
 
         PropertyExtractor codeEx = new PropertyExtractor("code");
-        PropertyExtractor nameEx = new PropertyExtractor("name", PropertyExtractor.VALUE);
+        PropertyExtractor nameEx = new PropertyExtractor("name");
 
         assertEquals("SRB",    InvocableMapHelper.extractFromEntry(codeEx, entry));
         assertEquals("Serbia", InvocableMapHelper.extractFromEntry(nameEx, entry));
@@ -77,8 +78,8 @@ public class PropertyExtractorTests
         {
         Map.Entry entry = new SimpleMapEntry(new Country("SRB", "Serbia"), null);
 
-        ValueExtractor    codeEx = new KeyExtractor(new PropertyExtractor("code"));
-        PropertyExtractor nameEx = new PropertyExtractor("name", PropertyExtractor.KEY);
+        ValueExtractor codeEx = new KeyExtractor(new PropertyExtractor("code"));
+        ValueExtractor nameEx = new KeyExtractor(new PropertyExtractor("name"));
 
         assertEquals("SRB",    InvocableMapHelper.extractFromEntry(codeEx, entry));
         assertEquals("Serbia", InvocableMapHelper.extractFromEntry(nameEx, entry));
@@ -92,12 +93,11 @@ public class PropertyExtractorTests
         }
 
     @Test
-    public void testGetIsHas()
+    public void testGetIs()
         {
         PropertyTester obj = new PropertyTester();
         assertEquals("get", new PropertyExtractor("get").extract(obj));
         assertEquals("is",  new PropertyExtractor("is").extract(obj));
-        assertEquals("has", new PropertyExtractor("has").extract(obj));
         }
 
     @Test(expected = RuntimeException.class)
@@ -149,7 +149,7 @@ public class PropertyExtractorTests
 
     // ---- Inner class: PropertyTester -------------------------------------
 
-    private static class PropertyTester
+    public static class PropertyTester
         {
         public String getGet()
             {

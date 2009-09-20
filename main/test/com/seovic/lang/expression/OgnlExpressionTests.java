@@ -14,27 +14,29 @@
  * limitations under the License.
  */
 
-package com.seovic.lang.extractor;
+package com.seovic.lang.expression;
 
 
-import com.seovic.lang.Extractor;
+import com.seovic.lang.Expression;
 
 
 /**
- * Tests for {@link OgnlExtractor}.
+ * OgnlExpression tests.
  *
- * @author ic  2009.06.16
+ * @author Aleksandar Seovic  2009.09.20
  */
-public class OgnlExtractorTests
-        extends AbstractExtractorTests
+public class OgnlExpressionTests
+        extends AbstractExpressionTests
     {
-    protected Extractor createExtractor(String expression)
+    protected Expression createExpression(String expression)
         {
-        return new OgnlExtractor(expression);
+        if ("x * y".equals(expression))                 expression = "#x * #y";
+        if ("name + ' ' + lastName".equals(expression)) expression = "name + ' ' + #lastName";
+        return new OgnlExpression(expression);
         }
 
-    protected String getName()
+    protected String getLanguage()
         {
-        return "OgnlExtractor";
+        return "OGNL";
         }
     }

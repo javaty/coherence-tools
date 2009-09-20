@@ -34,23 +34,21 @@ import java.util.HashMap;
  */
 public class MapExtractorTests
     {
-
     @Test
     public void testWithBadProperty()
         {
-        MapExtractor extractor = new MapExtractor("bad");
-        Map<String, Object> source = createTestSourceMap();
-        assertNull(extractor.extract(source));
+        MapExtractor        ext    = new MapExtractor("bad");
+        Map<String, Object> target = createTestTarget();
+        assertNull(ext.extract(target));
         }
 
     @Test
     public void testWithNullProperty()
         {
-        MapExtractor extractor = new MapExtractor(null);
-        Map<String, Object> source = createTestSourceMap();
-        assertNull(extractor.extract(source));
+        MapExtractor        ext    = new MapExtractor(null);
+        Map<String, Object> target = createTestTarget();
+        assertNull(ext.extract(target));
         }
-
 
     @Test
     public void testWithNullTarget()
@@ -62,21 +60,24 @@ public class MapExtractorTests
     @Test
     public void testWithExistingProperty()
         {
-        MapExtractor extractor = new MapExtractor("address");
-        Address merced = new Address("Merced", "Santiago", "Chile");
-        Map<String, Object> sourceItem = createTestSourceMap();
-        assertEquals(merced, extractor.extract(sourceItem));
-        extractor = new MapExtractor("dob");
-        assertTrue(extractor.extract(sourceItem) instanceof Date);
+        MapExtractor        ext     = new MapExtractor("address");
+        Address             address = new Address("Merced", "Santiago", "Chile");
+        Map<String, Object> target  = createTestTarget();
+        assertEquals(address, ext.extract(target));
+        ext = new MapExtractor("dob");
+        assertTrue(ext.extract(target) instanceof Date);
         }
 
-    private Map<String, Object> createTestSourceMap()
+
+    // ---- helper methods --------------------------------------------------
+
+    private Map<String, Object> createTestTarget()
         {
-        Map<String, Object> source = new HashMap<String, Object>();
-        source.put("name", "Ivan");
-        source.put("idNo", 2504);
-        source.put("dob", new Date());
-        source.put("address", new Address("Merced", "Santiago", "Chile"));
-        return source;
+        Map<String, Object> target = new HashMap<String, Object>();
+        target.put("name", "Ivan");
+        target.put("idNo", 2504);
+        target.put("dob", new Date());
+        target.put("address", new Address("Merced", "Santiago", "Chile"));
+        return target;
         }
     }

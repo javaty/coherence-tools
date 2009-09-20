@@ -21,20 +21,20 @@ import com.seovic.lang.Extractor;
 
 
 /**
- * Tests for {@link OgnlExtractor}.
+ * Tests for {@link MvelExtractor}.
  *
  * @author ic  2009.06.16
  */
-public class OgnlExtractorTests
+public class MvelExtractorTests
         extends AbstractExtractorTests
     {
     protected Extractor createExtractor(String expression)
         {
-        return new OgnlExtractor(expression);
+        return new MvelExtractor(expression);
         }
 
     protected String getName()
         {
-        return "OgnlExtractor";
+        return "MvelExtractor";
         }
     }
