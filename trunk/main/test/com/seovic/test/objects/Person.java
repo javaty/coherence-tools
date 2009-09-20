@@ -36,11 +36,17 @@ public class Person
         {
         }
 
+    public Person(long id, String name)
+        {
+        this.id   = id;
+        this.name = name;
+        }
+
     public Person(Long id, String name, Date dob, Address address)
         {
-        this.name = name;
-        this.id = id;
-        this.dob  = dob;
+        this.name    = name;
+        this.id      = id;
+        this.dob     = dob;
         this.address = address;
         }
 

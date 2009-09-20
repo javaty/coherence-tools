@@ -62,9 +62,15 @@ public class OgnlExpression
         {
         try
             {
-            return variables == null
-                    ? Ognl.getValue(getCompiledExpression(), target)
-                    : Ognl.getValue(getCompiledExpression(), variables, target);
+            if (variables == null)
+                {
+                return Ognl.getValue(getCompiledExpression(), target);
+                }
+            else
+                {
+                Ognl.addDefaultContext(target, variables);
+                return Ognl.getValue(getCompiledExpression(), variables, target);
+                }
             }
         catch (OgnlException e)
             {

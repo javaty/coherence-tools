@@ -24,8 +24,7 @@ import com.seovic.lang.expression.MvelExpression;
 
 /**
  * An imlementation of {@link Condition} that evaluates boolean expression
- * using <a href="http://mvel.codehaus.org/" target="_new">MVEL</a> and returns
- * the result.
+ * using <a href="http://mvel.codehaus.org/" target="_new">MVEL</a>.
  *
  * @author Aleksandar Seovic  2009.09.20
  */
@@ -66,8 +65,8 @@ public class MvelCondition
             }
         catch (ClassCastException e)
             {
-            throw new IllegalArgumentException("Specified expression does not"
-                                               + "evaluate to a boolean value");
+            throw new IllegalArgumentException(
+                    "Specified expression does not evaluate to a boolean value");
             }
         }
     }

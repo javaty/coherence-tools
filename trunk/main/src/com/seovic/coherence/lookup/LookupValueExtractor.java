@@ -17,6 +17,8 @@ limitations under the License.
 package com.seovic.coherence.lookup;
 
 
+import com.seovic.lang.extractor.PropertyExtractor;
+
 import com.tangosol.util.extractor.AbstractExtractor;
 import com.tangosol.util.extractor.KeyExtractor;
 import com.tangosol.util.extractor.IdentityExtractor;
@@ -28,10 +30,9 @@ import com.tangosol.io.pof.PortableObject;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
 
-import com.seovic.coherence.util.extractor.PropertyExtractor;
-
 import java.io.IOException;
 import java.io.Serializable;
+
 import java.util.Map;
 
 

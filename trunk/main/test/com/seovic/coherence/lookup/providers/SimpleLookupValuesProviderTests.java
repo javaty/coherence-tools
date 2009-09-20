@@ -30,7 +30,8 @@ import com.seovic.test.objects.Country;
 import com.seovic.coherence.lookup.LookupValuesProvider;
 import com.seovic.coherence.lookup.LookupValueExtractor;
 import com.seovic.coherence.lookup.LookupValue;
-import com.seovic.coherence.util.extractor.PropertyExtractor;
+
+import com.seovic.lang.extractor.PropertyExtractor;
 
 import java.util.Collection;
 import java.util.Set;

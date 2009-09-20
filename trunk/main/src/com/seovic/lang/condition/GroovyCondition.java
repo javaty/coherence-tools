@@ -18,17 +18,18 @@ package com.seovic.lang.condition;
 
 
 import com.seovic.lang.Condition;
-import com.seovic.lang.expression.OgnlExpression;
+
+import com.seovic.lang.expression.GroovyExpression;
 
 
 /**
  * An imlementation of {@link Condition} that evaluates boolean expression
- * using <a href="http://www.opensymphony.com/ognl/" target="_new">OGNL</a>.
+ * using <a href="http://groovy.codehaus.org/" target="_new">Groovy</a>.
  *
- * @author Aleksandar Seovic  2009.06.17
+ * @author Aleksandar Seovic  2009.09.20
  */
-public class OgnlCondition
-        extends OgnlExpression
+public class GroovyCondition
+        extends    GroovyExpression
         implements Condition
     {
     // ---- constructors ----------------------------------------------------
@@ -36,16 +37,16 @@ public class OgnlCondition
     /**
      * Deserialization constructor (for internal use only).
      */
-    public OgnlCondition()
+    public GroovyCondition()
         {
         }
 
     /**
-     * Construct a <tt>OgnlCondition</tt> instance.
+     * Construct a <tt>GroovyCondition</tt> instance.
      *
      * @param expression  the expression to evaluate
      */
-    public OgnlCondition(String expression)
+    public GroovyCondition(String expression)
         {
         super(expression);
         }

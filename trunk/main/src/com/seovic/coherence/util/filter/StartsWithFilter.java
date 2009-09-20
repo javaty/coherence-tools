@@ -17,7 +17,7 @@ limitations under the License.
 package com.seovic.coherence.util.filter;
 
 
-import com.seovic.coherence.util.extractor.PropertyExtractor;
+import com.seovic.lang.extractor.PropertyExtractor;
 
 import com.tangosol.util.Filter;
 import com.tangosol.util.MapIndex;

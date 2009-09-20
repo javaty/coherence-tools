@@ -19,22 +19,44 @@ package com.seovic.lang.extractor;
 
 import com.seovic.lang.Extractor;
 
+import com.seovic.coherence.util.extractor.ValueExtractorAdapter;
+
+import com.tangosol.util.extractor.ChainedExtractor;
+
+import com.tangosol.util.ValueExtractor;
+import com.tangosol.util.Base;
+
 
 /**
- * Tests for {@link OgnlExtractor}.
+ * Tests for {@link MvelExtractor}.
  *
  * @author ic  2009.06.16
  */
-public class OgnlExtractorTests
+public class PropertyExtractorTests
         extends AbstractExtractorTests
     {
     protected Extractor createExtractor(String expression)
         {
-        return new OgnlExtractor(expression);
+        return expression.indexOf(".") < 0
+                ? new PropertyExtractor(expression)
+                : new ValueExtractorAdapter(createChainedExtractor(expression));
+        }
+
+    private ValueExtractor createChainedExtractor(String expression)
+        {
+        String[] parts       = Base.parseDelimitedString(expression, '.');
+        ValueExtractor[] aVE = new ValueExtractor[parts.length];
+
+        for (int i = 0; i < parts.length; i++)
+            {
+            aVE[i] = new PropertyExtractor(parts[i]);
+            }
+
+        return new ChainedExtractor(aVE);
         }
 
     protected String getName()
         {
-        return "OgnlExtractor";
+        return "PropertyExtractor";
         }
     }
