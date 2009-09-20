@@ -1,8 +1,8 @@
 package com.seovic.coherence.loader.source;
 
 
-import com.seovic.util.extractors.OgnlExtractor;
-import com.seovic.util.Extractor;
+import com.seovic.lang.extractor.OgnlExtractor;
+import com.seovic.lang.Extractor;
 
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;

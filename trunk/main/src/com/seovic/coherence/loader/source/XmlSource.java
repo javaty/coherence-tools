@@ -1,8 +1,8 @@
 package com.seovic.coherence.loader.source;
 
 
-import com.seovic.util.Extractor;
-import com.seovic.util.extractors.XmlExtractor;
+import com.seovic.lang.Extractor;
+import com.seovic.lang.extractor.XmlExtractor;
 
 import java.io.Reader;
 import java.io.StringReader;

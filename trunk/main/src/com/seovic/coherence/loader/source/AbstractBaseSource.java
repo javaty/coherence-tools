@@ -2,7 +2,7 @@ package com.seovic.coherence.loader.source;
 
 
 import com.seovic.coherence.loader.Source;
-import com.seovic.util.Extractor;
+import com.seovic.lang.Extractor;
 import java.util.HashMap;
 import java.util.Map;
 

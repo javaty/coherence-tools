@@ -1,8 +1,8 @@
 package com.seovic.coherence.loader.source;
 
 
-import com.seovic.util.Extractor;
-import com.seovic.util.extractors.MapExtractor;
+import com.seovic.lang.Extractor;
+import com.seovic.lang.extractor.MapExtractor;
 
 import java.io.IOException;
 import java.io.Reader;

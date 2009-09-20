@@ -3,7 +3,7 @@ package com.seovic.coherence.loader.target;
 
 import com.seovic.coherence.loader.Target;
 
-import com.seovic.util.Updater;
+import com.seovic.lang.Updater;
 
 import java.beans.PropertyDescriptor;
 

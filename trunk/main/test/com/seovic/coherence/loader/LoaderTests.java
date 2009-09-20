@@ -11,8 +11,8 @@ import com.seovic.coherence.loader.target.XmlTarget;
 
 import com.seovic.test.objects.Country;
 
-import com.seovic.util.extractors.XmlExtractor;
-import com.seovic.util.extractors.OgnlExtractor;
+import com.seovic.lang.extractor.XmlExtractor;
+import com.seovic.lang.extractor.OgnlExtractor;
 
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
