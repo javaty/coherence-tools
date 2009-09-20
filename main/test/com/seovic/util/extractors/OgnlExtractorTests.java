@@ -21,6 +21,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.seovic.test.objects.Person;
+import com.seovic.test.objects.Address;
 
 import java.util.Date;
 
@@ -32,12 +33,11 @@ import java.util.Date;
  */
 public class OgnlExtractorTests
     {
-
     @Test(expected = RuntimeException.class)
     public void testWithBadProperty()
         {
         OgnlExtractor extractor = new OgnlExtractor("bad");
-        Person ivan = new Person("Ivan", 2504l, null, null);
+        Person ivan = new Person(2504l, "Ivan", null, null);
         extractor.extract(ivan);
         }
 
@@ -45,16 +45,16 @@ public class OgnlExtractorTests
     public void testWithComplexType()
         {
         OgnlExtractor extractor = new OgnlExtractor("address.city");
-        Person.Address address = new Person.Address("Merced", "Santiago", "Chile");
-        Person ivan = new Person("Ivan", 2504l, new Date(), address);
+        Address address = new Address("Merced", "Santiago", "Chile");
+        Person ivan = new Person(2504l, "Ivan", new Date(), address);
         assertEquals("Santiago", extractor.extract(ivan));
         }
 
     @Test
     public void testWithExpressionTransformation()
         {
-        OgnlExtractor extractor = new OgnlExtractor("name + ':' + idNo");
-        Person ivan = new Person("Ivan", 2504l, null, null);
+        OgnlExtractor extractor = new OgnlExtractor("name + ':' + id");
+        Person ivan = new Person(2504l, "Ivan", null, null);
         assertEquals("Ivan:2504", extractor.extract(ivan));
         extractor = new OgnlExtractor("name == 'Ivan'");
         assertTrue((Boolean) extractor.extract(ivan));

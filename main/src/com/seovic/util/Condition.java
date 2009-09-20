@@ -17,13 +17,16 @@
 package com.seovic.util;
 
 
+import com.tangosol.util.Filter;
+
+
 /**
  * Condition interface represents a logical condition that can be evaluated
  * to boolean <tt>true</tt> or <tt>false</tt>.
  *
  * @author Aleksandar Seovic  2009.06.17
  */
-public interface Condition {
+public interface Condition extends Filter {
     // ---- constants -------------------------------------------------------
 
     /**

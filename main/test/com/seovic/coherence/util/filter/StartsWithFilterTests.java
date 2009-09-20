@@ -17,7 +17,7 @@ limitations under the License.
 package com.seovic.coherence.util.filter;
 
 import org.junit.Test;
-import org.junit.BeforeClass;
+import org.junit.Before;
 
 import static org.junit.Assert.*;
 
@@ -41,7 +41,8 @@ import java.util.Set;
 
 
 /**
- * Test
+ * Tests for StartsWithFilter class.
+ * 
  * @author Aleksandar Seovic  2009.06.07
  */
 @SuppressWarnings("unchecked")
@@ -49,9 +50,11 @@ public class StartsWithFilterTests
     {
     private static NamedCache countries = CacheFactory.getCache("countries");
 
-    @BeforeClass
-    public static void createTestData()
+    @Before
+    public void createTestData()
         {
+        countries.clear();
+        
         countries.put("SRB", new Country("SRB", "Serbia"));
         countries.put("SUI", new Country("SUI", "Switzerland"));
         countries.put("SWE", new Country("SWE", "Sweden"));
