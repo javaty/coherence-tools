@@ -61,6 +61,16 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
+      <library name="mvel-2.0.13">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/lib/mvel-2.0.13" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/lib/mvel-2.0.13" recursive="false" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
       <library name="super-csv-1.52">
         <CLASSES>
           <root url="file://$MODULE_DIR$/lib/super-csv-1.52" />

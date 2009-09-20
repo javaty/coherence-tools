@@ -17,6 +17,9 @@
 package com.seovic.util;
 
 
+import com.tangosol.util.ValueExtractor;
+
+
 /**
  * Extractor is used to extract a value from a target object.
  * <p/>
@@ -26,7 +29,7 @@ package com.seovic.util;
  * 
  * @author Aleksandar Seovic  2009.06.17
  */
-public interface Extractor {
+public interface Extractor extends ValueExtractor {
     // ---- constants -------------------------------------------------------
 
     /**

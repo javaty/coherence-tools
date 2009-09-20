@@ -19,18 +19,18 @@ package com.seovic.util.conditions;
 
 import com.seovic.util.Condition;
 
-import com.seovic.util.expression.OgnlExpression;
+import com.seovic.util.expression.MvelExpression;
 
 
 /**
  * An imlementation of {@link Condition} that evaluates boolean expression
- * using <a href="http://www.opensymphony.com/ognl/" target="_new">OGNL</a>
- * and returns the result.
+ * using <a href="http://mvel.codehaus.org/" target="_new">MVEL</a> and returns
+ * the result.
  *
- * @author Aleksandar Seovic  2009.06.17
+ * @author Aleksandar Seovic  2009.09.20
  */
-public class OgnlCondition
-        extends    OgnlExpression
+public class MvelCondition
+        extends    MvelExpression
         implements Condition
     {
     // ---- constructors ----------------------------------------------------
@@ -38,16 +38,16 @@ public class OgnlCondition
     /**
      * Deserialization constructor (for internal use only).
      */
-    public OgnlCondition()
+    public MvelCondition()
         {
         }
 
     /**
-     * Construct a <tt>OgnlCondition</tt> instance.
+     * Construct a <tt>MvelCondition</tt> instance.
      *
      * @param expression  the expression to evaluate
      */
-    public OgnlCondition(String expression)
+    public MvelCondition(String expression)
         {
         super(expression);
         }

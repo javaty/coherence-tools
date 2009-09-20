@@ -21,26 +21,26 @@ import java.util.Date;
 
 
 /**
- * Simple class that can be used within tests.
+ * Simple Person class that can be used within tests.
  *
  * @author ic  2009.06.16
  */
 public class Person
     {
+    private long    id;
     private String  name;
-    private long    idNo;
-    private Date dob;
+    private Date    dob;
     private Address address;
 
     public Person()
         {
         }
 
-    public Person(String name, long idNo, Date dob, Address address)
+    public Person(Long id, String name, Date dob, Address address)
         {
         this.name = name;
-        this.idNo = idNo;
-        this.dob = dob;
+        this.id = id;
+        this.dob  = dob;
         this.address = address;
         }
 
@@ -54,14 +54,14 @@ public class Person
         this.name = name;
         }
 
-    public long getIdNo()
+    public long getId()
         {
-        return idNo;
+        return id;
         }
 
-    public void setIdNo(long idNo)
+    public void setId(long id)
         {
-        this.idNo = idNo;
+        this.id = id;
         }
 
     public Date getDob()
@@ -84,83 +84,44 @@ public class Person
         this.address = address;
         }
 
-    public static class Address
+    @Override
+    public boolean equals(Object o)
         {
-        private String street;
-
-        private String city;
-
-        private String country;
-
-        public Address(String street, String city, String country)
+        if (this == o)
             {
-            this.street = street;
-            this.city = city;
-            this.country = country;
+            return true;
+            }
+        if (o == null || getClass() != o.getClass())
+            {
+            return false;
             }
 
-        public String getStreet()
-            {
-            return street;
-            }
+        Person person = (Person) o;
 
-        public void setStreet(String street)
-            {
-            this.street = street;
-            }
+        return id == person.id
+               && !(address != null
+                 ? !address.equals(person.address)
+                 : person.address != null)
+               && !(dob != null
+                 ? !dob.equals(person.dob)
+                 : person.dob != null)
+               && name.equals(person.name);
+        }
 
-        public String getCity()
-            {
-            return city;
-            }
+    @Override
+    public int hashCode()
+        {
+        return (int) (id ^ (id >>> 32));
+        }
 
-        public void setCity(String city)
-            {
-            this.city = city;
-            }
-
-        public String getCountry()
-            {
-            return country;
-            }
-
-        public void setCountry(String country)
-            {
-            this.country = country;
-            }
-
-        @Override
-        public boolean equals(Object o)
-            {
-            if (this == o)
-                {
-                return true;
-                }
-            if (o == null || getClass() != o.getClass())
-                {
-                return false;
-                }
-
-            Address address = (Address) o;
-
-            return !(city != null
-                     ? !city.equals(address.city)
-                     : address.city != null)
-                   && !(country != null
-                     ? !country.equals(address.country)
-                     : address.country != null)
-                   && !(street != null
-                     ? !street.equals(address.street)
-                     : address.street != null);
-            }
-
-        @Override
-        public int hashCode()
-            {
-            int result = street != null ? street.hashCode() : 0;
-            result = 31 * result + (city != null ? city.hashCode() : 0);
-            result = 31 * result + (country != null ? country.hashCode() : 0);
-            return result;
-            }
+    @Override
+    public String toString()
+        {
+        return "Person{" +
+               "id=" + id +
+               ", name='" + name + '\'' +
+               ", dob=" + dob +
+               ", address=" + address +
+               '}';
         }
     }

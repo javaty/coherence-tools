@@ -17,12 +17,15 @@
 package com.seovic.util;
 
 
+import com.tangosol.util.ValueUpdater;
+
+
 /**
  * Updater is used to update the target object.
  *
  * @author Aleksandar Seovic  2009.06.17
  */
-public interface Updater {
+public interface Updater extends ValueUpdater {
     /**
      * Update one or more of target object's properties using specified value.
      *

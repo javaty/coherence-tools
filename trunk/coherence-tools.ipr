@@ -15,7 +15,9 @@
     <option name="BUILD_JARS_ON_MAKE" value="false" />
   </component>
   <component name="CodeStyleSettingsManager">
-    <option name="PER_PROJECT_SETTINGS" />
+    <option name="PER_PROJECT_SETTINGS">
+      <value />
+    </option>
     <option name="USE_PER_PROJECT_SETTINGS" value="false" />
   </component>
   <component name="CompilerConfiguration">
@@ -235,6 +237,46 @@
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="CacheServer" type="Application" factoryName="Application" enabled="false" merge="false" sample_coverage="true" runner="emma">
+      <option name="MAIN_CLASS_NAME" value="com.tangosol.net.DefaultCacheServer" />
+      <option name="VM_PARAMETERS" value="-server -Xms64m -Xmx64m" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="coherence-tools" />
+      <envs />
+      <RunnerSettings RunnerId="Profile ">
+        <option name="myExternalizedOptions" value="&#10;snapshots-dir=&#10;additional-options2=onexit\=snapshot&#10;" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method>
+        <option name="Make" value="true" />
+      </method>
+    </configuration>
+    <configuration default="false" name="Console" type="Application" factoryName="Application" enabled="false" merge="false" sample_coverage="true" runner="emma">
+      <option name="MAIN_CLASS_NAME" value="com.tangosol.net.CacheFactory" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="coherence-tools" />
+      <envs />
+      <RunnerSettings RunnerId="Profile ">
+        <option name="myExternalizedOptions" value="&#10;snapshots-dir=&#10;additional-options2=onexit\=snapshot&#10;" />
+      </RunnerSettings>
+      <method>
+        <option name="Make" value="true" />
+      </method>
+    </configuration>
     <configuration default="false" name="All in coherence-tools" type="JUnit" factoryName="JUnit" enabled="false" merge="false" sample_coverage="true" runner="emma">
       <module name="coherence-tools" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -253,6 +295,9 @@
         <value defaultName="moduleWithDependencies" />
       </option>
       <envs />
+      <RunnerSettings RunnerId="Profile ">
+        <option name="myExternalizedOptions" value="&#10;snapshots-dir=&#10;additional-options2=onexit\=snapshot&#10;" />
+      </RunnerSettings>
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
       <method>
@@ -277,6 +322,33 @@
   <component name="SvnBranchConfigurationManager">
     <option name="myConfigurationMap">
       <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://aleks%40seovic.com@coherence-tools.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://aleks%40seovic.com@coherence-tools.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://aleks%40seovic.com@coherence-tools.googlecode.com/svn/branches" />
+                  <option value="https://aleks%40seovic.com@coherence-tools.googlecode.com/svn/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://aleks%40seovic.com@coherence-tools.googlecode.com/svn/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/CoherenceLoader/java">
           <value>
             <SvnBranchConfiguration>

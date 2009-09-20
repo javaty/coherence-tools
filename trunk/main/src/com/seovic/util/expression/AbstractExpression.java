@@ -1,80 +1,54 @@
-/*
- * Copyright 2009 Aleksandar Seovic
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package com.seovic.util.extractors;
+package com.seovic.util.expression;
 
 
-import com.seovic.util.Extractor;
+import com.seovic.util.Expression;
 import com.tangosol.io.pof.PortableObject;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
-
-import java.util.Map;
 import java.io.Serializable;
 import java.io.IOException;
 
 
 /**
- * Simple imlementation of {@link Extractor} that extracts value from a map.
+ * Abstract base class for various expression implementations.
+ * <p/>
+ * This class takes care of expression serialization and overrides Object
+ * methods.
  *
- * @author Aleksandar Seovic  2009.06.17
+ * @author Aleksandar Seovic  2009.09.20
  */
-public class MapExtractor
-        implements Extractor, Serializable, PortableObject
+public abstract class AbstractExpression
+        implements Expression, Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
 
     /**
      * Deserialization constructor (for internal use only).
      */
-    public MapExtractor()
+    public AbstractExpression()
         {
         }
 
     /**
-     * Construct a <tt>MapExtractor</tt> instance.
+     * Construct an expression instance.
      *
-     * @param key the key to extract value for
+     * @param expression  the expression to evaluate
      */
-    public MapExtractor(String key)
+    public AbstractExpression(String expression)
         {
-        m_key = key;
+        m_expression = expression;
         }
 
 
-    // ---- Extractor implementation ----------------------------------------
+    // ---- Expression implementation ---------------------------------------
 
     /**
      * {@inheritDoc}
      */
-    public Object extract(Object target)
+    public Object eval(Object target)
         {
-        if (target == null)
-            {
-            return null;
-            }
-        if (!(target instanceof Map))
-            {
-            throw new IllegalArgumentException(
-                    "Extraction target is not a Map");
-            }
-
-        return ((Map) target).get(m_key);
+        return eval(target, null);
         }
-
 
     // ---- PortableObject implementation -----------------------------------
 
@@ -88,7 +62,7 @@ public class MapExtractor
     public void readExternal(PofReader reader)
             throws IOException
         {
-        m_key = reader.readString(0);
+        m_expression = reader.readString(0);
         }
 
     /**
@@ -101,7 +75,7 @@ public class MapExtractor
     public void writeExternal(PofWriter writer)
             throws IOException
         {
-        writer.writeString(0, m_key);
+        writer.writeString(0, m_expression);
         }
 
 
@@ -127,8 +101,8 @@ public class MapExtractor
             return false;
             }
 
-        MapExtractor extractor = (MapExtractor) o;
-        return m_key.equals(extractor.m_key);
+        AbstractExpression that = (AbstractExpression) o;
+        return m_expression.equals(that.m_expression);
         }
 
     /**
@@ -139,7 +113,7 @@ public class MapExtractor
     @Override
     public int hashCode()
         {
-        return m_key.hashCode();
+        return m_expression.hashCode();
         }
 
     /**
@@ -150,16 +124,16 @@ public class MapExtractor
     @Override
     public String toString()
         {
-        return "MapExtractor{" +
-               "key='" + m_key + '\'' +
+        return getClass().getSimpleName() + "{" +
+               "expression='" + m_expression + '\'' +
                '}';
         }
 
-    
+
     // ---- data members ----------------------------------------------------
 
     /**
-     * Map key.
+     * Expression source.
      */
-    private String m_key;
+    protected String m_expression;
     }

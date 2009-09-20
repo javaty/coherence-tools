@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.seovic.test.objects.Person;
+import com.seovic.test.objects.Address;
 
 import java.util.Date;
 import java.util.Map;
@@ -63,7 +63,7 @@ public class MapExtractorTests
     public void testWithExistingProperty()
         {
         MapExtractor extractor = new MapExtractor("address");
-        Person.Address merced = new Person.Address("Merced", "Santiago", "Chile");
+        Address merced = new Address("Merced", "Santiago", "Chile");
         Map<String, Object> sourceItem = createTestSourceMap();
         assertEquals(merced, extractor.extract(sourceItem));
         extractor = new MapExtractor("dob");
@@ -76,7 +76,7 @@ public class MapExtractorTests
         source.put("name", "Ivan");
         source.put("idNo", 2504);
         source.put("dob", new Date());
-        source.put("address", new Person.Address("Merced", "Santiago", "Chile"));
+        source.put("address", new Address("Merced", "Santiago", "Chile"));
         return source;
         }
     }

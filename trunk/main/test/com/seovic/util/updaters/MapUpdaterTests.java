@@ -23,7 +23,7 @@ import org.junit.Test;
 import java.util.Map;
 import java.util.HashMap;
 
-import com.seovic.test.objects.Person;
+import com.seovic.test.objects.Address;
 
 
 /**
@@ -52,7 +52,7 @@ public class MapUpdaterTests
     public void testWithNonNullProperty()
         {
         MapUpdater updater = new MapUpdater("address");
-        Person.Address merced = new Person.Address("Merced", "Santiago", "Chile");
+        Address merced = new Address("Merced", "Santiago", "Chile");
         Map<String, Object> target = new HashMap<String, Object>();
         updater.update(target, merced);
         assertEquals(merced, target.get("address"));

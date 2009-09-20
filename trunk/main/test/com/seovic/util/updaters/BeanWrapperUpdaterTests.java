@@ -20,6 +20,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.seovic.test.objects.Person;
+import com.seovic.test.objects.Address;
 
 
 /**
@@ -29,7 +30,6 @@ import com.seovic.test.objects.Person;
  */
 public class BeanWrapperUpdaterTests
     {
-
     @Test(expected = RuntimeException.class)
     public void testWithBadPropertyName()
         {
@@ -41,10 +41,10 @@ public class BeanWrapperUpdaterTests
     @Test
     public void testWithStringPropertyType()
         {
-        BeanWrapperUpdater updater = new BeanWrapperUpdater(
-                "name");
+        BeanWrapperUpdater updater = new BeanWrapperUpdater("name");
         Person person = new Person();
         assertNull(person.getName());
+        
         updater.update(person, "Ivan");
         assertEquals("Ivan", person.getName());
         }
@@ -52,25 +52,25 @@ public class BeanWrapperUpdaterTests
     @Test
     public void testWithPrimitivePropertyType()
         {
-        BeanWrapperUpdater updater = new BeanWrapperUpdater(
-                "idNo");
+        BeanWrapperUpdater updater = new BeanWrapperUpdater("id");
         Person person = new Person();
-        assertEquals(0, person.getIdNo());
-        updater.update(person, 2504);
-        assertEquals(2504, person.getIdNo());
+        assertEquals(0L, person.getId());
+
+        updater.update(person, 2504L);
+        assertEquals(2504L, person.getId());
         }
 
     @Test
     public void testWithComplexPropertyType()
         {
-        BeanWrapperUpdater updater = new BeanWrapperUpdater(
-                "address");
+        BeanWrapperUpdater updater = new BeanWrapperUpdater("address");
         Person person = new Person();
         assertNull(person.getAddress());
-        Person.Address merced = new Person.Address("Merced", "Santiago",
-                                                   "Chile");
+
+        Address merced = new Address("Merced", "Santiago", "Chile");
         updater.update(person, merced);
         assertEquals(merced, person.getAddress());
+
         updater = new BeanWrapperUpdater("address.street");
         updater.update(person, "Av Bernardo O'Higgins");
         assertEquals("Av Bernardo O'Higgins", person.getAddress().getStreet());

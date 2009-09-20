@@ -18,18 +18,19 @@ package com.seovic.util.extractors;
 
 
 import com.seovic.util.Extractor;
-import com.seovic.util.expression.OgnlExpression;
+
+import com.seovic.util.expression.MvelExpression;
 
 
 /**
  * An imlementation of {@link Extractor} that extracts value from a target
- * object using <a href="http://www.opensymphony.com/ognl/" target="_new">
- * OGNL</a> expression.
+ * object using <a href="http://mvel.codehaus.org/" target="_new">MVEL</a>
+ * expression.
  *
- * @author Aleksandar Seovic  2009.06.17
+ * @author Aleksandar Seovic  2009.09.20
  */
-public class OgnlExtractor
-        extends    OgnlExpression
+public class MvelExtractor
+        extends    MvelExpression
         implements Extractor
     {
     // ---- constructors ----------------------------------------------------
@@ -37,16 +38,16 @@ public class OgnlExtractor
     /**
      * Deserialization constructor (for internal use only).
      */
-    public OgnlExtractor()
+    public MvelExtractor()
         {
         }
 
     /**
-     * Construct a <tt>OgnlExtractor</tt> instance.
+     * Construct a <tt>MvelExtractor</tt> instance.
      *
      * @param expression the expression to evaluate
      */
-    public OgnlExtractor(String expression)
+    public MvelExtractor(String expression)
         {
         super(expression);
         }
