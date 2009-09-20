@@ -3,8 +3,8 @@ package com.seovic.coherence.loader.target;
 
 import com.seovic.coherence.loader.Source;
 
-import com.seovic.util.Updater;
-import com.seovic.util.updaters.MapUpdater;
+import com.seovic.lang.Updater;
+import com.seovic.lang.updater.MapUpdater;
 
 import java.io.Writer;
 
