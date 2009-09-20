@@ -9,7 +9,7 @@ import com.seovic.coherence.loader.target.CoherenceCacheTarget;
 import com.seovic.coherence.loader.target.CsvTarget;
 import com.seovic.coherence.loader.target.XmlTarget;
 
-import com.seovic.coherence.test.objects.Country;
+import com.seovic.test.objects.Country;
 
 import com.seovic.util.extractors.XmlExtractor;
 import com.seovic.util.extractors.OgnlExtractor;

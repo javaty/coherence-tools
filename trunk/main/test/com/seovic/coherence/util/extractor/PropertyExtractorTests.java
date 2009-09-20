@@ -30,7 +30,7 @@ import com.tangosol.io.DefaultSerializer;
 import com.tangosol.io.pof.SimplePofContext;
 import com.tangosol.io.pof.PortableObjectSerializer;
 
-import com.seovic.coherence.test.objects.Country;
+import com.seovic.test.objects.Country;
 
 import org.junit.Test;
 

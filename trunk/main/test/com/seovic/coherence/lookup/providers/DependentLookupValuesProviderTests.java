@@ -27,7 +27,7 @@ import com.tangosol.util.filter.EqualsFilter;
 import com.tangosol.util.filter.LikeFilter;
 import com.tangosol.util.Filter;
 
-import com.seovic.coherence.test.objects.City;
+import com.seovic.test.objects.City;
 
 import com.seovic.coherence.lookup.LookupValuesProvider;
 import com.seovic.coherence.lookup.LookupValueExtractor;
