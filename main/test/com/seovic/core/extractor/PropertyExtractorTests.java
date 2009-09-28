@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.seovic.lang.extractor;
+package com.seovic.core.extractor;
 
 
-import com.seovic.lang.Extractor;
+import com.seovic.core.Extractor;
 
 import com.tangosol.util.extractor.ChainedExtractor;
 

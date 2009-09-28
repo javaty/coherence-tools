@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.seovic.lang.extractor;
+package com.seovic.core.extractor;
 
 
-import com.seovic.lang.Expression;
-import com.seovic.lang.expression.OgnlExpression;
+import com.seovic.core.Expression;
+import com.seovic.core.expression.OgnlExpression;
 
 
 /**

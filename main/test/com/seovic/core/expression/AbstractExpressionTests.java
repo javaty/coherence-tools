@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package com.seovic.lang.expression;
+package com.seovic.core.expression;
 
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.seovic.lang.Expression;
 import com.seovic.test.objects.Person;
 import com.seovic.test.objects.Address;
+
+import com.seovic.core.Expression;
 
 import java.util.Map;
 import java.util.HashMap;
