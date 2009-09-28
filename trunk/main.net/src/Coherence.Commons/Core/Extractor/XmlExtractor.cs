@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Xml;
 using Tangosol.IO.Pof;
 
 namespace Seovic.Coherence.Core.Extractor
@@ -31,8 +30,35 @@ namespace Seovic.Coherence.Core.Extractor
 
         public object Extract(object target)
         {
-            // TODO:
-            throw new NotImplementedException();
+            if (target == null) 
+            {
+                return null;
+            }
+
+            XmlDocument sourceDoc     = (XmlDocument) target;
+            XmlElement  sourceElement = sourceDoc.DocumentElement;
+            if (sourceElement != null)
+            {
+                string uri = nsUri == null
+                               ? sourceElement.NamespaceURI
+                               : nsUri;
+                string result = null;
+                if (sourceElement.HasAttribute(nodeName, uri))
+                {
+                    result = sourceElement.GetAttribute(nodeName, uri);
+                }
+                else
+                {
+                    XmlNodeList candidates = sourceElement.GetElementsByTagName(nodeName, uri);
+                    if (candidates.Count > 0)
+                    {
+                        result = candidates[0].InnerText;
+                    }
+                }
+                return result;
+            }
+            
+            return null;
         }
 
         #endregion
