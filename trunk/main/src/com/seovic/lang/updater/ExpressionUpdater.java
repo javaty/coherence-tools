@@ -14,55 +14,75 @@
  * limitations under the License.
  */
 
-package com.seovic.lang.expression;
+package com.seovic.lang.updater;
 
 
 import com.seovic.lang.Expression;
+import com.seovic.lang.Defaults;
+import com.seovic.lang.Updater;
+
 import com.tangosol.io.pof.PortableObject;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
+
 import java.io.Serializable;
 import java.io.IOException;
 
 
 /**
- * Abstract base class for various expression implementations.
+ * An imlementation of {@link Updater} that updates the last node of the
+ * specified {@link Expression}.
  *
- * @author Aleksandar Seovic  2009.09.20
+ * @author Aleksandar Seovic  2009.06.17
  */
-public abstract class AbstractExpression
-        implements Expression, Serializable, PortableObject
+public class ExpressionUpdater
+        implements Updater, Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
 
     /**
      * Deserialization constructor (for internal use only).
      */
-    public AbstractExpression()
+    public ExpressionUpdater()
         {
         }
 
     /**
-     * Construct an expression instance.
+     * Construct an <tt>ExpressionUpdater</tt> instance.
      *
-     * @param expression  the expression to evaluate
+     * @param expression  the expression to use
      */
-    public AbstractExpression(String expression)
+    public ExpressionUpdater(String expression)
+        {
+        this(Defaults.createExpression(expression));
+        }
+
+    /**
+     * Construct an <tt>ExpressionUpdater</tt> instance.
+     *
+     * @param expression  the expression to use
+     */
+    public ExpressionUpdater(Expression expression)
         {
         m_expression = expression;
         }
 
 
-    // ---- Expression implementation ---------------------------------------
+    // ---- Updater implementation ------------------------------------------
 
     /**
      * {@inheritDoc}
      */
-    public Object evaluate(Object target)
+    public void update(Object target, Object value)
         {
-        return evaluate(target, null);
+        if (target == null)
+            {
+            throw new IllegalArgumentException("Updater target cannot be null");
+            }
+        m_expression.evaluateAndSet(target, value);
         }
 
+    
     // ---- PortableObject implementation -----------------------------------
 
     /**
@@ -75,7 +95,7 @@ public abstract class AbstractExpression
     public void readExternal(PofReader reader)
             throws IOException
         {
-        m_expression = reader.readString(0);
+        m_expression = (Expression) reader.readObject(0);
         }
 
     /**
@@ -88,7 +108,7 @@ public abstract class AbstractExpression
     public void writeExternal(PofWriter writer)
             throws IOException
         {
-        writer.writeString(0, m_expression);
+        writer.writeObject(0, m_expression);
         }
 
 
@@ -114,8 +134,8 @@ public abstract class AbstractExpression
             return false;
             }
 
-        AbstractExpression that = (AbstractExpression) o;
-        return m_expression.equals(that.m_expression);
+        ExpressionUpdater extractor = (ExpressionUpdater) o;
+        return m_expression.equals(extractor.m_expression);
         }
 
     /**
@@ -137,8 +157,8 @@ public abstract class AbstractExpression
     @Override
     public String toString()
         {
-        return getClass().getSimpleName() + "{" +
-               "expression='" + m_expression + '\'' +
+        return "ExpressionUpdater{" +
+               "expression=" + m_expression +
                '}';
         }
 
@@ -146,7 +166,7 @@ public abstract class AbstractExpression
     // ---- data members ----------------------------------------------------
 
     /**
-     * Expression source.
+     * The expression to use.
      */
-    protected String m_expression;
+    private Expression m_expression;
     }

@@ -35,7 +35,7 @@ public interface Expression
      *
      * @return expression result
      */
-    public Object eval(Object target);
+    public Object evaluate(Object target);
 
     /**
      * Evaluates expression against the target object.
@@ -45,5 +45,14 @@ public interface Expression
      *
      * @return expression result
      */
-    public Object eval(Object target, Map variables);
+    public Object evaluate(Object target, Map variables);
+
+    /**
+     * Evaluates expression against the target object and sets the last element
+     * returned to a specified value.
+     *
+     * @param target  object to evaluate expression against
+     * @param value   value to set last element of an expression to
+     */
+    public void evaluateAndSet(Object target, Object value);
     }

@@ -19,8 +19,6 @@ package com.seovic.lang.extractor;
 
 import com.seovic.lang.Extractor;
 
-import com.seovic.coherence.util.extractor.ValueExtractorAdapter;
-
 import com.tangosol.util.extractor.ChainedExtractor;
 
 import com.tangosol.util.ValueExtractor;
@@ -28,7 +26,7 @@ import com.tangosol.util.Base;
 
 
 /**
- * Tests for {@link MvelExtractor}.
+ * Tests for {@link PropertyExtractor}.
  *
  * @author ic  2009.06.16
  */

@@ -8,7 +8,7 @@ import com.seovic.coherence.identity.extractor.EntityIdentityExtractor;
 import com.seovic.coherence.loader.Source;
 
 import com.seovic.lang.Updater;
-import com.seovic.lang.updater.OgnlUpdater;
+import com.seovic.lang.Defaults;
 
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
@@ -82,7 +82,7 @@ public class CoherenceCacheTarget
      */
     protected Updater createDefaultUpdater(String propertyName)
         {
-        return new OgnlUpdater(propertyName);
+        return Defaults.createUpdater(propertyName);
         }
 
     /**

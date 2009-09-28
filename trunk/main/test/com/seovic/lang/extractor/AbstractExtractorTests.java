@@ -22,12 +22,13 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.seovic.lang.Extractor;
+
 import com.seovic.test.objects.Person;
 import com.seovic.test.objects.Address;
 
 
 /**
- * Common expression tests.
+ * Common extractor tests.
  *
  * @author Aleksandar Seovic  2009.09.20
  */

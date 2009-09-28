@@ -78,7 +78,7 @@ public class GroovyExpression
     /**
      * {@inheritDoc}
      */
-    public Object eval(Object target, Map variables)
+    public Object evaluate(Object target, Map variables)
         {
         Binding binding = new Binding(variables);
         binding.setVariable("target", target);
@@ -91,6 +91,22 @@ public class GroovyExpression
             }
         }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void evaluateAndSet(Object target, Object value)
+        {
+        Binding binding = new Binding();
+        binding.setVariable("target", target);
+        binding.setVariable("value", value);
+
+        synchronized (monitor)
+            {
+            Script script = getCompiledSetScript();
+            script.setBinding(binding);
+            script.run();
+            }
+        }
 
     // ---- helper methods --------------------------------------------------
 
@@ -110,6 +126,21 @@ public class GroovyExpression
         return script;
         }
 
+    /**
+     * Return a compiled Groovy script for this expression.
+     *
+     * @return compiled Groovy script
+     */
+    protected Script getCompiledSetScript()
+        {
+        Script script = m_setScript;
+        if (script == null)
+            {
+            GroovyShell shell = new GroovyShell();
+            m_setScript = script = shell.parse(m_expression + " = value");
+            }
+        return script;
+        }
 
     // ---- data members ----------------------------------------------------
 
@@ -119,7 +150,12 @@ public class GroovyExpression
     private transient final Object monitor = new Object();
 
     /**
-     * Compiled Grrovy script
+     * Compiled Groovy script
      */
     private transient Script m_script;
+
+    /**
+     * Compiled Groovy set script
+     */
+    private transient Script m_setScript;
     }

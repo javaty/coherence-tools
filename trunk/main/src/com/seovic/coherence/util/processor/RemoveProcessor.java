@@ -15,28 +15,37 @@ import java.io.IOException;
  * @author Aleksandar Seovic  2009.06.24
  */
 public class RemoveProcessor
-        extends    AbstractProcessor
-        implements PortableObject {
+        extends AbstractProcessor
+        implements PortableObject
+    {
 
     private boolean m_fReturnOldValue;
 
-    public RemoveProcessor() {
-    }
+    public RemoveProcessor()
+        {
+        }
 
-    public RemoveProcessor(boolean fReturnOldValue) {
+    public RemoveProcessor(boolean fReturnOldValue)
+        {
         m_fReturnOldValue = fReturnOldValue;
-    }
+        }
 
-    public Object process(InvocableMap.Entry entry) {
+    public Object process(InvocableMap.Entry entry)
+        {
         Object oldValue = m_fReturnOldValue ? entry.getValue() : null;
         entry.remove(false);
         return oldValue;
-    }
-    public void readExternal(PofReader reader) throws IOException {
-        m_fReturnOldValue = reader.readBoolean(0);
-    }
+        }
 
-    public void writeExternal(PofWriter writer) throws IOException {
+    public void readExternal(PofReader reader)
+            throws IOException
+        {
+        m_fReturnOldValue = reader.readBoolean(0);
+        }
+
+    public void writeExternal(PofWriter writer)
+            throws IOException
+        {
         writer.writeBoolean(0, m_fReturnOldValue);
+        }
     }
-}

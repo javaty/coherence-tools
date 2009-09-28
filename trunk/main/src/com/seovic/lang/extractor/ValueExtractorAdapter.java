@@ -17,43 +17,44 @@
 package com.seovic.lang.extractor;
 
 
-import com.seovic.lang.Extractor;
+import com.tangosol.util.ValueExtractor;
+
 import com.tangosol.io.pof.PortableObject;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
-import java.util.Map;
+
+import com.seovic.lang.Extractor;
+
 import java.io.Serializable;
 import java.io.IOException;
 
 
 /**
- * Composite imlementation of {@link Extractor} that extracts value using either
- * a {@link PropertyExtractor} or a {@link MapExtractor}, depending on the type
- * of extraction target.
+ * Adapter that allows any class that implements <tt>com.tangosol.util.ValueExtractor</tt>
+ * to be used where {@link Extractor} instance is expected.
  *
- * @author Aleksandar Seovic  2009.06.17
+ * @author Aleksandar Seovic  2009.09.20
  */
-public class DefaultExtractor
-        implements Extractor, Serializable, PortableObject
+public class ValueExtractorAdapter
+    implements Extractor, Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
 
     /**
      * Deserialization constructor (for internal use only).
      */
-    public DefaultExtractor()
+    public ValueExtractorAdapter()
         {
         }
 
     /**
-     * Construct a <tt>DefaultExtractor</tt> instance.
+     * Construct a <tt>ValueExtractorAdapter</tt> instance.
      *
-     * @param propertyName  the name of the property or key to extract
+     * @param delegate  value extractor to delegate to
      */
-    public DefaultExtractor(String propertyName)
+    public ValueExtractorAdapter(ValueExtractor delegate)
         {
-        m_mapExtractor      = new MapExtractor(propertyName);
-        m_propertyExtractor = new PropertyExtractor(propertyName);
+        this.m_delegate = delegate;
         }
 
 
@@ -62,20 +63,9 @@ public class DefaultExtractor
     /**
      * {@inheritDoc}
      */
-    public Object extract(Object target)
+    public Object extract(Object o)
         {
-        if (target == null)
-            {
-            return null;
-            }
-        else if (target instanceof Map)
-            {
-            return m_mapExtractor.extract(target);
-            }
-        else
-            {
-            return m_propertyExtractor.extract(target);
-            }
+        return m_delegate.extract(o);
         }
 
 
@@ -91,8 +81,7 @@ public class DefaultExtractor
     public void readExternal(PofReader reader)
             throws IOException
         {
-        m_mapExtractor      = (Extractor) reader.readObject(0);
-        m_propertyExtractor = (Extractor) reader.readObject(1);
+        m_delegate = (ValueExtractor) reader.readObject(0);
         }
 
     /**
@@ -105,11 +94,10 @@ public class DefaultExtractor
     public void writeExternal(PofWriter writer)
             throws IOException
         {
-        writer.writeObject(0, m_mapExtractor);
-        writer.writeObject(1, m_propertyExtractor);
+        writer.writeObject(0, m_delegate);
         }
 
-    
+
     // ---- Object methods --------------------------------------------------
 
     /**
@@ -132,10 +120,8 @@ public class DefaultExtractor
             return false;
             }
 
-        DefaultExtractor that = (DefaultExtractor) o;
-
-        return m_mapExtractor.equals(that.m_mapExtractor)
-               && m_propertyExtractor.equals(that.m_propertyExtractor);
+        ValueExtractorAdapter adapter = (ValueExtractorAdapter) o;
+        return m_delegate.equals(adapter.m_delegate);
         }
 
     /**
@@ -146,9 +132,7 @@ public class DefaultExtractor
     @Override
     public int hashCode()
         {
-        int result = m_mapExtractor.hashCode();
-        result = 31 * result + m_propertyExtractor.hashCode();
-        return result;
+        return m_delegate.hashCode();
         }
 
     /**
@@ -159,22 +143,13 @@ public class DefaultExtractor
     @Override
     public String toString()
         {
-        return "DefaultExtractor{" +
-               "mapExtractor=" + m_mapExtractor +
-               ", propertyExtractor=" + m_propertyExtractor +
+        return "ValueExtractorAdapter{" +
+               "delegate=" + m_delegate +
                '}';
         }
 
-
+    
     // ---- data members ----------------------------------------------------
 
-    /**
-     * Map extractor.
-     */
-    private Extractor m_mapExtractor;
-
-    /**
-     * Property extractor.
-     */
-    private Extractor m_propertyExtractor;
+    private ValueExtractor m_delegate;
     }

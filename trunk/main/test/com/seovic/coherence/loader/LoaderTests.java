@@ -12,7 +12,7 @@ import com.seovic.coherence.loader.target.XmlTarget;
 import com.seovic.test.objects.Country;
 
 import com.seovic.lang.extractor.XmlExtractor;
-import com.seovic.lang.extractor.OgnlExtractor;
+import com.seovic.lang.extractor.ExpressionExtractor;
 
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
@@ -179,7 +179,7 @@ public class LoaderTests
         Source source = new CsvSource(countriesReader);
         Target target = new CoherenceCacheTarget("countries", Country.class);
         Loader loader = new Loader(source, target);
-        source.setExtractor("name", new OgnlExtractor("code + ':' + name+ ':' + formalName"));
+        source.setExtractor("name", new ExpressionExtractor("code + ':' + name+ ':' + formalName"));
         loader.load();
 
         // asserts

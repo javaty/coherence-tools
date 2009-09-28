@@ -18,23 +18,29 @@ package com.seovic.lang.extractor;
 
 
 import com.seovic.lang.Extractor;
+import com.seovic.lang.Expression;
 
 
 /**
- * Tests for {@link OgnlExtractor}.
+ * Common expression extractor tests.
  *
- * @author ic  2009.06.16
+ * @author Aleksandar Seovic  2009.09.20
  */
-public class OgnlExtractorTests
+public abstract class AbstractExpressionExtractorTests 
         extends AbstractExtractorTests
     {
+    protected abstract Expression createExpression(String expression);
+    protected abstract String getLanguage();
+
+    // ---- helper methods --------------------------------------------------
+
     protected Extractor createExtractor(String expression)
         {
-        return new OgnlExtractor(expression);
+        return new ExpressionExtractor(createExpression(expression));
         }
 
     protected String getName()
         {
-        return "OgnlExtractor";
+        return "ExpressionExtractor(" + getLanguage() + ")";
         }
     }
