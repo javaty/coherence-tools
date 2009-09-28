@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.seovic.lang.updater;
+package com.seovic.core.updater;
 
 
 import static org.junit.Assert.*;
