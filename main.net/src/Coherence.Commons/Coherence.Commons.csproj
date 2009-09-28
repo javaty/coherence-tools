@@ -36,19 +36,42 @@
       <HintPath>..\..\lib\Coherence.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Condition\ExpressionCondition.cs" />
+    <Compile Include="Core\Defaults.cs" />
+    <Compile Include="Core\Expression\AbstractExpression.cs" />
+    <Compile Include="Core\Expression\GroovyExpression.cs" />
+    <Compile Include="Core\Expression\MvelExpression.cs" />
+    <Compile Include="Core\Expression\OgnlExpression.cs" />
+    <Compile Include="Core\Expression\ScriptExpression.cs" />
+    <Compile Include="Core\Extractor\ExpressionExtractor.cs" />
+    <Compile Include="Core\Extractor\MapExtractor.cs" />
+    <Compile Include="Core\Extractor\ValueExtractorAdapter.cs" />
+    <Compile Include="Core\Extractor\XmlExtractor.cs" />
+    <Compile Include="Core\IEntity.cs" />
+    <Compile Include="Core\ICondition.cs" />
+    <Compile Include="Core\IExpression.cs" />
+    <Compile Include="Core\IExtractor.cs" />
+    <Compile Include="Core\IUpdater.cs" />
     <Compile Include="IEntity.cs" />
     <Compile Include="IO\Pof\EnumPofSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\Objects\Country.cs" />
-    <Compile Include="Util\Aggregator\TopAggregator.cs" />
     <Compile Include="Util\Extractor\PropertyExtractor.cs" />
     <Compile Include="Util\Filter\StartsWithFilter.cs" />
     <Compile Include="Util\Processor\RemoveProcessor.cs" />
     <Compile Include="Util\SerializationHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\Updater\" />
+    <Folder Include="Util\Aggregator\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
