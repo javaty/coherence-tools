@@ -31,7 +31,7 @@ import com.seovic.coherence.lookup.LookupValuesProvider;
 import com.seovic.coherence.lookup.LookupValueExtractor;
 import com.seovic.coherence.lookup.LookupValue;
 
-import com.seovic.lang.extractor.PropertyExtractor;
+import com.seovic.core.extractor.PropertyExtractor;
 
 import java.util.Collection;
 import java.util.Set;
