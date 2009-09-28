@@ -112,7 +112,7 @@ namespace Seovic.Coherence.Core.Extractor
         {
             int hash = 17;
             hash = hash * 31 + nodeName.GetHashCode();
-            hash = hash*31 + (nsUri != null ? nsUri.GetHashCode() : 0);
+            hash = hash * 31 + (nsUri != null ? nsUri.GetHashCode() : 0);
             return hash;
         }
 
