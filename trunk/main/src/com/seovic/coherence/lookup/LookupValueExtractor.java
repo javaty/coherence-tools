@@ -17,7 +17,7 @@ limitations under the License.
 package com.seovic.coherence.lookup;
 
 
-import com.seovic.lang.extractor.PropertyExtractor;
+import com.seovic.core.extractor.PropertyExtractor;
 
 import com.tangosol.util.extractor.AbstractExtractor;
 import com.tangosol.util.extractor.KeyExtractor;

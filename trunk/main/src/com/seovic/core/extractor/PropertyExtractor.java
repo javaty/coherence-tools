@@ -14,25 +14,27 @@
  * limitations under the License.
  */
 
-package com.seovic.lang.extractor;
+package com.seovic.core.extractor;
 
 
-import com.seovic.lang.Extractor;
+import com.seovic.core.Extractor;
 import com.tangosol.io.pof.PortableObject;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
 
-import java.util.Map;
+import java.lang.reflect.Method;
 import java.io.Serializable;
 import java.io.IOException;
 
 
 /**
- * Simple imlementation of {@link Extractor} that extracts value from a map.
+ * Simple imlementation of {@link Extractor} that extracts value from a target
+ * object using introspection.
  *
  * @author Aleksandar Seovic  2009.06.17
  */
-public class MapExtractor
+@SuppressWarnings("unchecked")
+public class PropertyExtractor
         implements Extractor, Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
@@ -40,18 +42,19 @@ public class MapExtractor
     /**
      * Deserialization constructor (for internal use only).
      */
-    public MapExtractor()
+    public PropertyExtractor()
         {
         }
 
     /**
-     * Construct a <tt>MapExtractor</tt> instance.
+     * Construct a <tt>BeanExtractor</tt> instance.
      *
-     * @param key the key to extract value for
+     * @param propertyName the name of the property to extract, as defined by
+     *                     the JavaBean specification
      */
-    public MapExtractor(String key)
+    public PropertyExtractor(String propertyName)
         {
-        m_key = key;
+        m_propertyName = propertyName;
         }
 
 
@@ -66,13 +69,65 @@ public class MapExtractor
             {
             return null;
             }
-        if (!(target instanceof Map))
+
+        Class targetClass = target.getClass();
+        try
             {
-            throw new IllegalArgumentException(
-                    "Extraction target is not a Map");
+            Method method = m_propertyAccessor;
+            if (method == null || method.getDeclaringClass() != targetClass)
+                {
+                m_propertyAccessor = method =
+                        findReadMethod(m_propertyName, target.getClass());
+                }
+            return method.invoke(target);
+            }
+        catch (NullPointerException e)
+            {
+            throw new RuntimeException("Readable property " + m_propertyName +
+                                       " does not exist in the class "
+                                       + targetClass);
+            }
+        catch (Exception e)
+            {
+            throw new RuntimeException(e);
+            }
+        }
+
+
+    // ---- helper methods --------------------------------------------------
+
+    /**
+     * Attempt to find a read method for the specified property name.
+     * <p/>
+     * This method attempts to find a read method by prepending prefixes 'get'
+     * and 'is' to the specified property name, in that order.
+     *
+     * @param propertyName property name
+     * @param cls          class containing the property
+     *
+     * @return read method for the property, or <tt>null</tt> if the method
+     *         cannot be found
+     */
+    protected Method findReadMethod(String propertyName, Class cls)
+        {
+        String name = Character.toUpperCase(propertyName.charAt(0))
+                      + propertyName.substring(1);
+
+        final Class[]  EMPTY_ARGS = new Class[0];
+        final String[] prefixes   = new String[] {"get", "is"};
+
+        for (String prefix : prefixes)
+            {
+            try
+                {
+                return cls.getMethod(prefix + name, EMPTY_ARGS);
+                }
+            catch (NoSuchMethodException ignore)
+                {
+                }
             }
 
-        return ((Map) target).get(m_key);
+        return null;
         }
 
 
@@ -88,7 +143,7 @@ public class MapExtractor
     public void readExternal(PofReader reader)
             throws IOException
         {
-        m_key = reader.readString(0);
+        m_propertyName = reader.readString(0);
         }
 
     /**
@@ -101,7 +156,7 @@ public class MapExtractor
     public void writeExternal(PofWriter writer)
             throws IOException
         {
-        writer.writeString(0, m_key);
+        writer.writeString(0, m_propertyName);
         }
 
 
@@ -127,8 +182,8 @@ public class MapExtractor
             return false;
             }
 
-        MapExtractor extractor = (MapExtractor) o;
-        return m_key.equals(extractor.m_key);
+        PropertyExtractor that = (PropertyExtractor) o;
+        return m_propertyName.equals(that.m_propertyName);
         }
 
     /**
@@ -139,7 +194,7 @@ public class MapExtractor
     @Override
     public int hashCode()
         {
-        return m_key.hashCode();
+        return m_propertyName.hashCode();
         }
 
     /**
@@ -150,16 +205,20 @@ public class MapExtractor
     @Override
     public String toString()
         {
-        return "MapExtractor{" +
-               "key='" + m_key + '\'' +
+        return "PropertyExtractor{" +
+               "propertyName='" + m_propertyName + '\'' +
                '}';
         }
 
-    
     // ---- data members ----------------------------------------------------
 
     /**
-     * Map key.
+     * Property name.
      */
-    private String m_key;
+    private String m_propertyName;
+
+    /**
+     * Property accessor.
+     */
+    private transient Method m_propertyAccessor;
     }

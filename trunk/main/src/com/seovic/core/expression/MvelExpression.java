@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
-package com.seovic.lang.expression;
+package com.seovic.core.expression;
 
 
-import com.seovic.lang.Expression;
+import com.seovic.core.Expression;
 
-import ognl.Ognl;
-import ognl.OgnlException;
+import org.mvel2.MVEL;
+
 import java.util.Map;
+
+import java.io.Serializable;
 
 
 /**
  * An imlementation of {@link Expression} that evaluates specified expression
- * using <a href="http://www.opensymphony.com/ognl/" target="_new">OGNL</a>.
+ * using <a href="http://mvel.codehaus.org/" target="_new">MVEL</a>.
  *
  * @author Aleksandar Seovic  2009.09.20
  */
-public class OgnlExpression
+public class MvelExpression
         extends AbstractExpression
     {
     // ---- constructors ----------------------------------------------------
@@ -38,16 +40,16 @@ public class OgnlExpression
     /**
      * Deserialization constructor (for internal use only).
      */
-    public OgnlExpression()
+    public MvelExpression()
         {
         }
 
     /**
-     * Construct a <tt>OgnlExpression</tt> instance.
+     * Construct a <tt>MvelExpression</tt> instance.
      *
      * @param expression  the expression to evaluate
      */
-    public OgnlExpression(String expression)
+    public MvelExpression(String expression)
         {
         super(expression);
         }
@@ -60,22 +62,7 @@ public class OgnlExpression
      */
     public Object evaluate(Object target, Map variables)
         {
-        try
-            {
-            if (variables == null)
-                {
-                return Ognl.getValue(getCompiledExpression(), target);
-                }
-            else
-                {
-                Ognl.addDefaultContext(target, variables);
-                return Ognl.getValue(getCompiledExpression(), variables, target);
-                }
-            }
-        catch (OgnlException e)
-            {
-            throw new RuntimeException(e);
-            }
+        return MVEL.executeExpression(getCompiledExpression(), target, variables);
         }
 
     /**
@@ -83,47 +70,52 @@ public class OgnlExpression
      */
     public void evaluateAndSet(Object target, Object value)
         {
-        try
-            {
-            Ognl.setValue(getCompiledExpression(), target, value);
-            }
-        catch (OgnlException e)
-            {
-            throw new RuntimeException(e);
-            }
+        MVEL.executeSetExpression(getCompiledSetExpression(), target, value);
         }
 
     // ---- helper methods --------------------------------------------------
 
     /**
-     * Return a compiled OGNL expression.
+     * Return a compiled MVEL expression.
      *
-     * @return compiled OGNL expression
+     * @return compiled MVEL expression
      */
-    protected Object getCompiledExpression()
+    protected Serializable getCompiledExpression()
         {
-        Object compiledExpression = m_compiledExpression;
+        Serializable compiledExpression = m_compiledExpression;
         if (compiledExpression == null)
             {
-            try
-                {
-                m_compiledExpression = compiledExpression =
-                        Ognl.parseExpression(m_expression);
-                }
-            catch (OgnlException e)
-                {
-                throw new IllegalArgumentException("[" + m_expression +
-                                                   "] is not a valid OGNL expression");
-                }
+            m_compiledExpression = compiledExpression =
+                    MVEL.compileExpression(m_expression);
             }
         return compiledExpression;
         }
 
+    /**
+     * Return a compiled MVEL set expression.
+     *
+     * @return compiled MVEL set expression
+     */
+    protected Serializable getCompiledSetExpression()
+        {
+        Serializable compiledExpression = m_compiledSetExpression;
+        if (compiledExpression == null)
+            {
+            m_compiledSetExpression = compiledExpression =
+                    MVEL.compileSetExpression(m_expression);
+            }
+        return compiledExpression;
+        }
 
     // ---- data members ----------------------------------------------------
 
     /**
-     * Compiled OGNL expression
+     * Compiled expression.
      */
-    private transient Object m_compiledExpression;
+    private transient Serializable m_compiledExpression;
+
+    /**
+     * Compiled set expression.
+     */
+    private transient Serializable m_compiledSetExpression;
     }

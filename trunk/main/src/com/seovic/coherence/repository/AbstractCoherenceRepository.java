@@ -17,7 +17,7 @@ limitations under the License.
 package com.seovic.coherence.repository;
 
 
-import com.seovic.lang.Entity;
+import com.seovic.core.Entity;
 
 import com.tangosol.net.NamedCache;
 

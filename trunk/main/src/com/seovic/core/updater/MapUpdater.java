@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.seovic.lang.updater;
+package com.seovic.core.updater;
 
 
-import com.seovic.lang.Updater;
+import com.seovic.core.Updater;
 
 import java.util.Map;
 

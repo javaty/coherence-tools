@@ -7,8 +7,8 @@ import com.seovic.coherence.identity.extractor.EntityIdentityExtractor;
 
 import com.seovic.coherence.loader.Source;
 
-import com.seovic.lang.Updater;
-import com.seovic.lang.Defaults;
+import com.seovic.core.Updater;
+import com.seovic.core.Defaults;
 
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;

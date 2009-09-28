@@ -14,40 +14,40 @@
  * limitations under the License.
  */
 
-package com.seovic.lang.updater;
+package com.seovic.core.updater;
 
 
-import com.seovic.lang.Updater;
+import com.seovic.core.Updater;
 
+import com.tangosol.io.pof.PortableObject;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
-import com.tangosol.io.pof.PortableObject;
 
-import java.lang.reflect.Method;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
-import java.io.IOException;
 import java.io.Serializable;
+import java.io.IOException;
 
 
 /**
  * Simple imlementation of {@link Updater} that updates single property of a
- * target value using introspection.
+ * target object using Spring BeanWrapper, thus allowing for the automatic
+ * conversion of String values to a target property type.
  *
- * @author Aleksandar Seovic  2009.06.17
+ * @author Aleksandar Seovic  2009.06.18
  */
-@SuppressWarnings("unchecked")
-public class PropertyUpdater
+public class BeanWrapperUpdater
         implements Updater, Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
 
     /**
-     * Construct a <tt>BeanExtractor</tt> instance.
+     * Construct a <tt>BeanWrapperUpdater</tt> instance.
      *
-     * @param propertyName the name of the property to extract, as defined by
-     *                     the JavaBean specification
+     * @param propertyName the name of the property to update
      */
-    public PropertyUpdater(String propertyName)
+    public BeanWrapperUpdater(String propertyName)
         {
         m_propertyName = propertyName;
         }
@@ -60,67 +60,8 @@ public class PropertyUpdater
      */
     public void update(Object target, Object value)
         {
-        if (target == null)
-            {
-            throw new IllegalArgumentException("Updater target cannot be null");
-            }
-
-        Class targetClass = target.getClass();
-        try
-            {
-            Method method = m_propertyMutator;
-            if (method == null
-                || method.getDeclaringClass() != targetClass)
-                {
-                m_propertyMutator = method = findWriteMethod(m_propertyName,
-                        target.getClass(), value == null ? Object.class : value.getClass());
-                }
-            method.invoke(target, value);
-            }
-        catch (NullPointerException e)
-            {
-            throw new RuntimeException("Writeable property " + m_propertyName +
-                                       " does not exist in the class "
-                                       + targetClass);
-            }
-        catch (Exception e)
-            {
-            throw new RuntimeException(e);
-            }
-        }
-
-
-    // ---- helper methods --------------------------------------------------
-
-    /**
-     * Attempt to find a write method for the specified property name.
-     * <p/>
-     * This method attempts to find a write method by prepending 'set' prefix to
-     * the specified property name.
-     *
-     * @param propertyName property name
-     * @param cls          class containing the property
-     * @param propertyType property type
-     *
-     * @return write method for the property, or <tt>null</tt> if the method
-     *         cannot be found
-     */
-    protected Method findWriteMethod(String propertyName, Class cls,
-                                     Class propertyType)
-        {
-        String name = "set"
-                      + Character.toUpperCase(propertyName.charAt(0))
-                      + propertyName.substring(1);
-
-        try
-            {
-            return cls.getMethod(name, propertyType);
-            }
-        catch (NoSuchMethodException ignore)
-            {
-            }
-
-        return null;
+        BeanWrapper bw = new BeanWrapperImpl(target);
+        bw.setPropertyValue(m_propertyName, value);
         }
 
 
@@ -175,7 +116,7 @@ public class PropertyUpdater
             return false;
             }
 
-        PropertyUpdater that = (PropertyUpdater) o;
+        BeanWrapperUpdater that = (BeanWrapperUpdater) o;
         return m_propertyName.equals(that.m_propertyName);
         }
 
@@ -198,7 +139,7 @@ public class PropertyUpdater
     @Override
     public String toString()
         {
-        return "PropertyUpdater{" +
+        return "BeanWrapperUpdater{" +
                "propertyName='" + m_propertyName + '\'' +
                '}';
         }
@@ -209,10 +150,4 @@ public class PropertyUpdater
      * Property name.
      */
     private String m_propertyName;
-
-
-    /**
-     * Property accessor.
-     */
-    private transient Method m_propertyMutator;
     }

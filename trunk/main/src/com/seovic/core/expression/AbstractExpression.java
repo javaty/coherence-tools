@@ -14,56 +14,54 @@
  * limitations under the License.
  */
 
-package com.seovic.lang.updater;
+package com.seovic.core.expression;
 
 
-import com.seovic.lang.Updater;
-
+import com.seovic.core.Expression;
 import com.tangosol.io.pof.PortableObject;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
-
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
-
 import java.io.Serializable;
 import java.io.IOException;
 
 
 /**
- * Simple imlementation of {@link Updater} that updates single property of a
- * target object using Spring BeanWrapper, thus allowing for the automatic
- * conversion of String values to a target property type.
+ * Abstract base class for various expression implementations.
  *
- * @author Aleksandar Seovic  2009.06.18
+ * @author Aleksandar Seovic  2009.09.20
  */
-public class BeanWrapperUpdater
-        implements Updater, Serializable, PortableObject
+public abstract class AbstractExpression
+        implements Expression, Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
 
     /**
-     * Construct a <tt>BeanWrapperUpdater</tt> instance.
-     *
-     * @param propertyName the name of the property to update
+     * Deserialization constructor (for internal use only).
      */
-    public BeanWrapperUpdater(String propertyName)
+    public AbstractExpression()
         {
-        m_propertyName = propertyName;
+        }
+
+    /**
+     * Construct an expression instance.
+     *
+     * @param expression  the expression to evaluate
+     */
+    public AbstractExpression(String expression)
+        {
+        m_expression = expression;
         }
 
 
-    // ---- Updater implementation ------------------------------------------
+    // ---- Expression implementation ---------------------------------------
 
     /**
      * {@inheritDoc}
      */
-    public void update(Object target, Object value)
+    public Object evaluate(Object target)
         {
-        BeanWrapper bw = new BeanWrapperImpl(target);
-        bw.setPropertyValue(m_propertyName, value);
+        return evaluate(target, null);
         }
-
 
     // ---- PortableObject implementation -----------------------------------
 
@@ -77,7 +75,7 @@ public class BeanWrapperUpdater
     public void readExternal(PofReader reader)
             throws IOException
         {
-        m_propertyName = reader.readString(0);
+        m_expression = reader.readString(0);
         }
 
     /**
@@ -90,7 +88,7 @@ public class BeanWrapperUpdater
     public void writeExternal(PofWriter writer)
             throws IOException
         {
-        writer.writeString(0, m_propertyName);
+        writer.writeString(0, m_expression);
         }
 
 
@@ -116,8 +114,8 @@ public class BeanWrapperUpdater
             return false;
             }
 
-        BeanWrapperUpdater that = (BeanWrapperUpdater) o;
-        return m_propertyName.equals(that.m_propertyName);
+        AbstractExpression that = (AbstractExpression) o;
+        return m_expression.equals(that.m_expression);
         }
 
     /**
@@ -128,7 +126,7 @@ public class BeanWrapperUpdater
     @Override
     public int hashCode()
         {
-        return m_propertyName.hashCode();
+        return m_expression.hashCode();
         }
 
     /**
@@ -139,15 +137,16 @@ public class BeanWrapperUpdater
     @Override
     public String toString()
         {
-        return "BeanWrapperUpdater{" +
-               "propertyName='" + m_propertyName + '\'' +
+        return getClass().getSimpleName() + "{" +
+               "expression='" + m_expression + '\'' +
                '}';
         }
+
 
     // ---- data members ----------------------------------------------------
 
     /**
-     * Property name.
+     * Expression source.
      */
-    private String m_propertyName;
+    protected String m_expression;
     }

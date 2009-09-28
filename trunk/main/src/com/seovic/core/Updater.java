@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.seovic.lang;
+package com.seovic.core;
 
 
 import com.tangosol.util.ValueUpdater;

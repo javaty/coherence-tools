@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.seovic.lang.expression;
+package com.seovic.core.expression;
 
 
-import com.seovic.lang.Expression;
+import com.seovic.core.Expression;
 import com.seovic.util.io.InputStreamUtil;
 
 import java.util.Map;

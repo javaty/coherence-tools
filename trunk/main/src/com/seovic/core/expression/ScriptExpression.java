@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.seovic.lang.expression;
+package com.seovic.core.expression;
 
 
-import com.seovic.lang.Expression;
-import com.seovic.lang.Defaults;
+import com.seovic.core.Expression;
+import com.seovic.core.Defaults;
 
 import com.seovic.util.io.InputStreamUtil;
 

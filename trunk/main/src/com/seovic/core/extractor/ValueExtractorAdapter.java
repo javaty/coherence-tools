@@ -14,76 +14,58 @@
  * limitations under the License.
  */
 
-package com.seovic.lang.condition;
+package com.seovic.core.extractor;
 
 
-import com.seovic.lang.Condition;
-import com.seovic.lang.Expression;
-import com.seovic.lang.Defaults;
+import com.tangosol.util.ValueExtractor;
 
 import com.tangosol.io.pof.PortableObject;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
+
+import com.seovic.core.Extractor;
 
 import java.io.Serializable;
 import java.io.IOException;
 
 
 /**
- * An imlementation of {@link Condition} that evaluates boolean expression
- * using one of the {@link Expression} implementations.
+ * Adapter that allows any class that implements <tt>com.tangosol.util.ValueExtractor</tt>
+ * to be used where {@link Extractor} instance is expected.
  *
  * @author Aleksandar Seovic  2009.09.20
  */
-public class ExpressionCondition
-        implements Condition, Serializable, PortableObject
+public class ValueExtractorAdapter
+    implements Extractor, Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
 
     /**
      * Deserialization constructor (for internal use only).
      */
-    public ExpressionCondition()
+    public ValueExtractorAdapter()
         {
         }
 
     /**
-     * Construct an <tt>ExpressionCondition</tt> instance.
+     * Construct a <tt>ValueExtractorAdapter</tt> instance.
      *
-     * @param expression  the expression to use
+     * @param delegate  value extractor to delegate to
      */
-    public ExpressionCondition(String expression)
+    public ValueExtractorAdapter(ValueExtractor delegate)
         {
-        this(Defaults.createExpression(expression));
-        }
-
-    /**
-     * Construct an <tt>ExpressionCondition</tt> instance.
-     *
-     * @param expression  the expression to use
-     */
-    public ExpressionCondition(Expression expression)
-        {
-        m_expression = expression;
+        this.m_delegate = delegate;
         }
 
 
-    // ---- Condition implementation ----------------------------------------
+    // ---- Extractor implementation ----------------------------------------
 
     /**
      * {@inheritDoc}
      */
-    public boolean evaluate(Object target)
+    public Object extract(Object o)
         {
-        try
-            {
-            return (Boolean) m_expression.evaluate(target);
-            }
-        catch (ClassCastException e)
-            {
-            throw new IllegalArgumentException(
-                    "Specified expression does not evaluate to a boolean value");
-            }
+        return m_delegate.extract(o);
         }
 
 
@@ -99,7 +81,7 @@ public class ExpressionCondition
     public void readExternal(PofReader reader)
             throws IOException
         {
-        m_expression = (Expression) reader.readObject(0);
+        m_delegate = (ValueExtractor) reader.readObject(0);
         }
 
     /**
@@ -112,7 +94,7 @@ public class ExpressionCondition
     public void writeExternal(PofWriter writer)
             throws IOException
         {
-        writer.writeObject(0, m_expression);
+        writer.writeObject(0, m_delegate);
         }
 
 
@@ -138,8 +120,8 @@ public class ExpressionCondition
             return false;
             }
 
-        ExpressionCondition condition = (ExpressionCondition) o;
-        return m_expression.equals(condition.m_expression);
+        ValueExtractorAdapter adapter = (ValueExtractorAdapter) o;
+        return m_delegate.equals(adapter.m_delegate);
         }
 
     /**
@@ -150,7 +132,7 @@ public class ExpressionCondition
     @Override
     public int hashCode()
         {
-        return m_expression.hashCode();
+        return m_delegate.hashCode();
         }
 
     /**
@@ -161,16 +143,13 @@ public class ExpressionCondition
     @Override
     public String toString()
         {
-        return "ExpressionCondition{" +
-               "expression=" + m_expression +
+        return "ValueExtractorAdapter{" +
+               "delegate=" + m_delegate +
                '}';
         }
 
-
+    
     // ---- data members ----------------------------------------------------
 
-    /**
-     * The expression to use.
-     */
-    private Expression m_expression;
+    private ValueExtractor m_delegate;
     }
