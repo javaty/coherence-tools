@@ -20,7 +20,7 @@ package com.seovic.test.objects;
 import com.tangosol.io.pof.PortableObject;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
-import com.seovic.coherence.Entity;
+import com.seovic.lang.Entity;
 
 import java.io.IOException;
 import java.io.Serializable;
