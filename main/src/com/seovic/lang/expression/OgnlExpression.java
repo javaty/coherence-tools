@@ -58,7 +58,7 @@ public class OgnlExpression
     /**
      * {@inheritDoc}
      */
-    public Object eval(Object target, Map variables)
+    public Object evaluate(Object target, Map variables)
         {
         try
             {
@@ -78,6 +78,20 @@ public class OgnlExpression
             }
         }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void evaluateAndSet(Object target, Object value)
+        {
+        try
+            {
+            Ognl.setValue(getCompiledExpression(), target, value);
+            }
+        catch (OgnlException e)
+            {
+            throw new RuntimeException(e);
+            }
+        }
 
     // ---- helper methods --------------------------------------------------
 

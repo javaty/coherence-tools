@@ -14,47 +14,57 @@
  * limitations under the License.
  */
 
-package com.seovic.coherence.util.extractor;
+package com.seovic.lang.extractor;
 
 
-import com.tangosol.util.ValueExtractor;
+import com.seovic.lang.Extractor;
+import com.seovic.lang.Expression;
+import com.seovic.lang.Defaults;
 
 import com.tangosol.io.pof.PortableObject;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
-
-import com.seovic.lang.Extractor;
 
 import java.io.Serializable;
 import java.io.IOException;
 
 
 /**
- * Adapter that allows any class that implements <tt>com.tangosol.util.ValueExtractor</tt>
- * to be used where {@link Extractor} instance is expected.
+ * An imlementation of {@link Extractor} that extracts value from a target
+ * object using one of the {@link Expression} implementations.
  *
- * @author Aleksandar Seovic  2009.09.20
+ * @author Aleksandar Seovic  2009.06.17
  */
-public class ValueExtractorAdapter
-    implements Extractor, Serializable, PortableObject
+public class ExpressionExtractor
+        implements Extractor, Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
 
     /**
      * Deserialization constructor (for internal use only).
      */
-    public ValueExtractorAdapter()
+    public ExpressionExtractor()
         {
         }
 
     /**
-     * Construct a <tt>ValueExtractorAdapter</tt> instance.
+     * Construct an <tt>ExpressionExtractor</tt> instance.
      *
-     * @param delegate  value extractor to delegate to
+     * @param expression  the expression to use
      */
-    public ValueExtractorAdapter(ValueExtractor delegate)
+    public ExpressionExtractor(String expression)
         {
-        this.m_delegate = delegate;
+        this(Defaults.createExpression(expression));
+        }
+
+    /**
+     * Construct an <tt>ExpressionExtractor</tt> instance.
+     *
+     * @param expression  the expression to use
+     */
+    public ExpressionExtractor(Expression expression)
+        {
+        m_expression = expression;
         }
 
 
@@ -63,9 +73,13 @@ public class ValueExtractorAdapter
     /**
      * {@inheritDoc}
      */
-    public Object extract(Object o)
+    public Object extract(Object target)
         {
-        return m_delegate.extract(o);
+        if (target == null)
+            {
+            return null;
+            }
+        return m_expression.evaluate(target);
         }
 
 
@@ -81,7 +95,7 @@ public class ValueExtractorAdapter
     public void readExternal(PofReader reader)
             throws IOException
         {
-        m_delegate = (ValueExtractor) reader.readObject(0);
+        m_expression = (Expression) reader.readObject(0);
         }
 
     /**
@@ -94,10 +108,10 @@ public class ValueExtractorAdapter
     public void writeExternal(PofWriter writer)
             throws IOException
         {
-        writer.writeObject(0, m_delegate);
+        writer.writeObject(0, m_expression);
         }
 
-
+    
     // ---- Object methods --------------------------------------------------
 
     /**
@@ -120,8 +134,8 @@ public class ValueExtractorAdapter
             return false;
             }
 
-        ValueExtractorAdapter adapter = (ValueExtractorAdapter) o;
-        return m_delegate.equals(adapter.m_delegate);
+        ExpressionExtractor extractor = (ExpressionExtractor) o;
+        return m_expression.equals(extractor.m_expression);
         }
 
     /**
@@ -132,7 +146,7 @@ public class ValueExtractorAdapter
     @Override
     public int hashCode()
         {
-        return m_delegate.hashCode();
+        return m_expression.hashCode();
         }
 
     /**
@@ -143,13 +157,16 @@ public class ValueExtractorAdapter
     @Override
     public String toString()
         {
-        return "ValueExtractorAdapter{" +
-               "delegate=" + m_delegate +
+        return "ExpressionExtractor{" +
+               "expression=" + m_expression +
                '}';
         }
 
     
     // ---- data members ----------------------------------------------------
 
-    private ValueExtractor m_delegate;
+    /**
+     * The expression to use.
+     */
+    private Expression m_expression;
     }

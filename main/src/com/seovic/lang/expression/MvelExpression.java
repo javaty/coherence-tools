@@ -60,11 +60,18 @@ public class MvelExpression
     /**
      * {@inheritDoc}
      */
-    public Object eval(Object target, Map variables)
+    public Object evaluate(Object target, Map variables)
         {
         return MVEL.executeExpression(getCompiledExpression(), target, variables);
         }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void evaluateAndSet(Object target, Object value)
+        {
+        MVEL.executeSetExpression(getCompiledSetExpression(), target, value);
+        }
 
     // ---- helper methods --------------------------------------------------
 
@@ -84,11 +91,31 @@ public class MvelExpression
         return compiledExpression;
         }
 
+    /**
+     * Return a compiled MVEL set expression.
+     *
+     * @return compiled MVEL set expression
+     */
+    protected Serializable getCompiledSetExpression()
+        {
+        Serializable compiledExpression = m_compiledSetExpression;
+        if (compiledExpression == null)
+            {
+            m_compiledSetExpression = compiledExpression =
+                    MVEL.compileSetExpression(m_expression);
+            }
+        return compiledExpression;
+        }
 
     // ---- data members ----------------------------------------------------
 
     /**
-     * Compiled MVEL expression
+     * Compiled expression.
      */
     private transient Serializable m_compiledExpression;
+
+    /**
+     * Compiled set expression.
+     */
+    private transient Serializable m_compiledSetExpression;
     }

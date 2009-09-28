@@ -14,54 +14,78 @@
  * limitations under the License.
  */
 
-package com.seovic.lang.expression;
+package com.seovic.lang.condition;
 
 
+import com.seovic.lang.Condition;
 import com.seovic.lang.Expression;
+import com.seovic.lang.Defaults;
+
 import com.tangosol.io.pof.PortableObject;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
+
 import java.io.Serializable;
 import java.io.IOException;
 
 
 /**
- * Abstract base class for various expression implementations.
+ * An imlementation of {@link Condition} that evaluates boolean expression
+ * using one of the {@link Expression} implementations.
  *
  * @author Aleksandar Seovic  2009.09.20
  */
-public abstract class AbstractExpression
-        implements Expression, Serializable, PortableObject
+public class ExpressionCondition
+        implements Condition, Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
 
     /**
      * Deserialization constructor (for internal use only).
      */
-    public AbstractExpression()
+    public ExpressionCondition()
         {
         }
 
     /**
-     * Construct an expression instance.
+     * Construct an <tt>ExpressionCondition</tt> instance.
      *
-     * @param expression  the expression to evaluate
+     * @param expression  the expression to use
      */
-    public AbstractExpression(String expression)
+    public ExpressionCondition(String expression)
+        {
+        this(Defaults.createExpression(expression));
+        }
+
+    /**
+     * Construct an <tt>ExpressionCondition</tt> instance.
+     *
+     * @param expression  the expression to use
+     */
+    public ExpressionCondition(Expression expression)
         {
         m_expression = expression;
         }
 
 
-    // ---- Expression implementation ---------------------------------------
+    // ---- Condition implementation ----------------------------------------
 
     /**
      * {@inheritDoc}
      */
-    public Object evaluate(Object target)
+    public boolean evaluate(Object target)
         {
-        return evaluate(target, null);
+        try
+            {
+            return (Boolean) m_expression.evaluate(target);
+            }
+        catch (ClassCastException e)
+            {
+            throw new IllegalArgumentException(
+                    "Specified expression does not evaluate to a boolean value");
+            }
         }
+
 
     // ---- PortableObject implementation -----------------------------------
 
@@ -75,7 +99,7 @@ public abstract class AbstractExpression
     public void readExternal(PofReader reader)
             throws IOException
         {
-        m_expression = reader.readString(0);
+        m_expression = (Expression) reader.readObject(0);
         }
 
     /**
@@ -88,7 +112,7 @@ public abstract class AbstractExpression
     public void writeExternal(PofWriter writer)
             throws IOException
         {
-        writer.writeString(0, m_expression);
+        writer.writeObject(0, m_expression);
         }
 
 
@@ -114,8 +138,8 @@ public abstract class AbstractExpression
             return false;
             }
 
-        AbstractExpression that = (AbstractExpression) o;
-        return m_expression.equals(that.m_expression);
+        ExpressionCondition condition = (ExpressionCondition) o;
+        return m_expression.equals(condition.m_expression);
         }
 
     /**
@@ -137,8 +161,8 @@ public abstract class AbstractExpression
     @Override
     public String toString()
         {
-        return getClass().getSimpleName() + "{" +
-               "expression='" + m_expression + '\'' +
+        return "ExpressionCondition{" +
+               "expression=" + m_expression +
                '}';
         }
 
@@ -146,7 +170,7 @@ public abstract class AbstractExpression
     // ---- data members ----------------------------------------------------
 
     /**
-     * Expression source.
+     * The expression to use.
      */
-    protected String m_expression;
+    private Expression m_expression;
     }

@@ -17,27 +17,25 @@
 package com.seovic.lang.extractor;
 
 
-import com.seovic.lang.Extractor;
+import com.seovic.lang.Expression;
+import com.seovic.lang.expression.MvelExpression;
 
 
 /**
- * Tests for {@link GroovyExtractor}.
+ * Tests for {@link ExpressionExtractor} in combination with {@link MvelExpression}.
  *
- * @author ic  2009.06.16
+ * @author Aleksandar Seovic  2009.09.18
  */
-public class GroovyExtractorTests
-        extends AbstractExtractorTests
+public class MvelExpressionExtractorTests
+        extends AbstractExpressionExtractorTests
     {
-    protected Extractor createExtractor(String expression)
+    protected Expression createExpression(String expression)
         {
-        if ("name".equals(expression))         expression = "target.name";
-        if ("address.city".equals(expression)) expression = "target.address.city";
-
-        return new GroovyExtractor(expression);
+        return new MvelExpression(expression);
         }
 
-    protected String getName()
+    protected String getLanguage()
         {
-        return "GroovyExtractor";
+        return "MVEL";
         }
     }

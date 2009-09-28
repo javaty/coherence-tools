@@ -28,7 +28,8 @@ import java.util.Map;
  * @author Aleksandar Seovic  2009.06.17
  */
 public class MapUpdater
-        implements Updater {
+        implements Updater
+    {
     // ---- data members ----------------------------------------------------
 
     private String key;
@@ -39,11 +40,12 @@ public class MapUpdater
     /**
      * Construct a <tt>MapUpdater</tt> instance.
      *
-     * @param key  the key of the entry to update
+     * @param key the key of the entry to update
      */
-    public MapUpdater(String key) {
+    public MapUpdater(String key)
+        {
         this.key = key;
-    }
+        }
 
 
     // ---- Updater implementation ------------------------------------------
@@ -52,14 +54,17 @@ public class MapUpdater
      * {@inheritDoc}
      */
     @SuppressWarnings({"unchecked"})
-    public void update(Object target, Object value) {
-        if (target == null) {
+    public void update(Object target, Object value)
+        {
+        if (target == null)
+            {
             throw new IllegalArgumentException("Updater target cannot be null");
-        }
-        if (!(target instanceof Map)) {
+            }
+        if (!(target instanceof Map))
+            {
             throw new IllegalArgumentException("Updater target is not a Map");
-        }
+            }
 
         ((Map) target).put(key, value);
+        }
     }
-}

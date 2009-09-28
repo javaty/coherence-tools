@@ -19,14 +19,12 @@ package com.seovic.lang.extractor;
 
 import com.seovic.lang.Extractor;
 
-import com.seovic.coherence.util.extractor.ValueExtractorAdapter;
-
 import com.tangosol.util.extractor.ReflectionExtractor;
 import com.tangosol.util.extractor.ChainedExtractor;
 
 
 /**
- * Tests for {@link MvelExtractor}.
+ * Tests for built-in {@link ReflectionExtractor}.
  *
  * @author ic  2009.06.16
  */

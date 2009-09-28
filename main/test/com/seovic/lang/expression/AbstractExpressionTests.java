@@ -44,7 +44,7 @@ public abstract class AbstractExpressionTests
     public void testLiteralExpression()
         {
         Expression exp = createExpression("5 + 5");
-        assertEquals(new Integer(10), (Integer) exp.eval(null));
+        assertEquals(new Integer(10), (Integer) exp.evaluate(null));
         }
 
     @Test
@@ -52,7 +52,7 @@ public abstract class AbstractExpressionTests
         {
         Person     person = new Person(1L, "Homer");
         Expression exp    = createExpression("name");
-        assertEquals("Homer", exp.eval(person));
+        assertEquals("Homer", exp.evaluate(person));
         }
 
     @Test
@@ -61,7 +61,7 @@ public abstract class AbstractExpressionTests
         Person     person = new Person(1L, "Homer", null,
                                        new Address("111 Main St", "Springfield", "USA"));
         Expression exp    = createExpression("address.city");
-        assertEquals("Springfield", exp.eval(person));
+        assertEquals("Springfield", exp.evaluate(person));
         }
 
     @Test
@@ -72,7 +72,7 @@ public abstract class AbstractExpressionTests
         vars.put("y", 5);
 
         Expression exp = createExpression("x * y");
-        assertEquals(new Integer(25), (Integer) exp.eval(null, vars));
+        assertEquals(new Integer(25), (Integer) exp.evaluate(null, vars));
         }
 
     @Test
@@ -83,7 +83,7 @@ public abstract class AbstractExpressionTests
         vars.put("lastName", "Simpson");
 
         Expression exp = createExpression("name + ' ' + lastName");
-        assertEquals("Homer Simpson", exp.eval(person, vars));
+        assertEquals("Homer Simpson", exp.evaluate(person, vars));
         }
 
     @Test
@@ -97,14 +97,14 @@ public abstract class AbstractExpressionTests
         // warm up
         for (int i = 0; i < 1000; i++)
             {
-            exp.eval(person);
+            exp.evaluate(person);
             }
 
         // test
         long start = System.nanoTime();
         for (int i = 0; i < COUNT; i++)
             {
-            exp.eval(person);
+            exp.evaluate(person);
             }
         long duration = System.nanoTime() - start;
 

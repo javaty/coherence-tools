@@ -18,40 +18,136 @@ package com.seovic.lang.updater;
 
 
 import com.seovic.lang.Updater;
+
+import com.tangosol.io.pof.PortableObject;
+import com.tangosol.io.pof.PofReader;
+import com.tangosol.io.pof.PofWriter;
+
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
+import java.io.Serializable;
+import java.io.IOException;
+
 
 /**
- * Simple imlementation of {@link Updater} that updates single property
- * of a target object using Spring BeanWrapper, thus allowing for the automatic
- * conversion of String values to a target property type. 
+ * Simple imlementation of {@link Updater} that updates single property of a
+ * target object using Spring BeanWrapper, thus allowing for the automatic
+ * conversion of String values to a target property type.
  *
  * @author Aleksandar Seovic  2009.06.18
  */
 public class BeanWrapperUpdater
-        implements Updater {
-    // ---- data members ----------------------------------------------------
-
-    private String propertyName;
-
-
+        implements Updater, Serializable, PortableObject
+    {
     // ---- constructors ----------------------------------------------------
 
     /**
      * Construct a <tt>BeanWrapperUpdater</tt> instance.
-     * 
-     * @param propertyName  the name of the proeprty to update
+     *
+     * @param propertyName the name of the property to update
      */
-    public BeanWrapperUpdater(String propertyName) {
-        this.propertyName = propertyName;
-    }
+    public BeanWrapperUpdater(String propertyName)
+        {
+        m_propertyName = propertyName;
+        }
 
 
     // ---- Updater implementation ------------------------------------------
 
-    public void update(Object target, Object value) {
+    /**
+     * {@inheritDoc}
+     */
+    public void update(Object target, Object value)
+        {
         BeanWrapper bw = new BeanWrapperImpl(target);
-        bw.setPropertyValue(propertyName, value);
+        bw.setPropertyValue(m_propertyName, value);
+        }
+
+
+    // ---- PortableObject implementation -----------------------------------
+
+    /**
+     * Deserialize this object from a POF stream.
+     *
+     * @param reader  POF reader to use
+     *
+     * @throws IOException  if an error occurs during deserialization
+     */
+    public void readExternal(PofReader reader)
+            throws IOException
+        {
+        m_propertyName = reader.readString(0);
+        }
+
+    /**
+     * Serialize this object into a POF stream.
+     *
+     * @param writer  POF writer to use
+     *
+     * @throws IOException  if an error occurs during serialization
+     */
+    public void writeExternal(PofWriter writer)
+            throws IOException
+        {
+        writer.writeString(0, m_propertyName);
+        }
+
+
+    // ---- Object methods --------------------------------------------------
+
+    /**
+     * Test objects for equality.
+     *
+     * @param o  object to compare this object with
+     *
+     * @return <tt>true</tt> if the specified object is equal to this object
+     *         <tt>false</tt> otherwise
+     */
+    @Override
+    public boolean equals(Object o)
+        {
+        if (this == o)
+            {
+            return true;
+            }
+        if (o == null || getClass() != o.getClass())
+            {
+            return false;
+            }
+
+        BeanWrapperUpdater that = (BeanWrapperUpdater) o;
+        return m_propertyName.equals(that.m_propertyName);
+        }
+
+    /**
+     * Return hash code for this object.
+     *
+     * @return this object's hash code
+     */
+    @Override
+    public int hashCode()
+        {
+        return m_propertyName.hashCode();
+        }
+
+    /**
+     * Return string representation of this object.
+     *
+     * @return string representation of this object
+     */
+    @Override
+    public String toString()
+        {
+        return "BeanWrapperUpdater{" +
+               "propertyName='" + m_propertyName + '\'' +
+               '}';
+        }
+
+    // ---- data members ----------------------------------------------------
+
+    /**
+     * Property name.
+     */
+    private String m_propertyName;
     }
-}

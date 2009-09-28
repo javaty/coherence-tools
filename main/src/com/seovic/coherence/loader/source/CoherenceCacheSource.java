@@ -1,8 +1,8 @@
 package com.seovic.coherence.loader.source;
 
 
-import com.seovic.lang.extractor.OgnlExtractor;
 import com.seovic.lang.Extractor;
+import com.seovic.lang.Defaults;
 
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
@@ -30,6 +30,6 @@ public class CoherenceCacheSource
 
     protected Extractor createDefaultExtractor(String propertyName)
         {
-        return new OgnlExtractor(propertyName);
+        return Defaults.createExtractor(propertyName);
         }
     }
