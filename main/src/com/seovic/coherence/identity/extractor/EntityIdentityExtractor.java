@@ -1,7 +1,7 @@
 package com.seovic.coherence.identity.extractor;
 
 import com.seovic.coherence.identity.IdentityExtractor;
-import com.seovic.lang.Entity;
+import com.seovic.core.Entity;
 
 
 /**

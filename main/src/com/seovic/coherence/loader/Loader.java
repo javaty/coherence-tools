@@ -1,8 +1,8 @@
 package com.seovic.coherence.loader;
 
 
-import com.seovic.lang.Extractor;
-import com.seovic.lang.Updater;
+import com.seovic.core.Extractor;
+import com.seovic.core.Updater;
 
 
 /**
@@ -32,7 +32,7 @@ public class Loader
             for (String property : propertyNames)
                 {
                 Extractor extractor = source.getExtractor(property);
-                Updater updater   = target.getUpdater(property);
+                Updater updater     = target.getUpdater(property);
                 updater.update(targetItem, extractor.extract(sourceItem));
                 }
             target.importItem(targetItem);

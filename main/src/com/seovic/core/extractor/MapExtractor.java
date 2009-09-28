@@ -14,28 +14,25 @@
  * limitations under the License.
  */
 
-package com.seovic.lang.extractor;
+package com.seovic.core.extractor;
 
 
-import com.seovic.lang.Extractor;
-import com.seovic.lang.Expression;
-import com.seovic.lang.Defaults;
-
+import com.seovic.core.Extractor;
 import com.tangosol.io.pof.PortableObject;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
 
+import java.util.Map;
 import java.io.Serializable;
 import java.io.IOException;
 
 
 /**
- * An imlementation of {@link Extractor} that extracts value from a target
- * object using one of the {@link Expression} implementations.
+ * Simple imlementation of {@link Extractor} that extracts value from a map.
  *
  * @author Aleksandar Seovic  2009.06.17
  */
-public class ExpressionExtractor
+public class MapExtractor
         implements Extractor, Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
@@ -43,28 +40,18 @@ public class ExpressionExtractor
     /**
      * Deserialization constructor (for internal use only).
      */
-    public ExpressionExtractor()
+    public MapExtractor()
         {
         }
 
     /**
-     * Construct an <tt>ExpressionExtractor</tt> instance.
+     * Construct a <tt>MapExtractor</tt> instance.
      *
-     * @param expression  the expression to use
+     * @param key the key to extract value for
      */
-    public ExpressionExtractor(String expression)
+    public MapExtractor(String key)
         {
-        this(Defaults.createExpression(expression));
-        }
-
-    /**
-     * Construct an <tt>ExpressionExtractor</tt> instance.
-     *
-     * @param expression  the expression to use
-     */
-    public ExpressionExtractor(Expression expression)
-        {
-        m_expression = expression;
+        m_key = key;
         }
 
 
@@ -79,7 +66,13 @@ public class ExpressionExtractor
             {
             return null;
             }
-        return m_expression.evaluate(target);
+        if (!(target instanceof Map))
+            {
+            throw new IllegalArgumentException(
+                    "Extraction target is not a Map");
+            }
+
+        return ((Map) target).get(m_key);
         }
 
 
@@ -95,7 +88,7 @@ public class ExpressionExtractor
     public void readExternal(PofReader reader)
             throws IOException
         {
-        m_expression = (Expression) reader.readObject(0);
+        m_key = reader.readString(0);
         }
 
     /**
@@ -108,10 +101,10 @@ public class ExpressionExtractor
     public void writeExternal(PofWriter writer)
             throws IOException
         {
-        writer.writeObject(0, m_expression);
+        writer.writeString(0, m_key);
         }
 
-    
+
     // ---- Object methods --------------------------------------------------
 
     /**
@@ -134,8 +127,8 @@ public class ExpressionExtractor
             return false;
             }
 
-        ExpressionExtractor extractor = (ExpressionExtractor) o;
-        return m_expression.equals(extractor.m_expression);
+        MapExtractor extractor = (MapExtractor) o;
+        return m_key.equals(extractor.m_key);
         }
 
     /**
@@ -146,7 +139,7 @@ public class ExpressionExtractor
     @Override
     public int hashCode()
         {
-        return m_expression.hashCode();
+        return m_key.hashCode();
         }
 
     /**
@@ -157,8 +150,8 @@ public class ExpressionExtractor
     @Override
     public String toString()
         {
-        return "ExpressionExtractor{" +
-               "expression=" + m_expression +
+        return "MapExtractor{" +
+               "key='" + m_key + '\'' +
                '}';
         }
 
@@ -166,7 +159,7 @@ public class ExpressionExtractor
     // ---- data members ----------------------------------------------------
 
     /**
-     * The expression to use.
+     * Map key.
      */
-    private Expression m_expression;
+    private String m_key;
     }

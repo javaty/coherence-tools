@@ -14,37 +14,32 @@
  * limitations under the License.
  */
 
-package com.seovic.lang.extractor;
+package com.seovic.core.updater;
 
 
-import com.seovic.lang.Extractor;
-import com.tangosol.io.pof.PortableObject;
+import com.seovic.core.Updater;
+
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
+import com.tangosol.io.pof.PortableObject;
 
 import java.lang.reflect.Method;
-import java.io.Serializable;
+
 import java.io.IOException;
+import java.io.Serializable;
 
 
 /**
- * Simple imlementation of {@link Extractor} that extracts value from a target
- * object using introspection.
+ * Simple imlementation of {@link Updater} that updates single property of a
+ * target value using introspection.
  *
  * @author Aleksandar Seovic  2009.06.17
  */
 @SuppressWarnings("unchecked")
-public class PropertyExtractor
-        implements Extractor, Serializable, PortableObject
+public class PropertyUpdater
+        implements Updater, Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
-
-    /**
-     * Deserialization constructor (for internal use only).
-     */
-    public PropertyExtractor()
-        {
-        }
 
     /**
      * Construct a <tt>BeanExtractor</tt> instance.
@@ -52,38 +47,39 @@ public class PropertyExtractor
      * @param propertyName the name of the property to extract, as defined by
      *                     the JavaBean specification
      */
-    public PropertyExtractor(String propertyName)
+    public PropertyUpdater(String propertyName)
         {
         m_propertyName = propertyName;
         }
 
 
-    // ---- Extractor implementation ----------------------------------------
+    // ---- Updater implementation ------------------------------------------
 
     /**
      * {@inheritDoc}
      */
-    public Object extract(Object target)
+    public void update(Object target, Object value)
         {
         if (target == null)
             {
-            return null;
+            throw new IllegalArgumentException("Updater target cannot be null");
             }
 
         Class targetClass = target.getClass();
         try
             {
-            Method method = m_propertyAccessor;
-            if (method == null || method.getDeclaringClass() != targetClass)
+            Method method = m_propertyMutator;
+            if (method == null
+                || method.getDeclaringClass() != targetClass)
                 {
-                m_propertyAccessor = method =
-                        findReadMethod(m_propertyName, target.getClass());
+                m_propertyMutator = method = findWriteMethod(m_propertyName,
+                        target.getClass(), value == null ? Object.class : value.getClass());
                 }
-            return method.invoke(target);
+            method.invoke(target, value);
             }
         catch (NullPointerException e)
             {
-            throw new RuntimeException("Readable property " + m_propertyName +
+            throw new RuntimeException("Writeable property " + m_propertyName +
                                        " does not exist in the class "
                                        + targetClass);
             }
@@ -97,34 +93,31 @@ public class PropertyExtractor
     // ---- helper methods --------------------------------------------------
 
     /**
-     * Attempt to find a read method for the specified property name.
+     * Attempt to find a write method for the specified property name.
      * <p/>
-     * This method attempts to find a read method by prepending prefixes 'get'
-     * and 'is' to the specified property name, in that order.
+     * This method attempts to find a write method by prepending 'set' prefix to
+     * the specified property name.
      *
      * @param propertyName property name
      * @param cls          class containing the property
+     * @param propertyType property type
      *
-     * @return read method for the property, or <tt>null</tt> if the method
+     * @return write method for the property, or <tt>null</tt> if the method
      *         cannot be found
      */
-    protected Method findReadMethod(String propertyName, Class cls)
+    protected Method findWriteMethod(String propertyName, Class cls,
+                                     Class propertyType)
         {
-        String name = Character.toUpperCase(propertyName.charAt(0))
+        String name = "set"
+                      + Character.toUpperCase(propertyName.charAt(0))
                       + propertyName.substring(1);
 
-        final Class[]  EMPTY_ARGS = new Class[0];
-        final String[] prefixes   = new String[] {"get", "is"};
-
-        for (String prefix : prefixes)
+        try
             {
-            try
-                {
-                return cls.getMethod(prefix + name, EMPTY_ARGS);
-                }
-            catch (NoSuchMethodException ignore)
-                {
-                }
+            return cls.getMethod(name, propertyType);
+            }
+        catch (NoSuchMethodException ignore)
+            {
             }
 
         return null;
@@ -182,7 +175,7 @@ public class PropertyExtractor
             return false;
             }
 
-        PropertyExtractor that = (PropertyExtractor) o;
+        PropertyUpdater that = (PropertyUpdater) o;
         return m_propertyName.equals(that.m_propertyName);
         }
 
@@ -205,7 +198,7 @@ public class PropertyExtractor
     @Override
     public String toString()
         {
-        return "PropertyExtractor{" +
+        return "PropertyUpdater{" +
                "propertyName='" + m_propertyName + '\'' +
                '}';
         }
@@ -217,8 +210,9 @@ public class PropertyExtractor
      */
     private String m_propertyName;
 
+
     /**
      * Property accessor.
      */
-    private transient Method m_propertyAccessor;
+    private transient Method m_propertyMutator;
     }

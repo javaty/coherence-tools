@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.seovic.lang.updater;
+package com.seovic.core.extractor;
 
 
-import com.seovic.lang.Expression;
-import com.seovic.lang.Defaults;
-import com.seovic.lang.Updater;
+import com.seovic.core.Extractor;
+import com.seovic.core.Expression;
+import com.seovic.core.Defaults;
 
 import com.tangosol.io.pof.PortableObject;
 import com.tangosol.io.pof.PofReader;
@@ -30,59 +30,59 @@ import java.io.IOException;
 
 
 /**
- * An imlementation of {@link Updater} that updates the last node of the
- * specified {@link Expression}.
+ * An imlementation of {@link Extractor} that extracts value from a target
+ * object using one of the {@link Expression} implementations.
  *
  * @author Aleksandar Seovic  2009.06.17
  */
-public class ExpressionUpdater
-        implements Updater, Serializable, PortableObject
+public class ExpressionExtractor
+        implements Extractor, Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
 
     /**
      * Deserialization constructor (for internal use only).
      */
-    public ExpressionUpdater()
+    public ExpressionExtractor()
         {
         }
 
     /**
-     * Construct an <tt>ExpressionUpdater</tt> instance.
+     * Construct an <tt>ExpressionExtractor</tt> instance.
      *
      * @param expression  the expression to use
      */
-    public ExpressionUpdater(String expression)
+    public ExpressionExtractor(String expression)
         {
         this(Defaults.createExpression(expression));
         }
 
     /**
-     * Construct an <tt>ExpressionUpdater</tt> instance.
+     * Construct an <tt>ExpressionExtractor</tt> instance.
      *
      * @param expression  the expression to use
      */
-    public ExpressionUpdater(Expression expression)
+    public ExpressionExtractor(Expression expression)
         {
         m_expression = expression;
         }
 
 
-    // ---- Updater implementation ------------------------------------------
+    // ---- Extractor implementation ----------------------------------------
 
     /**
      * {@inheritDoc}
      */
-    public void update(Object target, Object value)
+    public Object extract(Object target)
         {
         if (target == null)
             {
-            throw new IllegalArgumentException("Updater target cannot be null");
+            return null;
             }
-        m_expression.evaluateAndSet(target, value);
+        return m_expression.evaluate(target);
         }
 
-    
+
     // ---- PortableObject implementation -----------------------------------
 
     /**
@@ -111,7 +111,7 @@ public class ExpressionUpdater
         writer.writeObject(0, m_expression);
         }
 
-
+    
     // ---- Object methods --------------------------------------------------
 
     /**
@@ -134,7 +134,7 @@ public class ExpressionUpdater
             return false;
             }
 
-        ExpressionUpdater extractor = (ExpressionUpdater) o;
+        ExpressionExtractor extractor = (ExpressionExtractor) o;
         return m_expression.equals(extractor.m_expression);
         }
 
@@ -157,12 +157,12 @@ public class ExpressionUpdater
     @Override
     public String toString()
         {
-        return "ExpressionUpdater{" +
+        return "ExpressionExtractor{" +
                "expression=" + m_expression +
                '}';
         }
 
-
+    
     // ---- data members ----------------------------------------------------
 
     /**

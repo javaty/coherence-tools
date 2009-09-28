@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.seovic.lang;
+package com.seovic.core;
 
 
 import java.lang.reflect.Constructor;
@@ -160,7 +160,7 @@ public class Defaults
             props.setProperty(CONDITION_TYPE,  DEFAULT_CONDITION_TYPE);
             props.setProperty(SCRIPT_LANGUAGE, DEFAULT_SCRIPT_LANGUAGE);
 
-            log.warn("Configuration resource com/seovic/lang/defaults.properties"
+            log.warn("Configuration resource com/seovic/core/defaults.properties"
                      + " not found. Using hardcoded defaults: " + props);
             }
         return props;
@@ -205,10 +205,10 @@ public class Defaults
     /**
      * Default property values
      */
-    private static final String DEFAULT_EXPRESSION_TYPE = "com.seovic.lang.expression.MvelExpression";
-    private static final String DEFAULT_EXTRACTOR_TYPE  = "com.seovic.lang.extractor.ExpressionExtractor";
-    private static final String DEFAULT_UPDATER_TYPE    = "com.seovic.lang.updater.ExpressionUpdater";
-    private static final String DEFAULT_CONDITION_TYPE  = "com.seovic.lang.condition.ExpressionCondition";
+    private static final String DEFAULT_EXPRESSION_TYPE = "com.seovic.core.expression.MvelExpression";
+    private static final String DEFAULT_EXTRACTOR_TYPE  = "com.seovic.core.extractor.ExpressionExtractor";
+    private static final String DEFAULT_UPDATER_TYPE    = "com.seovic.core.updater.ExpressionUpdater";
+    private static final String DEFAULT_CONDITION_TYPE  = "com.seovic.core.condition.ExpressionCondition";
     private static final String DEFAULT_SCRIPT_LANGUAGE = "javascript";
 
 

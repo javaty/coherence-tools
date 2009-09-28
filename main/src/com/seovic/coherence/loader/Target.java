@@ -1,7 +1,7 @@
 package com.seovic.coherence.loader;
 
 
-import com.seovic.lang.Updater;
+import com.seovic.core.Updater;
 
 
 /**
