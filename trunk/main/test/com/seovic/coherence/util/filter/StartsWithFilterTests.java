@@ -34,7 +34,7 @@ import com.tangosol.io.pof.SimplePofContext;
 import com.tangosol.io.pof.PortableObjectSerializer;
 
 import com.seovic.test.objects.Country;
-import com.seovic.lang.extractor.PropertyExtractor;
+import com.seovic.core.extractor.PropertyExtractor;
 
 import java.util.Set;
 
