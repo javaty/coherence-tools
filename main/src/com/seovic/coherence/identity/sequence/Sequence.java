@@ -106,29 +106,29 @@ public class Sequence
     /**
      * Deserialize object from the POF stream.
      *
-     * @param pofReader POF reader to use
+     * @param reader POF reader to use
      *
      * @throws IOException if an error occurs
      */
-    public void readExternal(PofReader pofReader)
+    public void readExternal(PofReader reader)
             throws IOException
         {
-        m_name = pofReader.readString(0);
-        m_last = pofReader.readLong(1);
+        m_name = reader.readString(0);
+        m_last = reader.readLong(1);
         }
 
     /**
      * Serialize object into the POF stream.
      *
-     * @param pofWriter POF writer to use
+     * @param writer POF writer to use
      *
      * @throws IOException if an error occurs
      */
-    public void writeExternal(PofWriter pofWriter)
+    public void writeExternal(PofWriter writer)
             throws IOException
         {
-        pofWriter.writeString(0, m_name);
-        pofWriter.writeLong(1, m_last);
+        writer.writeString(0, m_name);
+        writer.writeLong(1, m_last);
         }
 
 

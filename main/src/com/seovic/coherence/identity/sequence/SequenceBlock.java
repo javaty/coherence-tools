@@ -87,29 +87,29 @@ public class SequenceBlock
     /**
      * Deserialize object from the POF stream.
      *
-     * @param pofReader  POF reader to use
+     * @param reader  POF reader to use
      *
      * @throws IOException  if an error occurs
      */
-    public void readExternal(PofReader pofReader)
+    public void readExternal(PofReader reader)
             throws IOException
         {
-        m_next = new AtomicLong(pofReader.readLong(0));
-        m_last = pofReader.readLong(1);
+        m_next = new AtomicLong(reader.readLong(0));
+        m_last = reader.readLong(1);
         }
 
     /**
      * Serialize object into the POF stream.
      *
-     * @param pofWriter  POF writer to use
+     * @param writer  POF writer to use
      *
      * @throws IOException  if an error occurs
      */
-    public void writeExternal(PofWriter pofWriter)
+    public void writeExternal(PofWriter writer)
             throws IOException
         {
-        pofWriter.writeLong(0, m_next.longValue());
-        pofWriter.writeLong(1, m_last);
+        writer.writeLong(0, m_next.longValue());
+        writer.writeLong(1, m_last);
         }
 
 

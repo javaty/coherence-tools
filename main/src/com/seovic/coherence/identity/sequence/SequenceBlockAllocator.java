@@ -92,27 +92,27 @@ public class SequenceBlockAllocator
     /**
      * Deserialize object from the POF stream.
      *
-     * @param pofReader  POF reader to use
+     * @param reader  POF reader to use
      *
      * @throws IOException  if an error occurs
      */
-    public void readExternal(PofReader pofReader)
+    public void readExternal(PofReader reader)
             throws IOException
         {
-        m_blockSize = pofReader.readInt(0);
+        m_blockSize = reader.readInt(0);
         }
 
     /**
      * Serialize object into the POF stream.
      *
-     * @param pofWriter  POF writer to use
+     * @param writer  POF writer to use
      *
      * @throws IOException  if an error occurs
      */
-    public void writeExternal(PofWriter pofWriter)
+    public void writeExternal(PofWriter writer)
             throws IOException
         {
-        pofWriter.writeInt(0, m_blockSize);
+        writer.writeInt(0, m_blockSize);
         }
 
 

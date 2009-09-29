@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.seovic.core.extractor;
+package com.seovic.coherence.util.extractor;
 
 
 import com.tangosol.util.ValueExtractor;
