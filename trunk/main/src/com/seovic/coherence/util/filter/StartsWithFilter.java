@@ -18,6 +18,7 @@ package com.seovic.coherence.util.filter;
 
 
 import com.seovic.core.extractor.PropertyExtractor;
+import com.seovic.core.Condition;
 
 import com.tangosol.util.Filter;
 import com.tangosol.util.MapIndex;
@@ -54,7 +55,7 @@ import java.io.DataOutput;
 @SuppressWarnings("unchecked")
 public class StartsWithFilter
         extends    ComparisonFilter
-        implements IndexAwareFilter, Serializable
+        implements Condition, IndexAwareFilter, Serializable
     {
     // ---- data members ----------------------------------------------------
 
