@@ -3,6 +3,7 @@ package com.seovic.coherence.loader.target;
 
 import com.seovic.coherence.identity.IdentityExtractor;
 import com.seovic.coherence.identity.IdentityGenerator;
+
 import com.seovic.coherence.identity.extractor.EntityIdentityExtractor;
 
 import com.seovic.coherence.loader.Source;
@@ -10,7 +11,6 @@ import com.seovic.coherence.loader.Source;
 import com.seovic.core.Updater;
 import com.seovic.core.Defaults;
 
-import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 
 import java.beans.PropertyDescriptor;
@@ -45,28 +45,28 @@ public class CoherenceCacheTarget
 
     private transient Constructor itemCtor;
 
-    public CoherenceCacheTarget(String cacheName, Class itemClass)
+    public CoherenceCacheTarget(NamedCache cache, Class itemClass)
         {
-        this(cacheName, itemClass, null, new EntityIdentityExtractor());
+        this(cache, itemClass, null, new EntityIdentityExtractor());
         }
 
-    public CoherenceCacheTarget(String cacheName, Class itemClass,
+    public CoherenceCacheTarget(NamedCache cache, Class itemClass,
                                 IdentityGenerator idGenerator)
         {
-        this(cacheName, itemClass, idGenerator, null);
+        this(cache, itemClass, idGenerator, null);
         }
 
-    public CoherenceCacheTarget(String cacheName, Class itemClass,
+    public CoherenceCacheTarget(NamedCache cache, Class itemClass,
                                 IdentityExtractor idExtractor)
         {
-        this(cacheName, itemClass, null, idExtractor);
+        this(cache, itemClass, null, idExtractor);
         }
 
-    private CoherenceCacheTarget(String cacheName, Class itemClass,
+    private CoherenceCacheTarget(NamedCache cache, Class itemClass,
                                  IdentityGenerator idGenerator,
                                  IdentityExtractor idExtractor)
         {
-        this.cache = CacheFactory.getCache(cacheName);
+        this.cache = cache;
         this.itemClass = itemClass;
         this.idGenerator = idGenerator;
         this.idExtractor = idExtractor;

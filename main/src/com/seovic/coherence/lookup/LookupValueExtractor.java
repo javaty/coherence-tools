@@ -19,8 +19,7 @@ package com.seovic.coherence.lookup;
 
 import com.seovic.core.Defaults;
 import com.seovic.core.Extractor;
-
-import com.seovic.coherence.util.extractor.KeyExtractorAdapter;
+import com.seovic.core.extractor.KeyExtractorAdapter;
 
 import com.tangosol.util.extractor.AbstractExtractor;
 import com.tangosol.util.extractor.IdentityExtractor;
