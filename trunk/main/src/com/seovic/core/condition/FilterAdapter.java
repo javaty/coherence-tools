@@ -14,58 +14,58 @@
  * limitations under the License.
  */
 
-package com.seovic.coherence.util.extractor;
+package com.seovic.core.condition;
 
 
-import com.tangosol.util.ValueExtractor;
+import com.tangosol.util.Filter;
 
 import com.tangosol.io.pof.PortableObject;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
 
-import com.seovic.core.Extractor;
+import com.seovic.core.Condition;
 
 import java.io.Serializable;
 import java.io.IOException;
 
 
 /**
- * Adapter that allows any class that implements <tt>com.tangosol.util.ValueExtractor</tt>
- * to be used where {@link Extractor} instance is expected.
+ * Adapter that allows any class that implements <tt>com.tangosol.util.Filter</tt>
+ * to be used where {@link Condition} instance is expected.
  *
- * @author Aleksandar Seovic  2009.09.20
+ * @author Aleksandar Seovic  2009.09.28
  */
-public class ValueExtractorAdapter
-    implements Extractor, Serializable, PortableObject
+public class FilterAdapter
+    implements Condition, Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
 
     /**
      * Deserialization constructor (for internal use only).
      */
-    public ValueExtractorAdapter()
+    public FilterAdapter()
         {
         }
 
     /**
-     * Construct a <tt>ValueExtractorAdapter</tt> instance.
+     * Construct a <tt>FilterAdapter</tt> instance.
      *
-     * @param delegate  value extractor to delegate to
+     * @param delegate  filter to delegate to
      */
-    public ValueExtractorAdapter(ValueExtractor delegate)
+    public FilterAdapter(Filter delegate)
         {
         this.m_delegate = delegate;
         }
 
 
-    // ---- Extractor implementation ----------------------------------------
+    // ---- Condition implementation ----------------------------------------
 
     /**
      * {@inheritDoc}
      */
-    public Object extract(Object o)
+    public boolean evaluate(Object o)
         {
-        return m_delegate.extract(o);
+        return m_delegate.evaluate(o);
         }
 
 
@@ -81,7 +81,7 @@ public class ValueExtractorAdapter
     public void readExternal(PofReader reader)
             throws IOException
         {
-        m_delegate = (ValueExtractor) reader.readObject(0);
+        m_delegate = (Filter) reader.readObject(0);
         }
 
     /**
@@ -120,7 +120,7 @@ public class ValueExtractorAdapter
             return false;
             }
 
-        ValueExtractorAdapter adapter = (ValueExtractorAdapter) o;
+        FilterAdapter adapter = (FilterAdapter) o;
         return m_delegate.equals(adapter.m_delegate);
         }
 
@@ -143,13 +143,13 @@ public class ValueExtractorAdapter
     @Override
     public String toString()
         {
-        return "ValueExtractorAdapter{" +
+        return "FilterAdapter{" +
                "delegate=" + m_delegate +
                '}';
         }
 
-    
+
     // ---- data members ----------------------------------------------------
 
-    private ValueExtractor m_delegate;
+    private Filter m_delegate;
     }

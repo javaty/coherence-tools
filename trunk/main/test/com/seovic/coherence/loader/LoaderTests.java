@@ -42,31 +42,24 @@ import org.xml.sax.InputSource;
  */
 public class LoaderTests
     {
-
-    public static final NamedCache countriesCache = CacheFactory.getCache(
-            "countries");
+    public static final NamedCache countries = CacheFactory.getCache("countries");
 
     @Before
     public void clearCache()
         {
-        countriesCache.clear();
+        countries.clear();
         }
 
     @Test
     public void testCsvToCoherenceLoader()
         {
-        Reader countriesReader = new InputStreamReader(
-                Loader.class.getClassLoader().getResourceAsStream(
-                        "countries.csv"));
-        Source source = new CsvSource(countriesReader);
-        Target target = new CoherenceCacheTarget("countries", Country.class);
-        Loader loader = new Loader(source, target);
+        Loader loader = new CsvToCoherenceLoader("countries.csv", countries, Country.class);
         loader.load();
 
         // asserts
-        assertEquals(244, countriesCache.size());
+        assertEquals(244, countries.size());
 
-        Country srb = (Country) countriesCache.get("SRB");
+        Country srb = (Country) countries.get("SRB");
         assertEquals("Serbia", srb.getName());
         assertEquals("Belgrade", srb.getCapital());
         assertEquals("RSD", srb.getCurrencySymbol());
@@ -82,7 +75,7 @@ public class LoaderTests
         Target target = new CsvTarget(writer,
                                       "code,formalName,capital,currencySymbol,currencyName,telephonePrefix,domain");
 
-        Loader loader = new Loader(source, target);
+        Loader loader = new DefaultLoader(source, target);
         loader.load();
 
         // asserts
@@ -99,19 +92,13 @@ public class LoaderTests
     @Test
     public void testXmlToCoherenceLoader()
         {
-        Reader countriesReader = new InputStreamReader(
-                Loader.class.getClassLoader().getResourceAsStream(
-                        "countries.xml"));
-        Source source = new XmlSource(countriesReader);
-
-        Target target = new CoherenceCacheTarget("countries", Country.class);
-        Loader loader = new Loader(source, target);
+        Loader loader = new XmlToCoherenceLoader("countries.xml", countries, Country.class);
         loader.load();
 
         // asserts
-        assertEquals(244, countriesCache.size());
+        assertEquals(244, countries.size());
 
-        Country srb = (Country) countriesCache.get("SRB");
+        Country srb = (Country) countries.get("SRB");
         assertEquals("Belgrade", srb.getCapital());
         assertEquals("RSD", srb.getCurrencySymbol());
         }
@@ -129,14 +116,14 @@ public class LoaderTests
         source.setExtractor("telephonePrefix", new XmlExtractor( "telephonePrefix", "http://schemas.seovic.com/validation"));
         source.setExtractor("domain",          new XmlExtractor("domain", "http://schemas.seovic.com/validation"));
 
-        Target target = new CoherenceCacheTarget("countries", Country.class);
-        Loader loader = new Loader(source, target);
+        Target target = new CoherenceCacheTarget(countries, Country.class);
+        Loader loader = new DefaultLoader(source, target);
         loader.load();
 
         // asserts
-        assertEquals(244, countriesCache.size());
+        assertEquals(244, countries.size());
 
-        Country srb = (Country) countriesCache.get("SRB");
+        Country srb = (Country) countries.get("SRB");
         assertEquals("Belgrade", srb.getCapital());
         assertEquals("RSD", srb.getCurrencySymbol());
         }
@@ -151,7 +138,7 @@ public class LoaderTests
         Target target = new XmlTarget(writer, "countries", "country",
                                       "@code,name,formalName,capital,currencySymbol,currencyName,telephonePrefix,domain");
 
-        Loader loader = new Loader(source, target);
+        Loader loader = new DefaultLoader(source, target);
         loader.load();
 
         System.out.println(writer.toString());
@@ -177,15 +164,15 @@ public class LoaderTests
                 Loader.class.getClassLoader().getResourceAsStream(
                         "countries.csv"));
         Source source = new CsvSource(countriesReader);
-        Target target = new CoherenceCacheTarget("countries", Country.class);
-        Loader loader = new Loader(source, target);
+        Target target = new CoherenceCacheTarget(countries, Country.class);
+        Loader loader = new DefaultLoader(source, target);
         source.setExtractor("name", new ExpressionExtractor("code + ':' + name+ ':' + formalName"));
         loader.load();
 
         // asserts
-        assertEquals(244, countriesCache.size());
+        assertEquals(244, countries.size());
 
-        Country srb = (Country) countriesCache.get("SRB");
+        Country srb = (Country) countries.get("SRB");
         assertEquals("SRB:Serbia:Republic of Serbia", srb.getName());
         }
 
@@ -193,11 +180,11 @@ public class LoaderTests
     @SuppressWarnings({"unchecked"})
     protected static void prepareCache()
         {
-        countriesCache.put("SRB", createCountry(
+        countries.put("SRB", createCountry(
                 "SRB,Serbia,Republic of Serbia,Belgrade,RSD,Dinar,+381,.rs and .yu"));
-        countriesCache.put("SGP", createCountry(
+        countries.put("SGP", createCountry(
                 "SGP,Singapore,Republic of Singapore,Singapore,SGD,Dollar,+65,.sg"));
-        countriesCache.put("CHL", createCountry(
+        countries.put("CHL", createCountry(
                 "CHL,Chile,Republic of Chile,Santiago (administrative/judical) and Valparaiso (legislative),CLP,Peso,+56,.cl"));
         }
 
