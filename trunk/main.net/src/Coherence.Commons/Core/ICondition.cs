@@ -18,33 +18,12 @@ using Tangosol.Util;
 
 namespace Seovic.Coherence.Core
 {
-
-    /**
-    * Condition interface represents a logical condition that can be evaluated
- * to boolean <tt>true</tt> or <tt>false</tt>.
- *
- * @author Aleksandar Seovic  2009.06.17
- */
-    public interface ICondition : IFilter {
-       
-    // ---- constants -------------------------------------------------------
-    
-    /**
-     * Condition that always evaluates to <tt>true</tt>.
-     */
-//    public static final Condition TRUE = new Condition() {
-//        public boolean evaluate(Object target) {
-//            return true;
-//        }
-//    };
-//
-//    /**
-//     * Condition that always evaluates to <tt>false</tt>.
-//     */
-//    public static final Condition FALSE = new Condition() {
-//        public boolean evaluate(Object target) {
-//            return false;
-//        }
-//    };
+    /// <summary>
+    /// Condition interface represents a logical condition that can be evaluated
+    /// to boolean <b>true</b> or <b>false</b>.
+    /// </summary>
+    /// <author>Aleksandar Seovic  2008.11.20</author>
+    public interface ICondition : IFilter 
+    {
     }
 }

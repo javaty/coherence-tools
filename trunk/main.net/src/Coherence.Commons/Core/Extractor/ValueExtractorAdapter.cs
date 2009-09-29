@@ -52,19 +52,19 @@ namespace Seovic.Coherence.Core.Extractor
 
         #region Object methods
 
+        public bool Equals(ValueExtractorAdapter other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.m_delegate, m_delegate);
+        }
+
         public override bool Equals(object obj)
         {
-            if (this == obj)
-            {
-                return true;
-            }
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
-
-            ValueExtractorAdapter adapter = (ValueExtractorAdapter)obj;
-            return m_delegate.Equals(adapter.m_delegate);
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof (ValueExtractorAdapter)) return false;
+            return Equals((ValueExtractorAdapter) obj);
         }
 
         public override int GetHashCode()

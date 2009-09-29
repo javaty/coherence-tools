@@ -67,17 +67,17 @@ namespace Seovic.Coherence.Core.Expression
 
         public override bool Equals(object obj)
         {
-            if (this == obj)
-            {
-                return true;
-            }
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof (AbstractExpression)) return false;
+            return Equals((AbstractExpression) obj);
+        }
 
-            AbstractExpression that = (AbstractExpression)obj;
-            return m_expression.Equals(that.m_expression);
+        public bool Equals(AbstractExpression other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.m_expression, m_expression);
         }
 
         public override int GetHashCode()
