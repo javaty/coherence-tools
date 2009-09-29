@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+  ~ Copyright 2009 Aleksandar Seovic
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<xs:schema xmlns="http://www.s4hc.com/schema/validation"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema"
+          xmlns:beans="http://www.springframework.org/schema/beans" 
+          targetNamespace="http://www.s4hc.com/schema/validation" 
+          elementFormDefault="qualified" attributeFormDefault="unqualified">
+          
+  <xs:import namespace="http://www.springframework.org/schema/beans"/>
+
+  <xs:annotation>
+    <xs:documentation>
+      Spring Validation Framework Config Schema Definition
+
+      Author: Dragan Matovic
+
+      This file defines a configuration schema for the validation framework
+      object definitions. Using elements from this schema instead of the
+      standard object definitions can greatly simplify validator configuration.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:complexType name="messageType">
+    <xs:annotation>
+      <xs:documentation>Defines a message type.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="param" type="messageParamType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="providers" type="xs:string" use="required"/>
+    <xs:attribute name="when" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="messageParamType">
+    <xs:annotation>
+      <xs:documentation>Defines a message parameter type.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="value" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="actionType">
+    <xs:annotation>
+      <xs:documentation>Defines an action type.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="property" type="beans:propertyType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="type" type="xs:string" use="required"/>
+    <xs:attribute name="when" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="referenceType">
+    <xs:annotation>
+      <xs:documentation>Defines a validator reference type.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="context" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="baseValidatorType">
+    <xs:annotation>
+      <xs:documentation>Defines base validator type.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="message" type="messageType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="action" type="actionType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="parent" type="xs:string" use="optional"/>
+    <xs:attribute name="test" type="xs:string" use="required"/>
+    <xs:attribute name="when" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="genericValidatorType">
+    <xs:annotation>
+      <xs:documentation>Defines a generic validator type.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>     
+      <xs:element name="property" type="beans:propertyType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="message" type="messageType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="action" type="actionType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="type" type="xs:string" use="required"/>
+    <xs:attribute name="parent" type="xs:string" use="optional"/>
+    <xs:attribute name="test" type="xs:string" use="optional"/>
+    <xs:attribute name="when" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="regexValidatorType">
+    <xs:annotation>
+      <xs:documentation>Defines a regex validator type.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="property" type="beans:propertyType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="message" type="messageType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="action" type="actionType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="parent" type="xs:string" use="optional"/>
+    <xs:attribute name="test" type="xs:string" use="required"/>
+    <xs:attribute name="when" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="validatorGroupType">
+    <xs:annotation>
+      <xs:documentation>Defines a validator group type.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence minOccurs="1" maxOccurs="unbounded">
+      <xs:choice>
+        <xs:element name="message" type="messageType"/>
+        <xs:element name="action" type="actionType"/>
+
+        <xs:element name="group" type="validatorGroupType"/>
+        <xs:element name="any" type="validatorGroupType"/>
+        <xs:element name="exclusive" type="validatorGroupType"/>
+
+        <xs:element name="validator" type="genericValidatorType"/>
+        <xs:element name="required" type="baseValidatorType"/>
+        <xs:element name="condition" type="baseValidatorType"/>
+        <xs:element name="regex" type="regexValidatorType"/>
+        <xs:element name="ref" type="referenceType"/>
+
+        <xs:element name="collection" type="collectionValidatorGroupType"/>        
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="parent" type="xs:string" use="optional"/>
+    <xs:attribute name="when" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="collectionValidatorGroupType">
+    <xs:annotation>
+      <xs:documentation>Defines a collection validator group type.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>      
+      <xs:extension base="validatorGroupType">        
+        <xs:attribute name="validate-all" type="xs:boolean" use="optional" default="false"/>
+        <xs:attribute name="include-element-errors" type="xs:boolean" use="optional" default="false"/>
+        <xs:attribute name="context" type="xs:string" use="optional"/>        
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="validator" type="genericValidatorType"/>
+  <xs:element name="required" type="baseValidatorType"/>
+  <xs:element name="condition" type="baseValidatorType"/>
+  <xs:element name="regex" type="regexValidatorType"/>
+
+  <xs:element name="group" type="validatorGroupType"/>
+  <xs:element name="any" type="validatorGroupType"/>
+  <xs:element name="exclusive" type="validatorGroupType"/>
+
+  <xs:element name="collection" type="collectionValidatorGroupType"/>
+    
+
+
+</xs:schema>
