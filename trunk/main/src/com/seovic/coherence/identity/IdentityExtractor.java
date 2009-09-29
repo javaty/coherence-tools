@@ -1,11 +1,13 @@
 package com.seovic.coherence.identity;
 
+
 /**
  * A strategy interface for identity extractors.
  *
- * @author Aleksandar Seovic/Ivan Cikic  2009.06.09
+ * @author Aleksandar Seovic  2009.06.09
  */
-public interface IdentityExtractor<ID, SOURCE> {
+public interface IdentityExtractor<TId, TEntity>
+    {
     /**
      * Extracts identity from a specified source object.
      *
@@ -13,5 +15,5 @@ public interface IdentityExtractor<ID, SOURCE> {
      *
      * @return extracted identity
      */
-    public ID extractIdentity(SOURCE source);
-}
+    public TId extractIdentity(TEntity source);
+    }

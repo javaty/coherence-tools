@@ -32,12 +32,12 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author Aleksandar Seovic  2009.09.28
  */
+@SuppressWarnings("unchecked")
 public class Defaults
     {
     /**
      * Singleton constructor.
      */
-    @SuppressWarnings("unchecked")
     private Defaults()
         {
         Properties props = loadDefaults();

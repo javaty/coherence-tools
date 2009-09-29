@@ -40,22 +40,13 @@ public class SequenceBlockAllocator
         extends    AbstractProcessor
         implements PortableObject
     {
-    // ---- data members ----------------------------------------------------
-
-    /**
-     * The size of the sequence block to allocate.
-     */
-    private int m_blockSize;
-
-
     // ---- constructors ----------------------------------------------------
 
     /**
-     * For internal use only.
+     * Deserialization constructor (for internal use only).
      */
     public SequenceBlockAllocator()
         {
-        // deserialization constructor
         }
 
     /**
@@ -84,9 +75,10 @@ public class SequenceBlockAllocator
     public Object process(InvocableMap.Entry entry)
         {
         Sequence sequence = (Sequence) entry.getValue();
-        if (sequence == null) {
+        if (sequence == null)
+            {
             sequence = new Sequence((String) entry.getKey());
-        }
+            }
 
         SequenceBlock block = sequence.allocateBlock(m_blockSize);
         entry.setValue(sequence);
@@ -173,4 +165,12 @@ public class SequenceBlockAllocator
                "blockSize=" + m_blockSize +
                '}';
         }
+
+
+    // ---- data members ----------------------------------------------------
+
+    /**
+     * The size of the sequence block to allocate.
+     */
+    private int m_blockSize;
     }
