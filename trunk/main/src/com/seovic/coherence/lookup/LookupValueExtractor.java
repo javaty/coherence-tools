@@ -17,13 +17,14 @@ limitations under the License.
 package com.seovic.coherence.lookup;
 
 
-import com.seovic.core.extractor.PropertyExtractor;
+import com.seovic.core.Defaults;
+import com.seovic.core.Extractor;
+
+import com.seovic.coherence.util.extractor.KeyExtractorAdapter;
 
 import com.tangosol.util.extractor.AbstractExtractor;
-import com.tangosol.util.extractor.KeyExtractor;
 import com.tangosol.util.extractor.IdentityExtractor;
 
-import com.tangosol.util.ValueExtractor;
 import com.tangosol.util.InvocableMapHelper;
 
 import com.tangosol.io.pof.PortableObject;
@@ -44,21 +45,8 @@ import java.util.Map;
  */
 public class LookupValueExtractor<TId, TDesc>
         extends    AbstractExtractor
-        implements PortableObject, Serializable
+        implements Extractor, PortableObject, Serializable
     {
-    // ---- data members ----------------------------------------------------
-
-    /**
-     * Extractor used to extract lookup value identifier from the target object.
-     */
-    private ValueExtractor m_idExtractor;
-
-    /**
-     * Extractor used to extract lookup value description from the target object.
-     */
-    private ValueExtractor m_descriptionExtractor;
-
-
     // ---- constructors ----------------------------------------------------
 
     /**
@@ -72,58 +60,60 @@ public class LookupValueExtractor<TId, TDesc>
      * Construct <tt>LookupValueExtractor</tt> instance.
      * <p/>
      * This constructor will create a <tt>LookupValueExtractor</tt> that uses
-     * {@link PropertyExtractor} to extract the description, and a key-targeted
+     * an extractor created by {@link Defaults#createExtractor(String)} to
+     * extract the description, and a key-targeted {@link IdentityExtractor}
+     * to extract the identifier from a cache entry.
+     *
+     * @param descriptionExpression  an expression that returns a description
+     */
+    public LookupValueExtractor(String descriptionExpression)
+        {
+        this(Defaults.createExtractor(descriptionExpression));
+        }
+
+    /**
+     * Construct <tt>LookupValueExtractor</tt> instance.
+     * <p/>
+     * This constructor will create a <tt>LookupValueExtractor</tt> that uses
+     * specified extractor to extract the description, and a key-targeted
      * {@link IdentityExtractor} to extract the identifier from a cache entry.
      *
-     * @param descriptionProperty  the name of the description property
+     * @param descriptionExtractor  description extractor
      */
-    public LookupValueExtractor(String descriptionProperty)
+    public LookupValueExtractor(Extractor descriptionExtractor)
         {
-        this(new PropertyExtractor(descriptionProperty));
+        this(new KeyExtractorAdapter(new IdentityExtractor()),
+             descriptionExtractor);
         }
 
     /**
      * Construct <tt>LookupValueExtractor</tt> instance.
      * <p/>
      * This constructor will create a <tt>LookupValueExtractor</tt> that uses
-     * specified value extractor to extract the description, and a key-targeted
-     * {@link IdentityExtractor} to extract the identifier from a cache entry.
+     * default extractors (see {@link Defaults#createExtractor(String)}) to
+     * extract both the identifier and the description from a cache entry.
      *
-     * @param descriptionExtractor  the description extractor
+     * @param idExpression           an expression that returns an identifier
+     * @param descriptionExpression  an expression that returns a description
      */
-    public LookupValueExtractor(ValueExtractor descriptionExtractor)
+    public LookupValueExtractor(String idExpression, String descriptionExpression)
         {
-        this(new KeyExtractor(new IdentityExtractor()), descriptionExtractor);
+        this(Defaults.createExtractor(idExpression),
+             Defaults.createExtractor(descriptionExpression));
         }
 
     /**
      * Construct <tt>LookupValueExtractor</tt> instance.
      * <p/>
      * This constructor will create a <tt>LookupValueExtractor</tt> that uses
-     * {@link PropertyExtractor}s to extract both the identifier and the
-     * description from a cache entry.
-     *
-     * @param idProperty           the name of the identifier property
-     * @param descriptionProperty  the name of the description property
-     */
-    public LookupValueExtractor(String idProperty, String descriptionProperty)
-        {
-        this(new PropertyExtractor(idProperty),
-             new PropertyExtractor(descriptionProperty));
-        }
-
-    /**
-     * Construct <tt>LookupValueExtractor</tt> instance.
-     * <p/>
-     * This constructor will create a <tt>LookupValueExtractor</tt> that uses
-     * specified value extractors to extract the identifier and the description
-     * from a cache entry.
+     * specified extractors to extract the identifier and the description from
+     * a cache entry.
      *
      * @param idExtractor           the identifier extractor
      * @param descriptionExtractor  the description extractor
      */
-    public LookupValueExtractor(ValueExtractor idExtractor,
-                                ValueExtractor descriptionExtractor)
+    public LookupValueExtractor(Extractor idExtractor,
+                                Extractor descriptionExtractor)
         {
         m_idExtractor          = idExtractor;
         m_descriptionExtractor = descriptionExtractor;
@@ -137,7 +127,7 @@ public class LookupValueExtractor<TId, TDesc>
      *
      * @return identifier extractor
      */
-    public ValueExtractor getIdExtractor()
+    public Extractor getIdExtractor()
         {
         return m_idExtractor;
         }
@@ -147,7 +137,7 @@ public class LookupValueExtractor<TId, TDesc>
      *
      * @return description extractor
      */
-    public ValueExtractor getDescriptionExtractor()
+    public Extractor getDescriptionExtractor()
         {
         return m_descriptionExtractor;
         }
@@ -155,7 +145,11 @@ public class LookupValueExtractor<TId, TDesc>
     // ---- AbstractExtractor implementation --------------------------------
 
     /**
-     * {@inheritDoc}
+     * Extracts id and description from a map entry.
+     *
+     * @param entry  mao entry to extract from
+     *
+     * @return extracted value
      */
     @SuppressWarnings("unchecked")
     public Object extractFromEntry(Map.Entry entry)
@@ -170,30 +164,43 @@ public class LookupValueExtractor<TId, TDesc>
     // ---- PortableObject implementation -----------------------------------
 
     /**
-     * {@inheritDoc}
+     * Deserialize this object from a POF stream.
+     *
+     * @param reader  POF reader to use
+     *
+     * @throws IOException  if an error occurs during deserialization
      */
-    public void readExternal(PofReader pofReader)
+    public void readExternal(PofReader reader)
             throws IOException
         {
-        m_idExtractor          = (ValueExtractor) pofReader.readObject(0);
-        m_descriptionExtractor = (ValueExtractor) pofReader.readObject(1);
+        m_idExtractor          = (Extractor) reader.readObject(0);
+        m_descriptionExtractor = (Extractor) reader.readObject(1);
         }
 
     /**
-     * {@inheritDoc}
+     * Serialize this object into a POF stream.
+     *
+     * @param writer  POF writer to use
+     *
+     * @throws IOException  if an error occurs during serialization
      */
-    public void writeExternal(PofWriter pofWriter)
+    public void writeExternal(PofWriter writer)
             throws IOException
         {
-        pofWriter.writeObject(0, m_idExtractor);
-        pofWriter.writeObject(1, m_descriptionExtractor);
+        writer.writeObject(0, m_idExtractor);
+        writer.writeObject(1, m_descriptionExtractor);
         }
 
 
     // ---- Object methods implementation -----------------------------------
 
     /**
-     * {@inheritDoc}
+     * Test objects for equality.
+     *
+     * @param o  object to compare this object with
+     *
+     * @return <tt>true</tt> if the specified object is equal to this object
+     *         <tt>false</tt> otherwise
      */
     @Override
     public boolean equals(Object o)
@@ -215,7 +222,9 @@ public class LookupValueExtractor<TId, TDesc>
         }
 
     /**
-     * {@inheritDoc}
+     * Return hash code for this object.
+     *
+     * @return this object's hash code
      */
     @Override
     public int hashCode()
@@ -226,15 +235,30 @@ public class LookupValueExtractor<TId, TDesc>
         }
 
     /**
-     * {@inheritDoc}
+     * Return string representation of this object.
+     *
+     * @return string representation of this object
      */
     @Override
     public String toString()
         {
-        return "LookupValueExtractor(" +
-               "idExtractor = " + m_idExtractor +
-               ", descriptionExtractor = " + m_descriptionExtractor +
-               ")";
+        return "LookupValueExtractor{" +
+               "idExtractor=" + m_idExtractor +
+               ", descriptionExtractor=" + m_descriptionExtractor +
+               '}';
         }
+
+
+    // ---- data members ----------------------------------------------------
+
+    /**
+     * Extractor used to extract lookup value identifier from the target object.
+     */
+    private Extractor m_idExtractor;
+
+    /**
+     * Extractor used to extract lookup value description from the target object.
+     */
+    private Extractor m_descriptionExtractor;
     }
 

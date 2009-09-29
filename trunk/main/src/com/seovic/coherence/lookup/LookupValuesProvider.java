@@ -52,12 +52,12 @@ public interface LookupValuesProvider<TId, TDesc>
 
     /**
      * Return a collection of all lookup values from the underlying store that
-     * satisfy the specified <tt>filter</tt> criteria.
+     * satisfy the specified <tt>condition</tt>.
      *
-     * @param filter  filter to evaluate
+     * @param condition  condition to evaluate
      *
      * @return a collection of all lookup values in the underlying store that
-     * satisfy the specified <tt>filter</tt> criteria.
+     *         satisfy the specified <tt>condition</tt>
      */
-    Collection<LookupValue<TId, TDesc>> getValues(Filter filter);
+    Collection<LookupValue<TId, TDesc>> getValues(Filter condition);
     }

@@ -24,8 +24,10 @@ import com.seovic.coherence.lookup.LookupValuesAggregator;
 
 import com.seovic.coherence.util.filter.StartsWithFilter;
 
-import com.tangosol.util.Filter;
+import com.seovic.core.Condition;
+
 import com.tangosol.util.InvocableMap;
+import com.tangosol.util.Filter;
 
 import java.util.Collection;
 
@@ -39,20 +41,6 @@ import java.util.Collection;
 public class SimpleLookupValuesProvider<TId, TDesc>
         implements LookupValuesProvider<TId, TDesc>
     {
-    // ---- data members ----------------------------------------------------
-
-    /**
-     * InvocableMap that lookup values should be retrieved from.
-     */
-    private InvocableMap m_map;
-
-    /**
-     * Extractor that should be used to extract {@link LookupValue}s from
-     * map entries.
-     */
-    private LookupValueExtractor<TId, TDesc> m_extractor;
-
-    
     // ---- constructors ----------------------------------------------------
 
     /**
@@ -71,11 +59,21 @@ public class SimpleLookupValuesProvider<TId, TDesc>
 
     // ---- getters and setters ---------------------------------------------
 
+    /**
+     * Return the map that lookup values should be retrieved from.
+     *
+     * @return map that lookup values should be retrieved from
+     */
     public InvocableMap getMap()
         {
         return m_map;
         }
 
+    /**
+     * Return the lookup value extractor to use.
+     *
+     * @return lookup value extractor to use
+     */
     public LookupValueExtractor<TId, TDesc> getExtractor()
         {
         return m_extractor;
@@ -104,9 +102,9 @@ public class SimpleLookupValuesProvider<TId, TDesc>
     /**
      * {@inheritDoc}
      */
-    public Collection<LookupValue<TId, TDesc>> getValues(Filter filter)
+    public Collection<LookupValue<TId, TDesc>> getValues(Filter condition)
         {
-        return getValuesInternal(filter);
+        return getValuesInternal(condition);
         }
 
 
@@ -122,8 +120,8 @@ public class SimpleLookupValuesProvider<TId, TDesc>
      * @return a description that should be used to narrow down the aggregation
      *         scope
      */
-    protected Filter instantiateDescriptionFilter(String filter,
-                                                  boolean ignoreCase)
+    protected Condition instantiateDescriptionFilter(String filter,
+                                                     boolean ignoreCase)
         {
         return new StartsWithFilter(m_extractor.getDescriptionExtractor(),
                                     filter, ignoreCase);
@@ -142,4 +140,18 @@ public class SimpleLookupValuesProvider<TId, TDesc>
                 m_map.aggregate(filter,
                                 new LookupValuesAggregator<TId, TDesc>(m_extractor));
         }
+
+
+    // ---- data members ----------------------------------------------------
+
+    /**
+     * InvocableMap that lookup values should be retrieved from.
+     */
+    private InvocableMap m_map;
+
+    /**
+     * Extractor that should be used to extract {@link LookupValue}s from
+     * map entries.
+     */
+    private LookupValueExtractor<TId, TDesc> m_extractor;
     }

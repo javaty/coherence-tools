@@ -33,19 +33,6 @@ import java.io.Serializable;
 public class LookupValue<TId, TDesc>
         implements PortableObject, Serializable
     {
-    // ---- data members ----------------------------------------------------
-
-    /**
-     * Lookup value identifier.
-     */
-    private TId id;
-
-    /**
-     * Lookup value description.
-     */
-    private TDesc description;
-
-
     // ---- constructors ----------------------------------------------------
 
     /**
@@ -94,32 +81,46 @@ public class LookupValue<TId, TDesc>
     // ---- PortableObject implementation -----------------------------------
 
     /**
-     * {@inheritDoc}
+     * Deserialize this object from a POF stream.
+     *
+     * @param reader  POF reader to use
+     *
+     * @throws IOException  if an error occurs during deserialization
      */
     @SuppressWarnings("unchecked")
-    public void readExternal(PofReader pofReader)
+    public void readExternal(PofReader reader)
             throws IOException
         {
-        id          = (TId)   pofReader.readObject(0);
-        description = (TDesc) pofReader.readObject(1);
+        id          = (TId)   reader.readObject(0);
+        description = (TDesc) reader.readObject(1);
         }
 
     /**
-     * {@inheritDoc}
+     * Serialize this object into a POF stream.
+     *
+     * @param writer  POF writer to use
+     *
+     * @throws IOException  if an error occurs during serialization
      */
-    public void writeExternal(PofWriter pofWriter)
+    public void writeExternal(PofWriter writer)
             throws IOException
         {
-        pofWriter.writeObject(0, id);
-        pofWriter.writeObject(1, description);
+        writer.writeObject(0, id);
+        writer.writeObject(1, description);
         }
 
 
     // ---- Object methods --------------------------------------------------
 
     /**
-     * {@inheritDoc}
+     * Test objects for equality.
+     *
+     * @param o  object to compare this object with
+     *
+     * @return <tt>true</tt> if the specified object is equal to this object
+     *         <tt>false</tt> otherwise
      */
+    @Override
     public boolean equals(Object o)
         {
         if (this == o)
@@ -142,7 +143,9 @@ public class LookupValue<TId, TDesc>
         }
 
     /**
-     * {@inheritDoc}
+     * Return hash code for this object.
+     *
+     * @return this object's hash code
      */
     @Override
     public int hashCode()
@@ -151,13 +154,28 @@ public class LookupValue<TId, TDesc>
         }
 
     /**
-     * {@inheritDoc}
+     * Return string representation of this object.
+     *
+     * @return string representation of this object
      */
     @Override
     public String toString()
         {
-        return "LookupValue(" +
-               "Id = " + id +
-               ", Description = " + description + ")";
+        return "LookupValue{" +
+               "id=" + id +
+               ", description=" + description + '}';
         }
+
+
+    // ---- data members ----------------------------------------------------
+
+    /**
+     * Lookup value identifier.
+     */
+    private TId id;
+
+    /**
+     * Lookup value description.
+     */
+    private TDesc description;
     }

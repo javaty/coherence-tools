@@ -35,14 +35,6 @@ import java.util.Collection;
 public class LookupValuesAggregator<TId, TDesc>
         extends AbstractAggregator
     {
-    // ---- data members ----------------------------------------------------
-
-    /**
-     * A list that should be used to store results of either parallel or
-     * final aggregation.
-     */
-    private transient List<LookupValue<TId, TDesc>> results;
-
     // ---- constructors ----------------------------------------------------
 
     /**
@@ -66,7 +58,9 @@ public class LookupValuesAggregator<TId, TDesc>
     // ---- AbstractAggregator implementation -------------------------------
 
     /**
-     * {@inheritDoc}
+     * Initialize partial or final aggregator.
+     *
+     * @param isFinal  flag specifying whether this is a final (root) aggregator
      */
     protected void init(boolean isFinal)
         {
@@ -74,7 +68,13 @@ public class LookupValuesAggregator<TId, TDesc>
         }
 
     /**
-     * {@inheritDoc}
+     * Process a single item or the result of a parellel aggregator.
+     *
+     * @param o        object to process; result of a parallel aggregator if
+     *                 <tt>isFinal</tt> is true, or a {@link LookupValue}
+     *                 extracted from the aggregated cache entry if
+     *                 <tt>isFinal</tt> is false
+     * @param isFinal  flag specifying whether this is a final (root) aggregator
      */
     protected void process(Object o, boolean isFinal)
         {
@@ -89,10 +89,20 @@ public class LookupValuesAggregator<TId, TDesc>
         }
 
     /**
-     * {@inheritDoc}
+     * Finalizes and returns the aggregation result.
+     *
+     * @param isFinal  flag specifying whether this is a final (root) aggregator
      */
     protected Object finalizeResult(boolean isFinal)
         {
         return results;
         }
+
+    // ---- data members ----------------------------------------------------
+
+    /**
+     * A list that should be used to store results of either parallel or
+     * final aggregation.
+     */
+    private transient List<LookupValue<TId, TDesc>> results;
     }
