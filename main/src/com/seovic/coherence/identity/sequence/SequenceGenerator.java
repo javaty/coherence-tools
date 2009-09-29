@@ -23,43 +23,14 @@ import com.tangosol.net.CacheFactory;
 
 
 /**
- * An {@link IdentityGenerator} implementation that generates sequential,
- * Long-based identifiers.
+ * An {@link IdentityGenerator} implementation that generates sequential Long
+ * identifiers.
  *
  * @author Aleksandar Seovic  2009.05.27
  */
 public class SequenceGenerator
         implements IdentityGenerator<Long>
     {
-    // ---- data members ----------------------------------------------------
-
-    /**
-     * Default sequence block size.
-     */
-    private static final int DEFAULT_BLOCK_SIZE = 20;
-
-    /**
-     * Sequences cache.
-     */
-    private static final NamedCache
-            s_sequenceCache = CacheFactory.getCache("sequences");
-
-    /**
-     * Sequence name.
-     */
-    private String name;
-
-    /**
-     * Sequence block size.
-     */
-    private int blockSize;
-
-    /**
-     * Currently allocated block of sequences.
-     */
-    private SequenceBlock allocatedSequences;
-
-
     // ---- constructors ----------------------------------------------------
 
     /**
@@ -80,8 +51,8 @@ public class SequenceGenerator
      */
     public SequenceGenerator(String name, int blockSize)
         {
-        this.name = name;
-        this.blockSize = blockSize;
+        this.m_name      = name;
+        this.m_blockSize = blockSize;
         }
 
 
@@ -94,9 +65,10 @@ public class SequenceGenerator
      */
     public synchronized Long generateIdentity()
         {
+        SequenceBlock allocatedSequences = m_allocatedSequences;
         if (allocatedSequences == null || !allocatedSequences.hasNext())
             {
-            allocatedSequences = allocateSequenceBlock();
+            m_allocatedSequences = allocatedSequences = allocateSequenceBlock();
             }
         return allocatedSequences.next();
         }
@@ -112,7 +84,41 @@ public class SequenceGenerator
     protected SequenceBlock allocateSequenceBlock()
         {
         return (SequenceBlock)
-                s_sequenceCache.invoke(name,
-                                     new SequenceBlockAllocator(blockSize));
+                s_sequenceCache.invoke(m_name,
+                                     new SequenceBlockAllocator(m_blockSize));
         }
+
+
+    // ---- data members ----------------------------------------------------
+
+    /**
+     * Default sequence block size.
+     */
+    public static final int DEFAULT_BLOCK_SIZE = 20;
+
+    /**
+     * The name of the sequences cache.
+     */
+    public static final String CACHE_NAME = "coh-tools-sequences";
+
+    /**
+     * Sequences cache.
+     */
+    private static final NamedCache
+            s_sequenceCache = CacheFactory.getCache(CACHE_NAME);
+
+    /**
+     * Sequence name.
+     */
+    private final String m_name;
+
+    /**
+     * Sequence block size.
+     */
+    private final int m_blockSize;
+
+    /**
+     * Currently allocated block of sequences.
+     */
+    private SequenceBlock m_allocatedSequences;
     }

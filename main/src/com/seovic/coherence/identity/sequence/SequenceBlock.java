@@ -35,27 +35,13 @@ import com.tangosol.io.pof.PofWriter;
 public class SequenceBlock
         implements Serializable, PortableObject
     {
-    // ---- data members ----------------------------------------------------
-
-    /**
-     * The next assignable number within this sequence block.
-     */
-    private AtomicLong m_next;
-
-    /**
-     * The last assignable number within this sequence block.
-     */
-    private long m_last;
-
-
     // ---- constructors ----------------------------------------------------
 
     /**
-     * For internal use only.
+     * Deserialization constructor (for internal use only).
      */
     public SequenceBlock()
         {
-        // deserialization constructor
         }
 
     /**
@@ -125,4 +111,17 @@ public class SequenceBlock
         pofWriter.writeLong(0, m_next.longValue());
         pofWriter.writeLong(1, m_last);
         }
+
+
+    // ---- data members ----------------------------------------------------
+
+    /**
+     * The next assignable number within this sequence block.
+     */
+    private AtomicLong m_next;
+
+    /**
+     * The last assignable number within this sequence block.
+     */
+    private volatile long m_last;
     }

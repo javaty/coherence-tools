@@ -14,22 +14,27 @@ import org.junit.Test;
 
 
 /**
- * Tests for SequenceGenerator.
+ * Tests for {@link SequenceGenerator}.
  *
- * @author  Aleksandar Seovic  2008.11.24
+ * @author Aleksandar Seovic  2008.11.24
  */
 public class SequenceGeneratorTests
     {
-    private static NamedCache sequenceCache = CacheFactory.getCache("sequences");
+    private static NamedCache sequenceCache =
+            CacheFactory.getCache(SequenceGenerator.CACHE_NAME);
 
     @Before
-    public void before() throws Exception {
+    public void before()
+            throws Exception
+        {
         sequenceCache.clear();
-    }
+        }
 
     @Test
-    public void testIdGeneration() {
-        IdentityGeneratorClient igc = new IdentityGeneratorClient(new SequenceGenerator("test"));
+    public void testIdGeneration()
+        {
+        IdentityGeneratorClient igc = new IdentityGeneratorClient(
+                new SequenceGenerator("test"));
 
         assertEquals(100, igc.generateIdentities(1, 100).size());
         assertEquals(100, igc.generateIdentities(5, 20).size());
@@ -38,23 +43,28 @@ public class SequenceGeneratorTests
         Sequence seq = (Sequence) sequenceCache.get("test");
         assertEquals("test", seq.name());
         assertEquals(300, seq.peek());
-    }
+        }
 
     @Test
-    public void testIdGenerationWithoutBlockCaching() {
-        IdentityGeneratorClient igc = new IdentityGeneratorClient(new SequenceGenerator("test", 1));
+    public void testIdGenerationWithoutBlockCaching()
+        {
+        IdentityGeneratorClient igc = new IdentityGeneratorClient(
+                new SequenceGenerator("test", 1));
 
         assertEquals(100, igc.generateIdentities(5, 20).size());
 
         Sequence seq = (Sequence) sequenceCache.get("test");
         assertEquals("test", seq.name());
         assertEquals(100, seq.peek());
-    }
+        }
 
     @Test
-    public void testIdGenerationWithMultipleClients() {
-        IdentityGeneratorClient igc1 = new IdentityGeneratorClient(new SequenceGenerator("test", 10));
-        IdentityGeneratorClient igc2 = new IdentityGeneratorClient(new SequenceGenerator("test", 10));
+    public void testIdGenerationWithMultipleClients()
+        {
+        IdentityGeneratorClient igc1 = new IdentityGeneratorClient(
+                new SequenceGenerator("test", 10));
+        IdentityGeneratorClient igc2 = new IdentityGeneratorClient(
+                new SequenceGenerator("test", 10));
 
         assertEquals(25, igc1.generateIdentities(5, 5).size());
         assertEquals(25, igc2.generateIdentities(5, 5).size());
@@ -62,6 +72,6 @@ public class SequenceGeneratorTests
         Sequence seq = (Sequence) sequenceCache.get("test");
         assertEquals("test", seq.name());
         assertEquals(60, seq.peek());
-    }
+        }
 
-}
+    }

@@ -43,38 +43,24 @@ import javax.persistence.Access;
 public class Sequence
         implements Serializable, PortableObject
     {
-    // ---- data members ----------------------------------------------------
-
-    /**
-     * Sequence name.
-     */
-    @Id
-    @Column(name = "NAME", nullable = false)
-    private String m_name;
-
-    /**
-     * The last allocated number from this sequence.
-     */
-    @Column(name = "LAST_SEQ", nullable = false)
-    private long m_last;
-
-
     // ---- constructors --------------------------------------------------
 
     /**
      * Deserialization constructor (for internal use only).
      */
-    public Sequence() {
-    }
+    public Sequence()
+        {
+        }
 
     /**
      * Sequence constructor.
      *
-     * @param name  sequence name
+     * @param name sequence name
      */
-    public Sequence(String name) {
+    public Sequence(String name)
+        {
         m_name = name;
-    }
+        }
 
     // ---- public methods --------------------------------------------------
 
@@ -88,8 +74,9 @@ public class Sequence
      */
     public SequenceBlock allocateBlock(int blockSize)
         {
-        SequenceBlock block = new SequenceBlock(m_last + 1, m_last + blockSize);
-        m_last += blockSize;
+        final long last = m_last;
+        SequenceBlock block = new SequenceBlock(last + 1, last + blockSize);
+        m_last = last + blockSize;
 
         return block;
         }
@@ -143,4 +130,20 @@ public class Sequence
         pofWriter.writeString(0, m_name);
         pofWriter.writeLong(1, m_last);
         }
+
+
+    // ---- data members ----------------------------------------------------
+
+    /**
+     * Sequence name.
+     */
+    @Id
+    @Column(name = "NAME", nullable = false)
+    private String m_name;
+
+    /**
+     * The last allocated number from this sequence.
+     */
+    @Column(name = "LAST_SEQ", nullable = false)
+    private long m_last;
     }
