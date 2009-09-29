@@ -43,17 +43,10 @@ import java.util.Collection;
 public class DependentLookupValuesProvider<TId, TDesc>
         extends SimpleLookupValuesProvider<TId, TDesc>
     {
-    // ---- data members ----------------------------------------------------
-
-    /**
-     * Filter that is used to narrow down the aggregation scope.
-     */
-    private Filter m_dependencyFilter;
-
     // ---- constructors ----------------------------------------------------
 
     /**
-     * Construct <tt>SimpleLookupValuesProvider</tt> instance.
+     * Construct <tt>DependentLookupValuesProvider</tt> instance.
      *
      * @param map               map that lookup values should be retrieved from
      * @param extractor         lookup value extractor to use
@@ -82,4 +75,12 @@ public class DependentLookupValuesProvider<TId, TDesc>
 
         return super.getValuesInternal(filter);
         }
+
+
+    // ---- data members ----------------------------------------------------
+
+    /**
+     * Filter that is used to narrow down the aggregation scope.
+     */
+    private Filter m_dependencyFilter;
     }
