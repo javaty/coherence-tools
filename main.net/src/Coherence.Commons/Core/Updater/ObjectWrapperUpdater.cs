@@ -46,19 +46,19 @@ namespace Seovic.Coherence.Core.Updater
 
         #region Object methods
 
+        public bool Equals(ObjectWrapperUpdater other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.m_propertyName, m_propertyName);
+        }
+
         public override bool Equals(object obj)
         {
-            if (this == obj)
-            {
-                return true;
-            }
-            if (obj == null || GetType() != typeof(ObjectWrapperUpdater))
-            {
-                return false;
-            }
-
-            ObjectWrapperUpdater that = (ObjectWrapperUpdater) obj;
-            return m_propertyName.Equals(that.m_propertyName);
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof (ObjectWrapperUpdater)) return false;
+            return Equals((ObjectWrapperUpdater) obj);
         }
 
         public override int GetHashCode()

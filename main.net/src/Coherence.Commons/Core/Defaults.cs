@@ -8,6 +8,8 @@ namespace Seovic.Coherence.Core
 {
     public class Defaults
     {
+        #region Constructors
+
         /// <summary>
         /// Singleton constructor.
         /// </summary>
@@ -20,6 +22,8 @@ namespace Seovic.Coherence.Core
             m_ctorCondition  = GetConstructor(dict[CONDITION_TYPE]);
             m_scriptLanguage = dict[SCRIPT_LANGUAGE];
         }
+
+        #endregion
 
         #region Public methods
 
@@ -76,8 +80,7 @@ namespace Seovic.Coherence.Core
 
         #endregion
 
-
-    // ---- helper methods --------------------------------------------------
+        #region Helper methods
 
         /// <summary>
         /// Loads default values from a application configuration file.
@@ -128,25 +131,28 @@ namespace Seovic.Coherence.Core
             return cls.GetConstructor(new[] {typeof(String)});
         }
 
+        #endregion
+
         #region Constants
         
         #region Configuration property keys
 
-        private static readonly String EXPRESSION_TYPE = "expression.type";
-        private static readonly String EXTRACTOR_TYPE  = "extractor.type";
-        private static readonly String UPDATER_TYPE    = "updater.type";
-        private static readonly String CONDITION_TYPE  = "condition.type";
-        private static readonly String SCRIPT_LANGUAGE = "script.language";
+        private static readonly string EXPRESSION_TYPE = "expression.type";
+        private static readonly string EXTRACTOR_TYPE  = "extractor.type";
+        private static readonly string UPDATER_TYPE    = "updater.type";
+        private static readonly string CONDITION_TYPE  = "condition.type";
+        private static readonly string SCRIPT_LANGUAGE = "script.language";
 
         #endregion
 
         #region Configuration default values
 
-        private static readonly String DEFAULT_EXPRESSION_TYPE = "com.seovic.lang.expression.MvelExpression";
-        private static readonly String DEFAULT_EXTRACTOR_TYPE  = "com.seovic.lang.extractor.ExpressionExtractor";
-        private static readonly String DEFAULT_UPDATER_TYPE    = "com.seovic.lang.updater.ExpressionUpdater";
-        private static readonly String DEFAULT_CONDITION_TYPE  = "com.seovic.lang.condition.ExpressionCondition";
-        private static readonly String DEFAULT_SCRIPT_LANGUAGE = "javascript";
+        // TBD
+        private static readonly string DEFAULT_EXPRESSION_TYPE = "Seovic.Coherence.Core.Expression.MvelExpression, Coherence.Commons";
+        private static readonly string DEFAULT_EXTRACTOR_TYPE  = "Seovic.Coherence.Core.Extractor.ExpressionExtractor, Coherence.Commons";
+        private static readonly string DEFAULT_UPDATER_TYPE    = "Seovic.Coherence.Core.Updater.ExpressionUpdater, Coherence.Commons";
+        private static readonly string DEFAULT_CONDITION_TYPE  = "Seovic.Coherence.Core.Condition.ExpressionCondition, Coherence.Commons";
+        private static readonly string DEFAULT_SCRIPT_LANGUAGE = "javascript";
         
         #endregion
 
@@ -186,5 +192,6 @@ namespace Seovic.Coherence.Core
         private String m_scriptLanguage;
 
         #endregion
+
     }
 }

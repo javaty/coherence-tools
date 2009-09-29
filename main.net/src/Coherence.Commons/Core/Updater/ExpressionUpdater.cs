@@ -1,48 +1,53 @@
 ﻿using System;
 using Tangosol.IO.Pof;
 
-namespace Seovic.Coherence.Core.Extractor
+namespace Seovic.Coherence.Core.Updater
 {
     [Serializable]
-    public class ExpressionExtractor : IExtractor, IPortableObject
+    public class ExpressionUpdater : IUpdater, IPortableObject
     {
         #region Constructors
 
         /// <summary>
         /// Deserialization constructor (for internal use only).
         /// </summary>
-        public ExpressionExtractor()
+        public ExpressionUpdater()
         {
         }
 
         /// <summary>
-        /// Construct an <code>ExpressionExtractor</code> instance.
+        /// Construct an <code>ExpressionUpdater</code> instance.
         /// </summary>
-        /// <param name="expression">The expression to use.</param>
-        public ExpressionExtractor(string expression) :  this(Defaults.CreateExpression(expression))
+        /// <param name="expression">
+        /// The expression to use.
+        /// </param>
+        public ExpressionUpdater(string expression)
+            : this(Defaults.CreateExpression(expression))
         {
         }
 
         /// <summary>
-        /// Construct an <code>ExpressionExtractor</code> instance.
+        /// Construct an <code>ExpressionUpdater</code> instance.
         /// </summary>
-        /// <param name="expression">The expression to use.</param>
-        public ExpressionExtractor(IExpression expression)
+        /// <param name="expression">
+        /// The expression to use.
+        /// </param>
+        public ExpressionUpdater(IExpression expression)
         {
             m_expression = expression;
         }
 
         #endregion
 
-        #region IExtractor implementation
+        #region IUpdater implementation
 
-        public object Extract(object target)
+        public void Update(object target, object value)
         {
             if (target == null)
             {
-                return null;
+                throw new ArgumentException("Updater target cannot be null");
             }
-            return m_expression.Evaluate(target);
+            m_expression.EvaluateAndSet(target, value);
         }
 
         #endregion
@@ -51,7 +56,7 @@ namespace Seovic.Coherence.Core.Extractor
 
         public void ReadExternal(IPofReader reader)
         {
-            m_expression = (IExpression)reader.ReadObject(0);
+            m_expression = (IExpression) reader.ReadObject(0);
         }
 
         public void WriteExternal(IPofWriter writer)
@@ -63,7 +68,7 @@ namespace Seovic.Coherence.Core.Extractor
 
         #region Object methods
 
-        public bool Equals(ExpressionExtractor other)
+        public bool Equals(ExpressionUpdater other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -74,8 +79,8 @@ namespace Seovic.Coherence.Core.Extractor
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof (ExpressionExtractor)) return false;
-            return Equals((ExpressionExtractor) obj);
+            if (obj.GetType() != typeof (ExpressionUpdater)) return false;
+            return Equals((ExpressionUpdater) obj);
         }
 
         public override int GetHashCode()
@@ -85,9 +90,9 @@ namespace Seovic.Coherence.Core.Extractor
 
         public override string ToString()
         {
-            return "ExpressionExtractor{" +
-              "expression=" + m_expression +
-              '}';
+            return "ExpressionUpdater{" +
+               "expression=" + m_expression +
+               '}';
         }
 
         #endregion

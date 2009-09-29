@@ -2,51 +2,43 @@
 using System.Collections;
 using Tangosol.IO.Pof;
 
-namespace Seovic.Coherence.Core.Extractor
+namespace Seovic.Coherence.Core.Updater
 {
     [Serializable]
-    public class MapExtractor : IExtractor, IPortableObject
+    public class MapUpdater : IUpdater, IPortableObject
     {
         #region Constructors
 
-        /// <summary>
-        /// Deserialization constructor (for internal use only).
-        /// </summary>
-        public MapExtractor()
+        public MapUpdater()
         {
         }
 
-        /// <summary>
-        /// Construct an <code>MapExtractor</code> instance.
-        /// </summary>
-        /// <param name="key">The key to extract value for.</param>
-        public MapExtractor(string key)
+        public MapUpdater(string mKey)
         {
-            m_key = key;
+            m_key = mKey;
         }
 
         #endregion
 
-        #region IExtractor implementation
+        #region IUpdater implementation
 
-        public object Extract(object target)
+        public void Update(object target, object value)
         {
-             if (target == null)
+            if (target == null)
             {
-                return null;
+                throw new ArgumentException("Updater target cannot be null");
             }
             if (!(target is IDictionary))
             {
-            throw new ArgumentException(
-                    "Extraction target is not a Dictionary");
+                throw new ArgumentException("Updater target is not a Dictionary");
             }
 
-            return ((IDictionary) target)[m_key];
+            ((IDictionary) target)[m_key] = value;
         }
 
         #endregion
 
-        #region IPortableObject implementation
+        #region IPortableObject
 
         public void ReadExternal(IPofReader reader)
         {
@@ -62,7 +54,7 @@ namespace Seovic.Coherence.Core.Extractor
 
         #region Object methods
 
-        public bool Equals(MapExtractor other)
+        public bool Equals(MapUpdater other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -73,18 +65,18 @@ namespace Seovic.Coherence.Core.Extractor
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof (MapExtractor)) return false;
-            return Equals((MapExtractor) obj);
+            if (obj.GetType() != typeof (MapUpdater)) return false;
+            return Equals((MapUpdater) obj);
         }
 
         public override int GetHashCode()
         {
-            return (m_key != null ? m_key.GetHashCode() : 0);
+            return m_key.GetHashCode();
         }
 
         public override string ToString()
         {
-            return "MapExtractor{" +
+            return "MapUpdater{" +
               "key=" + m_key +
               '}';
         }
@@ -93,9 +85,6 @@ namespace Seovic.Coherence.Core.Extractor
 
         #region Data members
 
-        /// <summary>
-        /// Dictionary key.
-        /// </summary>
         private string m_key;
 
         #endregion

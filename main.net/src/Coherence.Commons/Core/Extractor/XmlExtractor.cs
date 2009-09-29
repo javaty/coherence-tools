@@ -81,39 +81,36 @@ namespace Seovic.Coherence.Core.Extractor
 
         #region Object methods
 
+        public bool Equals(XmlExtractor other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.nodeName, nodeName) && Equals(other.nsUri, nsUri);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof (XmlExtractor)) return false;
+            return Equals((XmlExtractor) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((nodeName != null ? nodeName.GetHashCode() : 0)*397) 
+                       ^ (nsUri != null ? nsUri.GetHashCode() : 0);
+            }
+        }
+
         public override string ToString()
         {
             return "XmlExtractor{" +
                "nodeName=" + nodeName +
                "nsUri=" + nsUri +
-               '}'; 
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (this == obj)
-            {
-                return true;
-            }
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
-
-            XmlExtractor that = (XmlExtractor)obj;
-
-            return nodeName.Equals(that.nodeName) 
-                && !(nsUri != null
-                     ? !nsUri.Equals(that.nsUri)
-                     : that.nsUri != null);
-        }
-
-        public override int GetHashCode()
-        {
-            int hash = 17;
-            hash = hash * 31 + nodeName.GetHashCode();
-            hash = hash * 31 + (nsUri != null ? nsUri.GetHashCode() : 0);
-            return hash;
+               '}';
         }
 
         #endregion
