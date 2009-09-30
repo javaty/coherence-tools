@@ -18,7 +18,12 @@ package com.seovic.core.updater;
 
 
 import com.seovic.core.Updater;
+import com.seovic.core.extractor.PropertyExtractor;
+import com.tangosol.io.pof.PofReader;
+import com.tangosol.io.pof.PofWriter;
+import com.tangosol.io.pof.PortableObject;
 
+import java.io.IOException;
 import java.util.Map;
 
 
@@ -28,7 +33,7 @@ import java.util.Map;
  * @author Aleksandar Seovic  2009.06.17
  */
 public class MapUpdater
-        implements Updater
+        implements Updater, PortableObject
     {
     // ---- data members ----------------------------------------------------
 
@@ -66,5 +71,69 @@ public class MapUpdater
             }
 
         ((Map) target).put(key, value);
+        }
+    
+    
+    //---- PortableObject implementation -----------------------------------
+
+    public void readExternal(PofReader reader) throws IOException 
+    	{
+    	key = reader.readString(0);
+    	}
+
+    public void writeExternal(PofWriter writer) throws IOException 
+    	{
+    	writer.writeString(0, key);
+    	}
+    
+    
+    // ---- Object methods --------------------------------------------------
+    
+    /**
+     * Test objects for equality.
+     *
+     * @param o  object to compare this object with
+     *
+     * @return <tt>true</tt> if the specified object is equal to this object
+     *         <tt>false</tt> otherwise
+     */
+    @Override
+    public boolean equals(Object o)
+        {
+        if (this == o)
+            {
+            return true;
+            }
+        if (o == null || getClass() != o.getClass())
+            {
+            return false;
+            }
+
+        MapUpdater that = (MapUpdater) o;
+        return key.equals(that.key);
+        }
+
+    /**
+     * Return hash code for this object.
+     *
+     * @return this object's hash code
+     */
+    @Override
+    public int hashCode()
+        {
+        return key.hashCode();
+        }
+
+    /**
+     * Return string representation of this object.
+     *
+     * @return string representation of this object
+     */
+    @Override
+    public String toString()
+        {
+        return "MapUpdater{" +
+               "key='" + key + '\'' +
+               '}';
         }
     }

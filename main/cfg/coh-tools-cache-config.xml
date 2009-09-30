@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE cache-config SYSTEM "cache-config.dtd">
+
+<cache-config>
+  <caching-scheme-mapping>
+    <cache-mapping>
+      <cache-name>*</cache-name>
+      <scheme-name>default-partitioned</scheme-name>
+    </cache-mapping>
+  </caching-scheme-mapping>
+
+  <caching-schemes>
+
+    <!--
+           Distributed caching scheme.
+           -->
+    <distributed-scheme>
+      <scheme-name>default-partitioned</scheme-name>
+
+      <serializer>
+        <class-name>com.tangosol.io.pof.ConfigurablePofContext</class-name>
+        <init-params>
+          <init-param>
+            <param-type>java.lang.String</param-type>
+            <param-value>coh-tools-pof-config.xml</param-value>
+          </init-param>
+        </init-params>
+      </serializer>
+
+      <backing-map-scheme>
+        <local-scheme>
+          <scheme-ref>unlimited-backing-map</scheme-ref>
+        </local-scheme>
+      </backing-map-scheme>
+
+      <autostart>true</autostart>
+    </distributed-scheme>
+
+    <!--
+    Near caching (two-tier) scheme with size limited local cache
+    in the front-tier and a distributed cache in the back-tier.
+    -->
+    <near-scheme>
+      <scheme-name>example-near</scheme-name>
+
+      <front-scheme>
+        <local-scheme>
+          <eviction-policy>HYBRID</eviction-policy>
+          <high-units>100</high-units>
+          <expiry-delay>1m</expiry-delay>
+        </local-scheme>
+      </front-scheme>
+
+      <back-scheme>
+        <distributed-scheme>
+          <scheme-ref>default-partitioned</scheme-ref>
+        </distributed-scheme>
+      </back-scheme>
+
+      <invalidation-strategy>present</invalidation-strategy>
+      <autostart>true</autostart>
+    </near-scheme>
+
+    <!--
+    Backing map scheme definition used by all the caches that do
+    not require any eviction policies
+    -->
+    <local-scheme>
+      <scheme-name>unlimited-backing-map</scheme-name>
+    </local-scheme>
+
+    <!--
+    Invocation Service scheme.
+    -->
+    <invocation-scheme>
+      <scheme-name>example-invocation</scheme-name>
+      <service-name>InvocationService</service-name>
+
+      <autostart>true</autostart>
+    </invocation-scheme>
+    
+    <proxy-scheme>
+      <service-name>ExtendTcpProxyService</service-name>
+      <thread-count>5</thread-count>
+      <acceptor-config>
+        <tcp-acceptor>
+          <local-address>
+            <address>localhost</address>
+            <port>9099</port>
+          </local-address>
+        </tcp-acceptor>
+        <serializer>
+          <class-name>com.tangosol.io.pof.ConfigurablePofContext</class-name>
+          <init-params>
+            <init-param>
+              <param-type>string</param-type>
+              <param-value>coh-tools-pof-config.xml</param-value>
+            </init-param>
+          </init-params>
+        </serializer>
+      </acceptor-config>
+      <proxy-config>
+        <cache-service-proxy>
+          <lock-enabled>true</lock-enabled>
+        </cache-service-proxy>
+      </proxy-config>
+      <autostart>true</autostart>
+    </proxy-scheme>
+
+    <!-- "private" remote-cache-scheme used by the ClusterControl utility -->
+    <remote-cache-scheme>
+      <service-name>ExtendTcpCacheService</service-name>
+      <initiator-config>
+        <tcp-initiator>
+          <remote-addresses>
+            <socket-address>
+              <address>10.0.0.125</address>
+              <port>9099</port>
+            </socket-address>
+          </remote-addresses>
+          <connect-timeout>10s</connect-timeout>
+        </tcp-initiator>
+        <outgoing-message-handler>
+          <request-timeout>5s</request-timeout>
+        </outgoing-message-handler>
+        <serializer>
+          <class-name>com.tangosol.io.pof.ConfigurablePofContext</class-name>
+        </serializer>
+      </initiator-config>
+    </remote-cache-scheme>
+
+  </caching-schemes>
+</cache-config>
