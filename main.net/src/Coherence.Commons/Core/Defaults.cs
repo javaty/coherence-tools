@@ -99,7 +99,7 @@ namespace Seovic.Coherence.Core
                     props.Add(key, config[key]);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // should never happen
                 props.Add(EXPRESSION_TYPE, DEFAULT_EXPRESSION_TYPE);
@@ -128,7 +128,7 @@ namespace Seovic.Coherence.Core
         protected ConstructorInfo GetConstructor(string typeName)
         {
             Type cls = Type.GetType(typeName);
-            return cls.GetConstructor(new[] {typeof(String)});
+            return cls.GetConstructor(new[] {typeof(string)});
         }
 
         #endregion
@@ -148,7 +148,7 @@ namespace Seovic.Coherence.Core
         #region Configuration default values
 
         // TBD
-        private static readonly string DEFAULT_EXPRESSION_TYPE = "Seovic.Coherence.Core.Expression.MvelExpression, Coherence.Commons";
+        private static readonly string DEFAULT_EXPRESSION_TYPE = "Seovic.Coherence.Core.Expression.SpelExpression, Coherence.Commons";
         private static readonly string DEFAULT_EXTRACTOR_TYPE  = "Seovic.Coherence.Core.Extractor.ExpressionExtractor, Coherence.Commons";
         private static readonly string DEFAULT_UPDATER_TYPE    = "Seovic.Coherence.Core.Updater.ExpressionUpdater, Coherence.Commons";
         private static readonly string DEFAULT_CONDITION_TYPE  = "Seovic.Coherence.Core.Condition.ExpressionCondition, Coherence.Commons";
