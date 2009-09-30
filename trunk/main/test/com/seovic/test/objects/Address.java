@@ -16,18 +16,27 @@
 
 package com.seovic.test.objects;
 
+import java.io.IOException;
+import java.io.Serializable;
+
+import com.tangosol.io.pof.PofReader;
+import com.tangosol.io.pof.PofWriter;
+import com.tangosol.io.pof.PortableObject;
+
 
 /**
  * Simple Address class that can be used within tests.
  *
  * @author Aleksandar Seovic  2009.09.20
  */
-public class Address
+public class Address implements Serializable, PortableObject
     {
     private String street;
     private String city;
     private String country;
 
+    public Address() {}
+    
     public Address(String street, String city, String country)
         {
         this.street = street;
@@ -65,7 +74,21 @@ public class Address
         this.country = country;
         }
 
-    @Override
+    
+    
+	public void readExternal(PofReader reader) throws IOException {
+		street  = reader.readString(0);
+		city    = reader.readString(1);
+		country = reader.readString(2);
+	}
+
+	public void writeExternal(PofWriter writer) throws IOException {
+		writer.writeString(0, street);
+		writer.writeString(1, city);
+		writer.writeString(2, country);
+	}
+
+	@Override
     public boolean equals(Object o)
         {
         if (this == o)

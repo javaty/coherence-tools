@@ -17,7 +17,13 @@
 package com.seovic.test.objects;
 
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.Date;
+
+import com.tangosol.io.pof.PofReader;
+import com.tangosol.io.pof.PofWriter;
+import com.tangosol.io.pof.PortableObject;
 
 
 /**
@@ -25,7 +31,7 @@ import java.util.Date;
  *
  * @author ic  2009.06.16
  */
-public class Person
+public class Person implements Serializable, PortableObject
     {
     private long    id;
     private String  name;
@@ -90,7 +96,24 @@ public class Person
         this.address = address;
         }
 
-    @Override
+    public void readExternal(PofReader reader) throws IOException {
+    	id      = reader.readLong(0);
+    	name    = reader.readString(1);
+    	dob     = reader.readDate(2);
+    	address = (Address) reader.readObject(3);
+    	
+		
+	}
+
+	public void writeExternal(PofWriter writer) throws IOException {
+		writer.writeLong(0, id);
+		writer.writeString(1, name);
+		writer.writeDate(2, dob);
+		writer.writeObject(3, address);
+		
+	}
+
+	@Override
     public boolean equals(Object o)
         {
         if (this == o)
