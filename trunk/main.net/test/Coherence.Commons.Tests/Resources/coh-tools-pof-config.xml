@@ -1,0 +1,101 @@
+<pof-config xmlns="http://schemas.tangosol.com/pof">
+  <user-type-list>
+	<include>assembly://Coherence/Tangosol.Config/coherence-pof-config.xml</include>
+
+  	<user-type>
+      <type-id>800</type-id>
+      <class-name>Seovic.Coherence.Core.Condition.ExpressionCondition, Coherence.Commons</class-name>
+    </user-type>
+  	<user-type>
+      <type-id>801</type-id>
+      <class-name>Seovic.Coherence.Core.Condition.FilterAdapter, Coherence.Commons</class-name>
+    </user-type>
+    
+    <user-type>
+      <type-id>810</type-id>
+      <class-name>Seovic.Coherence.Core.Expression.GroovyExpression, Coherence.Commons</class-name>
+    </user-type>
+    <user-type>
+      <type-id>811</type-id>
+      <class-name>Seovic.Coherence.Core.Expression.MvelExpression, Coherence.Commons</class-name>
+    </user-type>
+    <user-type>
+      <type-id>812</type-id>
+      <class-name>Seovic.Coherence.Core.Expression.OgnlExpression, Coherence.Commons</class-name>
+    </user-type>
+    <user-type>
+      <type-id>813</type-id>
+      <class-name>Seovic.Coherence.Core.Expression.ScriptExpression, Coherence.Commons</class-name>
+    </user-type>
+    
+    <user-type>
+      <type-id>820</type-id>
+      <class-name>Seovic.Coherence.Core.Extractor.ExpressionExtractor, Coherence.Commons</class-name>
+    </user-type>
+   <!-- <user-type>
+      <type-id>821</type-id>
+      <class-name>Seovic.Coherence.Core.Extractor.KeyExtractorAdapter, Coherence.Commons</class-name>
+    </user-type>
+    -->
+    <user-type>
+      <type-id>822</type-id>
+      <class-name>Seovic.Coherence.Core.Extractor.MapExtractor, Coherence.Commons</class-name>
+    </user-type>
+    <user-type>
+      <type-id>823</type-id>
+      <class-name>Seovic.Coherence.Core.Extractor.PropertyExtractor, Coherence.Commons</class-name>
+    </user-type>
+    <user-type>
+      <type-id>824</type-id>
+      <class-name>Seovic.Coherence.Core.Extractor.ValueExtractorAdapter, Coherence.Commons</class-name>
+    </user-type>
+    <user-type>
+      <type-id>825</type-id>
+      <class-name>Seovic.Coherence.Core.Extractor.XmlExtractor, Coherence.Commons</class-name>
+    </user-type>
+  	
+  	<user-type>
+      <type-id>830</type-id>
+      <class-name>Seovic.Coherence.Core.Updater.ObjectWrapperUpdater, Coherence.Commons</class-name>
+    </user-type>
+    <user-type>
+      <type-id>831</type-id>
+      <class-name>Seovic.Coherence.Core.Updater.ExpressionUpdater, Coherence.Commons</class-name>
+    </user-type>
+    <user-type>
+      <type-id>832</type-id>
+      <class-name>Seovic.Coherence.Core.Updater.MapUpdater, Coherence.Commons</class-name>
+    </user-type>
+    <user-type>
+      <type-id>833</type-id>
+      <class-name>Seovic.Coherence.Core.Updater.PropertyUpdater, Coherence.Commons</class-name>
+    </user-type>
+
+    <user-type>
+      <type-id>840</type-id>
+      <class-name>Seovic.Coherence.Identity.Sequence.Sequence, Coherence.Commons</class-name>
+    </user-type>
+    <user-type>
+      <type-id>841</type-id>
+      <class-name>Seovic.Coherence.Identity.Sequence.SequenceBlock, Coherence.Commons</class-name>
+    </user-type>
+    <user-type>
+      <type-id>842</type-id>
+      <class-name>Seovic.Coherence.Identity.Sequence.SequenceBlockAllocator, Coherence.Commons</class-name>
+    </user-type>
+    
+    <user-type>
+      <type-id>1001</type-id>
+      <class-name>Seovic.Coherence.Test.Objects.Address, Coherence.Commons</class-name>
+    </user-type>
+    <user-type>
+      <type-id>1003</type-id>
+      <class-name>Seovic.Coherence.Test.Objects.Country, Coherence.Commons</class-name>
+    </user-type>
+    <user-type>
+      <type-id>1004</type-id>
+      <class-name>Seovic.Coherence.Test.Objects.Person, Coherence.Commons</class-name>
+    </user-type>
+    
+  </user-type-list>
+</pof-config>
