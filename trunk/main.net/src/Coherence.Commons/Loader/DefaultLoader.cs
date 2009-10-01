@@ -2,10 +2,20 @@
 
 namespace Seovic.Coherence.Loader
 {
+    /// <summary>
+    /// Default loader implementation.
+    /// </summary>
+    /// <author>Aleksandar Seovic  2009.06.15</author>
+    /// <author>Ivan Cikic  2009.10.01</author>
     public class DefaultLoader : ILoader
     {
         #region Constructors
 
+        /// <summary>
+        /// Construct DefaultLoader instance.
+        /// </summary>
+        /// <param name="source">Source to load items from</param>
+        /// <param name="target">Target to load items into</param>
         public DefaultLoader(ISource source, ITarget target)
         {
             this.source = source;
@@ -16,6 +26,9 @@ namespace Seovic.Coherence.Loader
 
         #region ILoader implementation
 
+        /// <summary>
+        /// Load items from the ISource into the ITarget.
+        /// </summary>
         public void Load()
         {
             source.BeginExport();
@@ -41,8 +54,14 @@ namespace Seovic.Coherence.Loader
 
         #region Data members
 
+        /// <summary>
+        /// Source to load items from.
+        /// </summary>
         private ISource source;
 
+        /// <summary>
+        /// Target to load items into.
+        /// </summary>
         private ITarget target;
 
         #endregion

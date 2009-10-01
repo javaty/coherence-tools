@@ -1,4 +1,5 @@
 ﻿
+using Seovic.Coherence.Core;
 using Tangosol.Util.Extractor;
 
 namespace Seovic.Coherence.Identity.Extractor

@@ -1,4 +1,5 @@
 using System;
+using Seovic.Coherence.Core;
 using Tangosol.IO.Pof;
 
 namespace Seovic.Coherence.Test.Objects
@@ -6,7 +7,7 @@ namespace Seovic.Coherence.Test.Objects
     /// <summary>
     /// Helper class that is used for testing.
     /// </summary>
-    public class Country : IEntity<String>, IPortableObject, IComparable
+    public class Country : IEntity<object>, IPortableObject, IComparable
     {
         #region Data members
 
@@ -37,7 +38,7 @@ namespace Seovic.Coherence.Test.Objects
 
         #region Implementation of IEntity
 
-        public string Id
+        public object Id
         {
             get { return code; }
         }

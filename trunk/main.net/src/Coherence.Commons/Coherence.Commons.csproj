@@ -43,6 +43,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Common.Logging.dll</HintPath>
     </Reference>
+    <Reference Include="LumenWorks.Framework.IO, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\LumenWorks.Framework.IO.dll</HintPath>
+    </Reference>
     <Reference Include="Spring.Core, Version=1.2.0.20313, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Spring.Core.dll</HintPath>
@@ -84,14 +88,16 @@
     <Compile Include="Core\Updater\MapUpdater.cs" />
     <Compile Include="Core\Updater\ObjectWrapperUpdater.cs" />
     <Compile Include="Core\Updater\PropertyUpdater.cs" />
-    <Compile Include="IEntity.cs" />
     <Compile Include="IO\Pof\EnumPofSerializer.cs" />
+    <Compile Include="Loader\AbstractDelegatingLoader.cs" />
+    <Compile Include="Loader\CsvToCoherence.cs" />
     <Compile Include="Loader\DefaultLoader.cs" />
     <Compile Include="Loader\ILoader.cs" />
     <Compile Include="Loader\ISource.cs" />
     <Compile Include="Loader\ITarget.cs" />
     <Compile Include="Loader\Source\AbstractBaseSource.cs" />
     <Compile Include="Loader\Source\CoherenceCacheSource.cs" />
+    <Compile Include="Loader\Source\CsvSource.cs" />
     <Compile Include="Loader\Target\AbstractBaseTarget.cs" />
     <Compile Include="Loader\Target\CoherenceCacheTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
