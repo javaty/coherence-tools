@@ -3,6 +3,7 @@ package com.seovic.coherence.loader.source;
 
 import com.seovic.core.Extractor;
 import com.seovic.core.extractor.MapExtractor;
+import com.seovic.coherence.loader.Source;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -18,61 +19,104 @@ import org.supercsv.prefs.CsvPreference;
 
 
 /**
- * @author ic  2009.06.09
+ * A {@link Source} implementation that reads items to load from a CSV file.
+ *
+ * @author Aleksandar Seovic/Ivan Cikic  2009.06.15
  */
 public class CsvSource
         extends AbstractBaseSource
     {
+    // ---- constructors ----------------------------------------------------
 
-    private Reader reader;
-
-    private CsvPreference preferences = CsvPreference.STANDARD_PREFERENCE;
-
+    /**
+     * Construct a CsvSource instance.
+     *
+     * @param reader  reader to use to read CSV file with
+     */
     public CsvSource(Reader reader)
         {
-        this.reader = reader;
+        this.m_reader = reader;
         }
 
+
+    // ---- Iterable implementation -----------------------------------------
+
+    /**
+     * Return an iterator over this source.
+     *
+     * @return a source iterator
+     */
     public Iterator iterator()
         {
-        return new CsvIterator(new CsvListReader(reader, preferences));
+        return new CsvIterator(new CsvListReader(m_reader, m_preferences));
         }
 
+
+    // ---- public API ------------------------------------------------------
+
+    /**
+     * Set the delimiter character for CSV fields (default is comma).
+     *
+     * @param delimiter  delimiter character
+     */
     public void setDelimiterChar(char delimiter)
         {
-        preferences.setDelimiterChar(delimiter);
+        m_preferences.setDelimiterChar(delimiter);
         }
 
+    /**
+     * Set the quote character (default is double quote).
+     *
+     * @param quote  quote character
+     */
     public void setQuoteChar(char quote)
         {
-        preferences.setQuoteChar(quote);
+        m_preferences.setQuoteChar(quote);
         }
 
+    /**
+     * Set end-of-line characters.
+     *
+     * @param endOfLineSymbols  end-of-line characters
+     */
     public void setEndOfLineSymbols(String endOfLineSymbols)
         {
-        preferences.setEndOfLineSymbols(endOfLineSymbols);
+        m_preferences.setEndOfLineSymbols(endOfLineSymbols);
         }
 
+
+    // ---- AbstractBaseSource implementation -------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
     protected Extractor createDefaultExtractor(String propertyName)
         {
         return new MapExtractor(propertyName);
         }
 
-        public class CsvIterator
+
+    // ---- inner class: CsvIterator ----------------------------------------
+
+    /**
+     * Iterator implementation for CsvSource.
+     */
+    public class CsvIterator
             implements Iterator
         {
-        private List<String> currentLine;
+        // ---- constructors --------------------------------------------
 
-        private ICsvListReader reader;
-
-        private String[] header;
-
+        /**
+         * Construct CsvIterator instance.
+         *
+         * @param reader  reader to use
+         */
         public CsvIterator(ICsvListReader reader)
             {
             try
                 {
-                this.reader = reader;
-                this.header = reader.getCSVHeader(false);
+                this.m_reader = reader;
+                this.m_header = reader.getCSVHeader(false);
                 }
             catch (IOException e)
                 {
@@ -80,24 +124,56 @@ public class CsvSource
                 }
             }
 
+        // ---- Iterator implementation ---------------------------------
+
+        /**
+         * Returns true if there are more items to read, false otherwise.
+         *
+         * @return true if there are more items to read, false otherwise
+         */
         public boolean hasNext()
             {
             try
                 {
-                currentLine = reader.read();
+                m_currentLine = m_reader.read();
                 }
             catch (IOException e)
                 {
                 throw new RuntimeException(e);
                 }
-            return currentLine != null;
+            return m_currentLine != null;
             }
 
+        /**
+         * Reads the next item from the file and converts it into a map of
+         * attribute names to string values.
+         *
+         * @return a map of attribute names to values
+         */
         public Object next()
             {
-            return createMap(header, currentLine);
+            return createMap(m_header, m_currentLine);
             }
 
+        /**
+         * Not supported.
+         */
+        public void remove()
+            {
+            throw new UnsupportedOperationException(
+                    "CsvIterator does not support remove operation");
+            }
+
+        // ---- helper methods ------------------------------------------
+
+        /**
+         * Creates a name-value map for a single item.
+         *
+         * @param keys    attribute names
+         * @param values  attribute values
+         *
+         * @return a map of attribute names to values
+         */
         private Map<String, String> createMap(String[] keys,
                                               List<String> values)
             {
@@ -110,11 +186,34 @@ public class CsvSource
             return mapValues;
             }
 
-        public void remove()
-            {
-            throw new UnsupportedOperationException(
-                    "CsvIterator does not support remove operation");
-            }
+        // ---- data members --------------------------------------------
 
+        /**
+         * A list of attribute values for the last line read.
+         */
+        private List<String> m_currentLine;
+
+        /**
+         * Reader to use.
+         */
+        private ICsvListReader m_reader;
+
+        /**
+         * An array of attribute names (parsed from the header row).
+         */
+        private String[] m_header;
         }
+
+
+    // ---- data members ----------------------------------------------------
+
+    /**
+     * Reader to use.
+     */
+    private Reader m_reader;
+
+    /**
+     * Preferences.
+     */
+    private CsvPreference m_preferences = CsvPreference.STANDARD_PREFERENCE;
     }

@@ -9,38 +9,79 @@ import java.util.Map;
 
 
 /**
- * @author ic  2009.06.15
+ * Abstract base class for {@link Source} implementations.
+ *
+ * @author Aleksandar Seovic/Ivan Cikic  2009.06.15
  */
 public abstract class AbstractBaseSource
         implements Source
     {
-    private Map<String, Extractor> extractors;
+    // ---- constructors ----------------------------------------------------
 
+    /**
+     * Default constructor.
+     */
     protected AbstractBaseSource()
         {
-        extractors = new HashMap<String, Extractor>();
+        m_extractors = new HashMap<String, Extractor>();
         }
 
+
+    // ---- abstract methods ------------------------------------------------
+
+    /**
+     * Create default extractor for the specified property.
+     *
+     * @param propertyName  property to create an extractor for
+     *
+     * @return property extractor instance
+     */
     protected abstract Extractor createDefaultExtractor(String propertyName);
 
+
+    // ---- Source implementation -------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
     public Extractor getExtractor(String propertyName)
         {
-        Extractor extractor = extractors.get(propertyName);
-        return extractor != null
-               ? extractor
-               : createDefaultExtractor(propertyName);
+        Extractor extractor = m_extractors.get(propertyName);
+        if (extractor == null)
+            {
+            extractor = createDefaultExtractor(propertyName);
+            m_extractors.put(propertyName, extractor);
+            }
+        return extractor;
         }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setExtractor(String propertyName, Extractor extractor)
         {
-        extractors.put(propertyName, extractor);
+        m_extractors.put(propertyName, extractor);
         }
 
+    /**
+     * {@inheritDoc}
+     */
     public void beginExport()
         {
         }
 
+    /**
+     * {@inheritDoc}
+     */
     public void endExport()
         {
         }
+
+    
+    // ---- data members ----------------------------------------------------
+
+    /**
+     * A map of registered property extractors for this source.
+     */
+    private Map<String, Extractor> m_extractors;
     }

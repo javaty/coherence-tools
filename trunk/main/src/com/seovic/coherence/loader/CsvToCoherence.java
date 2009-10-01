@@ -35,22 +35,43 @@ import org.springframework.core.io.Resource;
  *
  * @author Aleksandar Seovic  2009.09.29
  */
-public class CsvToCoherenceLoader
+public class CsvToCoherence
         extends AbstractDelegatingLoader
     {
     // ---- constructors ----------------------------------------------------
 
-    public CsvToCoherenceLoader(String csvFile, NamedCache cache, Class itemClass)
+    /**
+     * Construct CsvToCoherence loader instance.
+     *
+     * @param csvFile    CSV file to read items from
+     * @param cache      Coherence cache to import objects into
+     * @param itemClass  target item class
+     */
+    public CsvToCoherence(String csvFile, NamedCache cache, Class itemClass)
         {
         this(getResource(csvFile), cache, itemClass);
         }
 
-    public CsvToCoherenceLoader(Resource csvFile, NamedCache cache, Class itemClass)
+    /**
+     * Construct CsvToCoherence loader instance.
+     *
+     * @param csvFile    CSV file to read items from
+     * @param cache      Coherence cache to import objects into
+     * @param itemClass  target item class
+     */
+    public CsvToCoherence(Resource csvFile, NamedCache cache, Class itemClass)
         {
         this(createResourceReader(csvFile), cache, itemClass);
         }
 
-    public CsvToCoherenceLoader(Reader csvReader, NamedCache cache, Class itemClass)
+    /**
+     * Construct CsvToCoherence loader instance.
+     *
+     * @param csvReader  CSV file reader
+     * @param cache      Coherence cache to import objects into
+     * @param itemClass  target item class
+     */
+    public CsvToCoherence(Reader csvReader, NamedCache cache, Class itemClass)
         {
         Source source = new CsvSource(csvReader);
         Target target = new CoherenceCacheTarget(cache, itemClass);
@@ -65,7 +86,7 @@ public class CsvToCoherenceLoader
         {
         if (args.length < 3)
             {
-            System.out.println("Usage: java com.seovic.coherence.loader.CsvToCoherenceLoader <csvFile> <cacheName> <itemClass>");
+            System.out.println("Usage: java com.seovic.coherence.loader.CsvToCoherence <csvFile> <cacheName> <itemClass>");
             System.exit(0);
             }
 
@@ -73,6 +94,6 @@ public class CsvToCoherenceLoader
         NamedCache cache     = CacheFactory.getCache(args[1]);
         Class      itemClass = Class.forName(args[2]);
 
-        new CsvToCoherenceLoader(csvReader, cache, itemClass).load();
+        new CsvToCoherence(csvReader, cache, itemClass).load();
         }
     }

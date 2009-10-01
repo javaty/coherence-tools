@@ -25,31 +25,68 @@ import java.io.IOException;
 
 
 /**
+ * Base class for delegating loaders.
+ *
  * @author Aleksandar Seovic  2009.09.29
  */
 public class AbstractDelegatingLoader
         implements Loader
     {
+    // ---- getters and setters ---------------------------------------------
+
+    /**
+     * Return the loader processing should be delegated to.
+     *
+     * @return the loader processing should be delegated to
+     */
     public Loader getLoader()
         {
         return m_loader;
         }
 
+    /**
+     * Set the loader processing should be delegated to.
+     *
+     * @param loader  the loader processing should be delegated to
+     */
     public void setLoader(Loader loader)
         {
         m_loader = loader;
         }
 
+
+    // ---- Loader implementation -------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
     public void load()
         {
         m_loader.load();
         }
 
+
+    // ---- helper methods --------------------------------------------------
+
+    /**
+     * Return a Resource represented by the specified location.
+     *
+     * @param location  resource location
+     *
+     * @return a resource
+     */
     protected static Resource getResource(String location)
         {
         return new DefaultResourceLoader().getResource(location);
         }
 
+    /**
+     * Create a reader for the specified resource.
+     *
+     * @param resource  resource to create reader for
+     *
+     * @return reader for the specified resource
+     */
     protected static Reader createResourceReader(Resource resource)
         {
         try
@@ -62,5 +99,11 @@ public class AbstractDelegatingLoader
             }
         }
 
+
+    // ---- data members ----------------------------------------------------
+
+    /**
+     * The loader processing should be delegated to.
+     */
     private Loader m_loader;
     }
