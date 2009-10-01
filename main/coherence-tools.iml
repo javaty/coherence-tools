@@ -10,7 +10,16 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Coherence 3.5" level="project" />
-    <orderEntry type="library" name="Spring 2.5.6" level="application" />
+    <orderEntry type="module-library">
+      <library name="spring-framework-3.0">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/lib/spring-framework-3.0.0-RC1" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/lib/spring-framework-3.0.0-RC1" recursive="false" />
+      </library>
+    </orderEntry>
     <orderEntry type="module-library">
       <library name="commons-logging">
         <CLASSES>

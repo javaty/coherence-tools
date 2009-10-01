@@ -75,6 +75,16 @@ public abstract class AbstractBinaryProcessor
     // ---- helper methods --------------------------------------------------
 
     /**
+     * Return PofContext to use.
+     *
+     * @return PofContext to use
+     */
+    public PofContext getPofContext()
+        {
+        return m_pofContext;
+        }
+
+    /**
      * Return binary value with the specified name.
      *
      * @param name  name of the binary value
@@ -191,6 +201,60 @@ public abstract class AbstractBinaryProcessor
         }
 
     
+    // ---- Object methods --------------------------------------------------
+
+    /**
+     * Test objects for equality.
+     *
+     * @param o  object to compare this object with
+     *
+     * @return <tt>true</tt> if the specified object is equal to this object
+     *         <tt>false</tt> otherwise
+     */
+    @Override
+    public boolean equals(Object o)
+        {
+        if (this == o)
+            {
+            return true;
+            }
+        if (o == null || !(o instanceof AbstractBinaryProcessor))
+            {
+            return false;
+            }
+
+        AbstractBinaryProcessor processor = (AbstractBinaryProcessor) o;
+
+        return (m_binValues == null
+                 ? processor.m_binValues == null
+                 : m_binValues.equals(processor.m_binValues));
+        }
+
+    /**
+     * Return hash code for this object.
+     *
+     * @return this object's hash code
+     */
+    @Override
+    public int hashCode()
+        {
+        return m_binValues != null ? m_binValues.hashCode() : 0;
+        }
+
+    /**
+     * Return string representation of this object.
+     *
+     * @return string representation of this object
+     */
+    @Override
+    public String toString()
+        {
+        return "AbstractBinaryProcessor{" +
+               "pofContext=" + m_pofContext +
+               "binValues=" + m_binValues +
+               '}';
+        }
+
     // ---- data members ----------------------------------------------------
 
     /**
