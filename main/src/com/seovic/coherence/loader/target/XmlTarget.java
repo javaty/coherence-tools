@@ -2,6 +2,7 @@ package com.seovic.coherence.loader.target;
 
 
 import com.seovic.coherence.loader.Source;
+import com.seovic.coherence.loader.Target;
 
 import com.seovic.core.Updater;
 import com.seovic.core.updater.MapUpdater;
@@ -22,23 +23,24 @@ import javax.xml.stream.XMLStreamWriter;
 
 
 /**
- * @author ic  2009.06.10
+ * A {@link Target} implementation that writes items into a CSV file.
+ *
+ * @author Aleksandar Seovic/Ivan Cikic  2009.06.15
  */
 public class XmlTarget
         extends AbstractBaseTarget
     {
-    private XMLStreamWriter writer;
+    // ---- constructors ----------------------------------------------------
 
-    private String rootElementName;
-
-    private String itemElementName;
-
-    private List<Property> attributes = new ArrayList<Property>();
-
-    private List<Property> elements = new ArrayList<Property>();
-
-    private Map<String, String> namespacesMap;
-
+    /**
+     * Construct XmlTarget instance.
+     *
+     * @param writer           writer to use
+     * @param rootElementName  root element name
+     * @param itemElementName  item element name
+     * @param propertyNames    property names (any property prefixed with '@'
+     *                         will be written out as attribute)
+     */
     public XmlTarget(Writer writer,
                      String rootElementName,
                      String itemElementName,
@@ -47,6 +49,15 @@ public class XmlTarget
         this(writer, null, rootElementName, itemElementName, propertyNames);
         }
 
+    /**
+     * Construct XmlTarget instance.
+     *
+     * @param writer           writer to use
+     * @param rootElementName  root element name
+     * @param itemElementName  item element name
+     * @param propertyNames    property names (any property prefixed with '@'
+     *                         will be written out as attribute)
+     */
     public XmlTarget(Writer writer,
                      String rootElementName,
                      String itemElementName,
@@ -55,6 +66,16 @@ public class XmlTarget
         this(writer, null, rootElementName, itemElementName, propertyNames);
         }
 
+    /**
+     * Construct XmlTarget instance.
+     *
+     * @param writer           writer to use
+     * @param namespaces       namespace map
+     * @param rootElementName  root element name
+     * @param itemElementName  item element name
+     * @param propertyNames    property names (any property prefixed with '@'
+     *                         will be written out as attribute)
+     */
     public XmlTarget(Writer writer,
                      Map<String, String> namespaces,
                      String rootElementName,
@@ -65,6 +86,16 @@ public class XmlTarget
              propertyNames.split(","));
         }
 
+    /**
+     * Construct XmlTarget instance.
+     *
+     * @param writer           writer to use
+     * @param namespaces       namespace map
+     * @param rootElementName  root element name
+     * @param itemElementName  item element name
+     * @param propertyNames    property names (any property prefixed with '@'
+     *                         will be written out as attribute)
+     */
     public XmlTarget(Writer writer,
                      Map<String, String> namespaces,
                      String rootElementName,
@@ -88,11 +119,23 @@ public class XmlTarget
             }
         }
 
+
+    // ---- AbstractBaseTarget implementation -------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
     protected Updater createDefaultUpdater(String propertyName)
         {
         return new MapUpdater(propertyName);
         }
 
+
+    // ---- Source implementation -------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void beginImport()
         {
@@ -111,6 +154,9 @@ public class XmlTarget
             }
         }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings({"unchecked"})
     public void importItem(Object item)
         {
@@ -168,6 +214,9 @@ public class XmlTarget
             }
         }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void endImport()
         {
@@ -183,6 +232,9 @@ public class XmlTarget
             }
         }
 
+    /**
+     * {@inheritDoc}
+     */
     public String[] getPropertyNames()
         {
         String[] propertyNames =
@@ -199,11 +251,23 @@ public class XmlTarget
         return propertyNames;
         }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object createTargetInstance(Source source, Object sourceItem)
         {
         return new HashMap<String, Object>();
         }
 
+
+    // ---- helper methods --------------------------------------------------
+
+    /**
+     * Parses user-specified property names and determines which properties
+     * should be written out as attributes and which as child elements.
+     *
+     * @param propertyNames  property names
+     */
     private void initAttributesAndElements(String... propertyNames)
         {
         for (String propertyName : propertyNames)
@@ -220,25 +284,28 @@ public class XmlTarget
             }
         }
 
-        private static class Property
+    // ---- inner class: Property -------------------------------------------
+
+    /**
+     * Represents a single property.
+     */
+    private static class Property
         {
-        private static final Pattern PATTERN = Pattern.compile(
-                "((.*):)?(@)?(.+)");
+        // ---- constructors --------------------------------------------
 
-        private String nsPrefix;
-
-        private boolean isAttribute;
-
-        private String localName;
-
+        /**
+         * Create property instance.
+         *
+         * @param propertyExpr  property expression to parse
+         */
         public Property(String propertyExpr)
             {
             Matcher matcher = PATTERN.matcher(propertyExpr);
             if (matcher.matches())
                 {
-                nsPrefix = matcher.group(2);
-                isAttribute = matcher.group(3) != null;
-                localName = matcher.group(4);
+                m_nsPrefix = matcher.group(2);
+                m_fAttribute = matcher.group(3) != null;
+                m_localName = matcher.group(4);
                 }
             else
                 {
@@ -247,21 +314,46 @@ public class XmlTarget
                 }
             }
 
+        /**
+         * Return namespace prefix.
+         *
+         * @return namespace prefix
+         */
         public String getNamespacePrefix()
             {
-            return nsPrefix;
+            return m_nsPrefix;
             }
 
+        /**
+         * Return true if this property should be written out as attribute.
+         *
+         * @return true if this property should be written out as attribute
+         */
         public boolean isAttribute()
             {
-            return isAttribute;
+            return m_fAttribute;
             }
 
+        /**
+         * Return local name
+         *
+         * @return local name
+         */
         public String getLocalName()
             {
-            return localName;
+            return m_localName;
             }
 
+        // ---- Object methods ----------------------------------------------
+
+        /**
+         * Test objects for equality.
+         *
+         * @param o  object to compare this object with
+         *
+         * @return <tt>true</tt> if the specified object is equal to this object
+         *         <tt>false</tt> otherwise
+         */
         @Override
         public boolean equals(Object o)
             {
@@ -276,20 +368,81 @@ public class XmlTarget
 
             Property property = (Property) o;
 
-            return isAttribute == property.isAttribute
-                   && localName.equals(property.localName)
-                   && !(nsPrefix != null
-                        ? !nsPrefix.equals(property.nsPrefix)
-                        : property.nsPrefix != null);
+            return m_fAttribute == property.m_fAttribute
+                   && m_localName.equals(property.m_localName)
+                   && m_nsPrefix == null
+                       ? property.m_nsPrefix == null
+                       : m_nsPrefix.equals(property.m_nsPrefix);
             }
 
+        /**
+         * Return hash code for this object.
+         *
+         * @return this object's hash code
+         */
         @Override
         public int hashCode()
             {
-            int result = nsPrefix != null ? nsPrefix.hashCode() : 0;
-            result = 31 * result + (isAttribute ? 1 : 0);
-            result = 31 * result + localName.hashCode();
+            int result = m_nsPrefix != null ? m_nsPrefix.hashCode() : 0;
+            result = 31 * result + (m_fAttribute ? 1 : 0);
+            result = 31 * result + m_localName.hashCode();
             return result;
             }
+
+        // ---- data members --------------------------------------------
+
+        /**
+         * Regex expression to use when parsing property names.
+         */
+        private static final Pattern PATTERN =
+                Pattern.compile("((.*):)?(@)?(.+)");
+
+        /**
+         * Namespace prefix.
+         */
+        private String m_nsPrefix;
+
+        /**
+         * True if this property shold be writtin out as attribute.
+         */
+        private boolean m_fAttribute;
+
+        /**
+         * Property name.
+         */
+        private String m_localName;
         }
+
+
+    // ---- data members ----------------------------------------------------
+
+    /**
+     * A writer to use.
+     */
+    private XMLStreamWriter writer;
+
+    /**
+     * Root element name.
+     */
+    private String rootElementName;
+
+    /**
+     * Item element name.
+     */
+    private String itemElementName;
+
+    /**
+     * A list of property names that should be written as attributes.
+     */
+    private List<Property> attributes = new ArrayList<Property>();
+
+    /**
+     * A list of property names that should be written as child elements.
+     */
+    private List<Property> elements = new ArrayList<Property>();
+
+    /**
+     * Namespace map.
+     */
+    private Map<String, String> namespacesMap;
     }

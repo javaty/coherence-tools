@@ -2,6 +2,7 @@ package com.seovic.coherence.loader.target;
 
 
 import com.seovic.coherence.loader.Source;
+import com.seovic.coherence.loader.Target;
 
 import com.seovic.core.Updater;
 import com.seovic.core.updater.MapUpdater;
@@ -18,37 +19,61 @@ import org.supercsv.prefs.CsvPreference;
 
 
 /**
- * @author ic  2009.06.09
+ * A {@link Target} implementation that writes items into a CSV file.
+ *
+ * @author Aleksandar Seovic/Ivan Cikic  2009.06.15
  */
 public class CsvTarget
         extends AbstractBaseTarget
     {
-    private ICsvMapWriter writer;
+    // ---- constructors ----------------------------------------------------
 
-    private String[] propertyNames;
-
+    /**
+     * Construct CsvTarget instance.
+     *
+     * @param writer         writer to use
+     * @param propertyNames  attribute names
+     */
     public CsvTarget(Writer writer, String propertyNames)
         {
         this(writer, propertyNames.split(","));
         }
 
+    /**
+     * Construct CsvTarget instance.
+     *
+     * @param writer         writer to use
+     * @param propertyNames  attribute names
+     */
     public CsvTarget(Writer writer, String... propertyNames)
         {
-        this.writer = new CsvMapWriter(writer,
+        this.m_writer = new CsvMapWriter(writer,
                                        CsvPreference.STANDARD_PREFERENCE);
-        this.propertyNames = propertyNames;
+        this.m_propertyNames = propertyNames;
         }
 
+
+    // ---- AbstractBaseTarget implementation -------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
     protected Updater createDefaultUpdater(String propertyName)
         {
         return new MapUpdater(propertyName);
         }
 
+
+    // ---- Source implementation -------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
     public void beginImport()
         {
         try
             {
-            writer.writeHeader(propertyNames);
+            m_writer.writeHeader(m_propertyNames);
             }
         catch (IOException e)
             {
@@ -56,12 +81,15 @@ public class CsvTarget
             }
         }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings({"unchecked"})
     public void importItem(Object item)
         {
         try
             {
-            writer.write((Map<String, ?>) item, propertyNames);
+            m_writer.write((Map<String, ?>) item, m_propertyNames);
             }
         catch (IOException e)
             {
@@ -70,11 +98,14 @@ public class CsvTarget
 
         }
 
+    /**
+     * {@inheritDoc}
+     */
     public void endImport()
         {
         try
             {
-            writer.close();
+            m_writer.close();
             }
         catch (IOException e)
             {
@@ -82,13 +113,32 @@ public class CsvTarget
             }
         }
 
+    /**
+     * {@inheritDoc}
+     */
     public String[] getPropertyNames()
         {
-        return propertyNames;
+        return m_propertyNames;
         }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object createTargetInstance(Source source, Object sourceItem)
         {
         return new HashMap<String, Object>();
         }
+
+    
+    // ---- data members ----------------------------------------------------
+
+    /**
+     * A writer to use.
+     */
+    private ICsvMapWriter m_writer;
+
+    /**
+     * Property names.
+     */
+    private String[] m_propertyNames;
     }

@@ -53,7 +53,7 @@ public class LoaderTests
     @Test
     public void testCsvToCoherenceLoader()
         {
-        Loader loader = new CsvToCoherenceLoader("countries.csv", countries, Country.class);
+        Loader loader = new CsvToCoherence("countries.csv", countries, Country.class);
         loader.load();
 
         // asserts
@@ -70,7 +70,7 @@ public class LoaderTests
             throws IOException
         {
         prepareCache();
-        Source source = new CoherenceCacheSource("countries");
+        Source source = new CoherenceCacheSource(countries);
         Writer writer = new StringWriter();
         Target target = new CsvTarget(writer,
                                       "code,formalName,capital,currencySymbol,currencyName,telephonePrefix,domain");
@@ -92,7 +92,7 @@ public class LoaderTests
     @Test
     public void testXmlToCoherenceLoader()
         {
-        Loader loader = new XmlToCoherenceLoader("countries.xml", countries, Country.class);
+        Loader loader = new XmlToCoherence("countries.xml", countries, Country.class);
         loader.load();
 
         // asserts
@@ -133,7 +133,7 @@ public class LoaderTests
             throws Exception
         {
         prepareCache();
-        Source source = new CoherenceCacheSource("countries");
+        Source source = new CoherenceCacheSource(countries);
         StringWriter writer = new StringWriter();
         Target target = new XmlTarget(writer, "countries", "country",
                                       "@code,name,formalName,capital,currencySymbol,currencyName,telephonePrefix,domain");

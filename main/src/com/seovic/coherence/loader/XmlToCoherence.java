@@ -35,22 +35,43 @@ import org.springframework.core.io.Resource;
  *
  * @author Aleksandar Seovic  2009.09.29
  */
-public class XmlToCoherenceLoader
+public class XmlToCoherence
         extends AbstractDelegatingLoader
     {
     // ---- constructors ----------------------------------------------------
 
-    public XmlToCoherenceLoader(String xmlFile, NamedCache cache, Class itemClass)
+    /**
+     * Construct XmlToCoherence loader instance.
+     *
+     * @param xmlFile    XML file to read items from
+     * @param cache      Coherence cache to import objects into
+     * @param itemClass  target item class
+     */
+    public XmlToCoherence(String xmlFile, NamedCache cache, Class itemClass)
         {
         this(getResource(xmlFile), cache, itemClass);
         }
 
-    public XmlToCoherenceLoader(Resource xmlFile, NamedCache cache, Class itemClass)
+    /**
+     * Construct XmlToCoherence loader instance.
+     *
+     * @param xmlFile    XML file to read items from
+     * @param cache      Coherence cache to import objects into
+     * @param itemClass  target item class
+     */
+    public XmlToCoherence(Resource xmlFile, NamedCache cache, Class itemClass)
         {
         this(createResourceReader(xmlFile), cache, itemClass);
         }
 
-    public XmlToCoherenceLoader(Reader xmlReader, NamedCache cache, Class itemClass)
+    /**
+     * Construct XmlToCoherence loader instance.
+     *
+     * @param xmlReader  XML file reader
+     * @param cache      Coherence cache to import objects into
+     * @param itemClass  target item class
+     */
+    public XmlToCoherence(Reader xmlReader, NamedCache cache, Class itemClass)
         {
         Source source = new XmlSource(xmlReader);
         Target target = new CoherenceCacheTarget(cache, itemClass);
@@ -65,7 +86,7 @@ public class XmlToCoherenceLoader
         {
         if (args.length < 3)
             {
-            System.out.println("Usage: java com.seovic.coherence.loader.XmlToCoherenceLoader <xmlFile> <cacheName> <itemClass>");
+            System.out.println("Usage: java com.seovic.coherence.loader.XmlToCoherence <xmlFile> <cacheName> <itemClass>");
             System.exit(0);
             }
 
@@ -73,6 +94,6 @@ public class XmlToCoherenceLoader
         NamedCache cache     = CacheFactory.getCache(args[1]);
         Class      itemClass = Class.forName(args[2]);
 
-        new XmlToCoherenceLoader(xmlReader, cache, itemClass).load();
+        new XmlToCoherence(xmlReader, cache, itemClass).load();
         }
     }

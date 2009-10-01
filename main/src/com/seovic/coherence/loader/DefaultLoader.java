@@ -6,21 +6,33 @@ import com.seovic.core.Updater;
 
 
 /**
- * @author ic  2009.06.09
+ * Default loader implementation.
+ *
+ * @author Aleksandar Seovic/Ivan Cikic  2009.06.15
  */
 public class DefaultLoader
         implements Loader
     {
-    private Source source;
+    // ---- constructors ----------------------------------------------------
 
-    private Target target;
-
+    /**
+     * Construct DefaultLoader instance.
+     *
+     * @param source  source to load items from
+     * @param target  target to load items into
+     */
     public DefaultLoader(Source source, Target target)
         {
         this.source = source;
         this.target = target;
         }
 
+
+    // ---- Loader implementation -------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
     public void load()
         {
         source.beginExport();
@@ -41,5 +53,17 @@ public class DefaultLoader
         source.endExport();
         target.endImport();
         }
+
+    // ---- data members ----------------------------------------------------
+
+    /**
+     * Source to load items from.
+     */
+    private Source source;
+
+    /**
+     * Target to load items into.
+     */
+    private Target target;
     }
 

@@ -16,7 +16,7 @@
 
 package com.seovic.coherence.util.filter;
 
-import com.seovic.coherence.loader.CsvToCoherenceLoader;
+import com.seovic.coherence.loader.CsvToCoherence;
 import com.seovic.test.objects.Country;
 import com.seovic.core.Condition;
 
@@ -76,6 +76,6 @@ public class FilterBuilderTests
 
     private void loadCountries(String csvFile)
         {
-        new CsvToCoherenceLoader(csvFile, countries, Country.class).load();
+        new CsvToCoherence(csvFile, countries, Country.class).load();
         }
 }

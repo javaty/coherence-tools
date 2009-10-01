@@ -3,6 +3,7 @@ package com.seovic.coherence.loader.source;
 
 import com.seovic.core.Extractor;
 import com.seovic.core.extractor.XmlExtractor;
+import com.seovic.coherence.loader.Source;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -23,14 +24,20 @@ import org.xml.sax.InputSource;
 
 
 /**
- * @author ic  2009.06.10
+ * A {@link Source} implementation that reads items to load from an XML file.
+ *
+ * @author Aleksandar Seovic/Ivan Cikic  2009.06.18
  */
 public class XmlSource
         extends AbstractBaseSource
     {
-    private XMLStreamReader reader;
+    // ---- constructors ----------------------------------------------------
 
-
+    /**
+     * Construct a CsvSource instance.
+     *
+     * @param reader  reader to use to read CSV file with
+     */
     public XmlSource(Reader reader)
         {
         try
@@ -44,26 +51,46 @@ public class XmlSource
             }
         }
 
+
+    // ---- Iterable implementation -----------------------------------------
+
+    /**
+     * Return an iterator over this source.
+     *
+     * @return a source iterator
+     */
     public Iterator iterator()
         {
         return new XmlIterator(reader);
         }
 
+
+    // ---- AbstractBaseSource implementation -------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
     protected Extractor createDefaultExtractor(String propertyName)
         {
         return new XmlExtractor(propertyName);
         }
 
-        public static class XmlIterator
+
+    // ---- inner class: XmlIterator ----------------------------------------
+
+    /**
+     * Iterator implementation for XmlSource.
+     */
+    public static class XmlIterator
             implements Iterator
         {
-        private XMLStreamReader reader;
+        // ---- constructors --------------------------------------------
 
-        private Map<String, String> namespaceMap =
-                new HashMap<String, String>();
-
-        private DocumentBuilderFactory documentFactory;
-
+        /**
+         * Construct XmlIterator instance.
+         *
+         * @param reader  reader to use
+         */
         public XmlIterator(XMLStreamReader reader)
             {
             this.documentFactory = DocumentBuilderFactory.newInstance();
@@ -91,6 +118,13 @@ public class XmlSource
                 }
             }
 
+        // ---- Iterator implementation ---------------------------------
+
+        /**
+         * Returns true if there are more items to read, false otherwise.
+         *
+         * @return true if there are more items to read, false otherwise
+         */
         public boolean hasNext()
             {
             try
@@ -109,6 +143,11 @@ public class XmlSource
                 }
             }
 
+        /**
+         * Reads the next item from the file and returns it as XmlDocument.
+         *
+         * @return an XmlDocument representing next item in the file
+         */
         public Object next()
             {
             try
@@ -124,7 +163,28 @@ public class XmlSource
                 }
             }
 
-        private String getNextElement(XMLStreamReader reader)
+        /**
+         * Not supported.
+         */
+        public void remove()
+            {
+            throw new UnsupportedOperationException(
+                    "XmlFileIterator supports " +
+                    " only read operations");
+            }
+
+        // ---- helper methods ------------------------------------------
+
+        /**
+         * Reads the next element from the stream.
+         *
+         * @param reader  reader to use
+         *
+         * @return element as a string
+         *
+         * @throws XMLStreamException  if an error occurs
+         */
+        protected String getNextElement(XMLStreamReader reader)
                 throws XMLStreamException
             {
             while (reader.getEventType() != XMLStreamConstants.START_ELEMENT
@@ -137,14 +197,15 @@ public class XmlSource
             return content.toString();
             }
 
-        public void remove()
-            {
-            throw new UnsupportedOperationException(
-                    "XmlFileIterator supports " +
-                    " only read operations");
-            }
-
-        private void writeElement(StringBuilder content,
+        /**
+         * Writes properly namespaced element into the specified string builder.
+         *
+         * @param content  string builder to write element into
+         * @param nsMap    namespace map
+         *
+         * @throws XMLStreamException  if an error occurs
+         */
+        protected void writeElement(StringBuilder content,
                                   Map<String, String> nsMap)
                 throws XMLStreamException
             {
@@ -160,6 +221,12 @@ public class XmlSource
             writeClosingTag(content, elementName);
             }
 
+        /**
+         * Writes opening tag into the specified string builder.
+         *
+         * @param content      string builder to write element into
+         * @param elementName  element name
+         */
         protected void writeOpeningTag(StringBuilder content, QName elementName)
             {
             String prefix = elementName.getPrefix();
@@ -171,6 +238,12 @@ public class XmlSource
             content.append(elementName.getLocalPart());
             }
 
+        /**
+         * Writes namespace declarations into the specified string builder.
+         *
+         * @param content  string builder to write element into
+         * @param nsMap    namespace map
+         */
         protected void writeNamespaces(StringBuilder content,
                                        Map<String, String> nsMap)
             {
@@ -190,6 +263,11 @@ public class XmlSource
                 }
             }
 
+        /**
+         * Writes attributes into the specified string builder.
+         *
+         * @param content  string builder to write element into
+         */
         protected void writeAttributes(StringBuilder content)
             {
             String prefix;// write attributes
@@ -212,6 +290,13 @@ public class XmlSource
             content.append(">");
             }
 
+        /**
+         * Writes element contents into the specified string builder.
+         *
+         * @param content  string builder to write element into
+         *
+         * @throws XMLStreamException  if an error occurs
+         */
         protected void writeContents(StringBuilder content)
                 throws XMLStreamException
             {
@@ -245,6 +330,12 @@ public class XmlSource
                 }
             }
 
+        /**
+         * Writes closing tag into the specified string builder.
+         *
+         * @param content      string builder to write element into
+         * @param elementName  element name
+         */
         protected void writeClosingTag(StringBuilder content, QName elementName)
             {
             String prefix = elementName.getPrefix();
@@ -255,5 +346,28 @@ public class XmlSource
                 }
             content.append(elementName.getLocalPart()).append(">");
             }
+
+        // ---- data members --------------------------------------------
+
+        /**
+         * Reader to use.
+         */
+        private XMLStreamReader reader;
+
+        /**
+         * Namespace map.
+         */
+        private Map<String, String> namespaceMap =
+                new HashMap<String, String>();
+
+        /**
+         * Document builder factory.
+         */
+        private DocumentBuilderFactory documentFactory;
         }
+
+    /**
+     * Reader to use.
+     */
+    private XMLStreamReader reader;
     }
