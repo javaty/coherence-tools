@@ -14,25 +14,28 @@
  * limitations under the License.
  */
 
-package com.seovic.coherence.io.pof.reflect;
+package com.seovic.coherence.util.extractor;
+
+
+import com.seovic.coherence.io.pof.reflect.SimplePofPath;
 
 
 /**
- * An extension of standard SimplePofPath that adds a convenience constructor.
+ * An extension of standard PofExtractor that adds several convenience
+ * constructors.
  *
- * @author Aleksandar Seovic  2009.09.29
+ * @author Aleksandar Seovic  2009.10.01
  */
-public class SimplePofPath extends com.tangosol.io.pof.reflect.SimplePofPath
+public class PofExtractor
+        extends com.tangosol.util.extractor.PofExtractor
     {
-    // ---- constructors ----------------------------------------------------
-
     /**
-     * Construct a SimplePofPath using an array of indices as a path.
+     * Construct PofExtractor instance.
      *
-     * @param indices  an array of indices
+     * @param indices  an array of property indices
      */
-    public SimplePofPath(int... indices)
+    public PofExtractor(int... indices)
         {
-        super(indices);
+        super(new SimplePofPath(indices));
         }
     }
