@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using Seovic.Coherence.Loader.Source;
 using Seovic.Coherence.Loader.Target;
 using Spring.Core.IO;
@@ -9,9 +7,14 @@ using Tangosol.Net;
 
 namespace Seovic.Coherence.Loader
 {
+    /// <summary>
+    /// Convenience class that loads data from the CSV file into Coherence cache
+    /// using default settings.
+    /// </summary>
+    /// <author>Aleksandar Seovic  2009.09.29</author>
+    /// <author>Ivan Cikic  2009.10.31</author>
     public class CsvToCoherence : AbstractDelegatingLoader
     {
-
         #region Constructors
 
         /// <summary>
