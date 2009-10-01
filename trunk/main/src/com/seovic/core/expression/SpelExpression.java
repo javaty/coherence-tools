@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.seovic.core.expression;
 
 
@@ -62,8 +63,7 @@ public class SpelExpression extends AbstractExpression {
      * {@inheritDoc}
      */
 	@SuppressWarnings("unchecked")
-	@Override
-	public Object evaluate(Object target, Map variables) 
+	public Object evaluate(Object target, Map variables)
 		{
 		Expression                expression = getParsedExpression();
 		StandardEvaluationContext context    = new StandardEvaluationContext();
@@ -85,7 +85,6 @@ public class SpelExpression extends AbstractExpression {
 	/**
      * {@inheritDoc}
      */
-	@Override
 	public void evaluateAndSet(Object target, Object value) 
 		{
 		Expression                expression = getParsedExpression();
@@ -131,7 +130,7 @@ public class SpelExpression extends AbstractExpression {
     
     // ---- data members ----------------------------------------------------
     
-	private static transient ExpressionParser m_parser = new SpelExpressionParser();
+	private static final ExpressionParser m_parser = new SpelExpressionParser();
 	
 	private transient Expression m_parsedExpression;
 }
