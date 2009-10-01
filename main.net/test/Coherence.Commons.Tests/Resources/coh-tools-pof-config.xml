@@ -27,6 +27,10 @@
       <type-id>813</type-id>
       <class-name>Seovic.Coherence.Core.Expression.ScriptExpression, Coherence.Commons</class-name>
     </user-type>
+    <user-type>
+      <type-id>814</type-id>
+      <class-name>Seovic.Coherence.Core.Expression.SpelExpression, Coherence.Commons</class-name>
+    </user-type>
     
     <user-type>
       <type-id>820</type-id>
