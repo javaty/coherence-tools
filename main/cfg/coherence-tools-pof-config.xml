@@ -1,0 +1,176 @@
+<!--
+  ~ Copyright 2009 Aleksandar Seovic
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE pof-config SYSTEM "pof-config.dtd">
+
+<pof-config>
+  <user-type-list>
+  	<include>coherence-pof-config.xml</include>
+  	<user-type>
+      <type-id>800</type-id>
+      <class-name>com.seovic.core.condition.ExpressionCondition</class-name>
+    </user-type>
+  	<user-type>
+      <type-id>801</type-id>
+      <class-name>com.seovic.core.condition.FilterAdapter</class-name>
+    </user-type>
+    
+    <user-type>
+      <type-id>810</type-id>
+      <class-name>com.seovic.core.expression.GroovyExpression</class-name>
+    </user-type>
+    <user-type>
+      <type-id>811</type-id>
+      <class-name>com.seovic.core.expression.MvelExpression</class-name>
+    </user-type>
+    <user-type>
+      <type-id>812</type-id>
+      <class-name>com.seovic.core.expression.OgnlExpression</class-name>
+    </user-type>
+    <user-type>
+      <type-id>813</type-id>
+      <class-name>com.seovic.core.expression.ScriptExpression</class-name>
+    </user-type>
+    
+    <user-type>
+      <type-id>820</type-id>
+      <class-name>com.seovic.core.extractor.ExpressionExtractor</class-name>
+    </user-type>
+    <user-type>
+      <type-id>821</type-id>
+      <class-name>com.seovic.core.extractor.KeyExtractorAdapter</class-name>
+    </user-type>
+    <user-type>
+      <type-id>822</type-id>
+      <class-name>com.seovic.core.extractor.MapExtractor</class-name>
+    </user-type>
+    <user-type>
+      <type-id>823</type-id>
+      <class-name>com.seovic.core.extractor.PropertyExtractor</class-name>
+    </user-type>
+    <user-type>
+      <type-id>824</type-id>
+      <class-name>com.seovic.core.extractor.ValueExtractorAdapter</class-name>
+    </user-type>
+    <user-type>
+      <type-id>825</type-id>
+      <class-name>com.seovic.core.extractor.XmlExtractor</class-name>
+    </user-type>
+  	
+  	<user-type>
+      <type-id>830</type-id>
+      <class-name>com.seovic.core.updater.BeanWrapperUpdater</class-name>
+    </user-type>
+    <user-type>
+      <type-id>831</type-id>
+      <class-name>com.seovic.core.updater.ExpressionUpdater</class-name>
+    </user-type>
+    <user-type>
+      <type-id>832</type-id>
+      <class-name>com.seovic.core.updater.MapUpdater</class-name>
+    </user-type>
+    <user-type>
+      <type-id>833</type-id>
+      <class-name>com.seovic.core.updater.PropertyUpdater</class-name>
+    </user-type>
+
+    <user-type>
+      <type-id>840</type-id>
+      <class-name>com.seovic.coherence.identity.sequence.Sequence</class-name>
+    </user-type>
+    <user-type>
+      <type-id>841</type-id>
+      <class-name>com.seovic.coherence.identity.sequence.SequenceBlock</class-name>
+    </user-type>
+    <user-type>
+      <type-id>842</type-id>
+      <class-name>com.seovic.coherence.identity.sequence.SequenceBlockAllocator</class-name>
+    </user-type>
+
+    <user-type>
+      <type-id>845</type-id>
+      <class-name>com.seovic.coherence.lookup.LookupValue</class-name>
+    </user-type>
+    <user-type>
+      <type-id>846</type-id>
+      <class-name>com.seovic.coherence.lookup.LookupValueExtractor</class-name>
+    </user-type>
+    <user-type>
+      <type-id>847</type-id>
+      <class-name>com.seovic.coherence.lookup.LookupValuesAggregator</class-name>
+    </user-type>
+
+    <user-type>
+      <type-id>850</type-id>
+      <class-name>com.seovic.coherence.util.aggregator.TopAggregator</class-name>
+    </user-type>
+    <user-type>
+      <type-id>851</type-id>
+      <class-name>com.seovic.coherence.util.aggregator.TopAggregator$KeyValuePair</class-name>
+    </user-type>
+    <user-type>
+      <type-id>852</type-id>
+      <class-name>com.seovic.coherence.util.aggregator.TopAggregator$KeyValuePairExtractor</class-name>
+    </user-type>
+    <user-type>
+      <type-id>853</type-id>
+      <class-name>com.seovic.coherence.util.filter.StartsWithFilter</class-name>
+    </user-type>
+
+    <user-type>
+      <type-id>860</type-id>
+      <class-name>com.seovic.coherence.util.processor.BinaryExtractorProcessor</class-name>
+    </user-type>
+    <user-type>
+      <type-id>861</type-id>
+      <class-name>com.seovic.coherence.util.processor.BinaryNumberIncrementor</class-name>
+    </user-type>
+    <user-type>
+      <type-id>862</type-id>
+      <class-name>com.seovic.coherence.util.processor.BinaryPut</class-name>
+    </user-type>
+    <user-type>
+      <type-id>863</type-id>
+      <class-name>com.seovic.coherence.util.processor.BinaryVersionedPut</class-name>
+    </user-type>
+    <user-type>
+      <type-id>864</type-id>
+      <class-name>com.seovic.coherence.util.processor.Put</class-name>
+    </user-type>
+    <user-type>
+      <type-id>865</type-id>
+      <class-name>com.seovic.coherence.util.processor.Remove</class-name>
+    </user-type>
+
+    <user-type>
+      <type-id>1001</type-id>
+      <class-name>com.seovic.test.objects.Address</class-name>
+    </user-type>
+    <user-type>
+      <type-id>1002</type-id>
+      <class-name>com.seovic.test.objects.City</class-name>
+    </user-type>
+    <user-type>
+      <type-id>1003</type-id>
+      <class-name>com.seovic.test.objects.Country</class-name>
+    </user-type>
+    <user-type>
+      <type-id>803</type-id>
+      <class-name>com.seovic.test.objects.Person</class-name>
+    </user-type>
+    
+  </user-type-list>
+</pof-config>

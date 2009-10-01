@@ -152,9 +152,9 @@ public class LoaderTests
         NodeList countries = root.getElementsByTagName("country");
 
         assertEquals(3, countries.getLength());
-        assertEquals("SGP", ((Element) countries.item(0)).getAttribute("code"));
-        assertEquals("CHL", ((Element) countries.item(1)).getAttribute("code"));
-        assertEquals("SRB", ((Element) countries.item(2)).getAttribute("code"));
+        assertEquals("CHL", ((Element) countries.item(0)).getAttribute("code"));
+        assertEquals("SRB", ((Element) countries.item(1)).getAttribute("code"));
+        assertEquals("SGP", ((Element) countries.item(2)).getAttribute("code"));
         }
 
     @Test
