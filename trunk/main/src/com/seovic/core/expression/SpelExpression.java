@@ -66,7 +66,8 @@ public class SpelExpression extends AbstractExpression {
 	public Object evaluate(Object target, Map variables)
 		{
 		Expression                expression = getParsedExpression();
-		StandardEvaluationContext context    = new StandardEvaluationContext();
+        StandardEvaluationContext context    = m_context;
+
 		context.setRootObject(target);
 		if (variables != null) 
 			{
@@ -88,7 +89,8 @@ public class SpelExpression extends AbstractExpression {
 	public void evaluateAndSet(Object target, Object value) 
 		{
 		Expression                expression = getParsedExpression();
-		StandardEvaluationContext context    = new StandardEvaluationContext();
+        StandardEvaluationContext context    = m_context;
+
 		context.setRootObject(target);
 		try 
 			{
@@ -116,7 +118,7 @@ public class SpelExpression extends AbstractExpression {
             try
                 {
             	m_parsedExpression = parsedExpression =
-                        m_parser.parseExpression(m_expression);
+                        s_parser.parseExpression(m_expression);
                 }
             catch (ParseException e)
                 {
@@ -130,7 +132,8 @@ public class SpelExpression extends AbstractExpression {
     
     // ---- data members ----------------------------------------------------
     
-	private static final ExpressionParser m_parser = new SpelExpressionParser();
-	
+	private static final ExpressionParser s_parser  = new SpelExpressionParser();
+
+    private transient StandardEvaluationContext m_context = new StandardEvaluationContext();
 	private transient Expression m_parsedExpression;
 }
