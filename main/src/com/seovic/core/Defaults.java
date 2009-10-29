@@ -149,7 +149,7 @@ public class Defaults
         Properties props = new Properties();
         try
             {
-            props.load(Defaults.class.getResourceAsStream("defaults.properties"));
+            props.load(getClass().getResourceAsStream("defaults.properties"));
             }
         catch (IOException e)
             {
