@@ -30,11 +30,12 @@ import com.tangosol.util.filter.AlwaysFilter;
 
 import com.tangosol.util.comparator.InverseComparator;
 
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import java.util.Collection;
+import java.util.List;
 
 
 @SuppressWarnings("unchecked")
@@ -58,39 +59,34 @@ public class TopAggregatorTests
         }
 
     @Test
-    public void testTop10ByNameAsc()
+    public void testTop10ByCodeAsc()
         {
-        TopAggregator ta = new TopAggregator(new ExpressionExtractor("name"),
-                                             null, 10);
-        long start = System.nanoTime();
-        for (int i = 0; i < 10000; i++)
+        TopAggregator ta      = new TopAggregator(new ExpressionExtractor("code"), null, 10);
+        List<String>  results = (List<String>) countries.aggregate(AlwaysFilter.INSTANCE, ta);
+
+        assertEquals(10, results.size());
+        String prev = results.get(0);
+        for (int i = 1; i < 10; i++)
             {
-            Collection keys = (Collection) countries.aggregate(
-                    AlwaysFilter.INSTANCE, ta);
+            assertTrue(prev.compareTo(results.get(i)) <= 0);
+            prev = results.get(i);
             }
-        long end = System.nanoTime();
-        System.out.println(
-                "Elapsed: " + (end - start) / 1000000 + "ms; Average: "
-                + (end - start) / 10000 + "ns");
-        //System.out.println(keys);
         }
 
     @Test
-    public void testTop10ByNameDesc()
+    public void testTop10ByCodeDesc()
         {
-        TopAggregator ta = new TopAggregator(new ExpressionExtractor("name"),
-                                             new InverseComparator(), 10);
-        long start = System.nanoTime();
-        for (int i = 0; i < 10000; i++)
+        TopAggregator ta      = new TopAggregator(new ExpressionExtractor("code"),
+                                                  new InverseComparator(), 10);
+        List<String>  results = (List<String>) countries.aggregate(AlwaysFilter.INSTANCE, ta);
+
+        assertEquals(10, results.size());
+        String prev = results.get(0);
+        for (int i = 1; i < 10; i++)
             {
-            Collection keys = (Collection) countries.aggregate(
-                    AlwaysFilter.INSTANCE, ta);
+            assertTrue(prev.compareTo(results.get(i)) >= 0);
+            prev = results.get(i);
             }
-        long end = System.nanoTime();
-        System.out.println(
-                "Elapsed: " + (end - start) / 1000000 + "ms; Average: "
-                + (end - start) / 10000 + "ns");
-        //System.out.println(keys);
         }
 
 

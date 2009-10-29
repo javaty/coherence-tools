@@ -7,6 +7,7 @@
   <property environment="env"/>
   <property name="env.COHERENCE_HOME" value="/opt/coherence-3.5"/>
 
+  <property name="cfg.dir"   value="cfg"/>
   <property name="src.dir"   value="src"/>
   <property name="test.dir"  value="test"/>
   <property name="build.dir" value="build"/>
@@ -35,6 +36,16 @@
            source="1.5"
            target="1.5">
     </javac>
+
+    <copy todir="${build.dir}/classes">
+      <fileset dir="${cfg.dir}">
+        <include name="*.xml"/>
+        <include name="*.properties"/>
+      </fileset>
+      <fileset dir="${src.dir}">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
   </target>
 
   <target name="test" depends="build">
@@ -54,7 +65,7 @@
       </fileset>
     </copy>
 
-    <junit haltonfailure="yes" printsummary="on">
+    <junit haltonfailure="yes">
       <classpath>
         <pathelement path="${env.COHERENCE_HOME}/lib/coherence.jar"/>
         <pathelement location="${build.dir}/classes"/>
@@ -66,8 +77,10 @@
       <batchtest>
         <fileset dir="${test.dir}">
           <include name="**/*Tests.java"/>
+          <exclude name="**/Abstract*.java"/>
         </fileset>
       </batchtest>
+      <formatter type="brief" usefile="false"/>
     </junit>
   </target>
 

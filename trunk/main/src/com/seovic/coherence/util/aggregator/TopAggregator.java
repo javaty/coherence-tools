@@ -86,7 +86,7 @@ public class TopAggregator
     public void readExternal(DataInput in) throws IOException {
         super.readExternal(in);
         comparator = (Comparator) readObject(in);
-        maxItems = in.readInt();
+        maxItems   = in.readInt();
     }
 
     @Override
@@ -100,7 +100,7 @@ public class TopAggregator
     public void readExternal(PofReader in) throws IOException {
         super.readExternal(in);
         comparator = (Comparator) in.readObject(10);
-        maxItems = in.readInt(11);
+        maxItems   = in.readInt(11);
     }
 
     @Override
@@ -277,7 +277,7 @@ public class TopAggregator
             ArrayList list = new ArrayList(length);
             KeyValuePair cur = head;
             do {
-                list.add(cur);
+                list.add(cur.getKey());
                 cur = cur.next;
             } while (cur != head);
 

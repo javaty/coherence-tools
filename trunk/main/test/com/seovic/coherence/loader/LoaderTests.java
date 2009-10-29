@@ -24,6 +24,8 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Set;
+import java.util.HashSet;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -40,6 +42,7 @@ import org.xml.sax.InputSource;
 /**
  * @author ic  2009.06.15
  */
+@SuppressWarnings({"unchecked"})
 public class LoaderTests
     {
     public static final NamedCache countries = CacheFactory.getCache("countries");
@@ -141,8 +144,6 @@ public class LoaderTests
         Loader loader = new DefaultLoader(source, target);
         loader.load();
 
-        System.out.println(writer.toString());
-        // asserts
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         Document doc = factory.newDocumentBuilder().parse(
@@ -152,9 +153,18 @@ public class LoaderTests
         NodeList countries = root.getElementsByTagName("country");
 
         assertEquals(3, countries.getLength());
-        assertEquals("CHL", ((Element) countries.item(0)).getAttribute("code"));
-        assertEquals("SRB", ((Element) countries.item(1)).getAttribute("code"));
-        assertEquals("SGP", ((Element) countries.item(2)).getAttribute("code"));
+
+        Set expectedCodes = new HashSet(3);
+        expectedCodes.add("CHL");
+        expectedCodes.add("SRB");
+        expectedCodes.add("SGP");
+
+        Set actualCodes = new HashSet(3);
+        for (int i = 0; i < 3; i++)
+            {
+            actualCodes.add(((Element) countries.item(i)).getAttribute("code"));
+            }
+        assertEquals(expectedCodes, actualCodes);
         }
 
     @Test
