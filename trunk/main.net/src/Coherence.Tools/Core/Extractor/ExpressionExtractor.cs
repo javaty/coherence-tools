@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Tangosol.IO.Pof;
 
 namespace Seovic.Coherence.Core.Extractor
@@ -27,9 +28,19 @@ namespace Seovic.Coherence.Core.Extractor
         /// Construct an <code>ExpressionExtractor</code> instance.
         /// </summary>
         /// <param name="expression">The expression to use.</param>
-        public ExpressionExtractor(IExpression expression)
+        public ExpressionExtractor(IExpression expression) : this(expression, null)
+        {
+        }
+
+        /// <summary>
+        /// Construct an <code>ExpressionExtractor</code> instance.
+        /// </summary>
+        /// <param name="expression">The expression to use.</param>
+        /// <param name="variables">The dictionary containing variables to be used during expression evaluation.</param>
+        public ExpressionExtractor(IExpression expression, IDictionary variables)
         {
             m_expression = expression;
+            m_variables  = variables;
         }
 
         #endregion
@@ -42,7 +53,7 @@ namespace Seovic.Coherence.Core.Extractor
             {
                 return null;
             }
-            return m_expression.Evaluate(target);
+            return m_expression.Evaluate(target, m_variables);
         }
 
         #endregion
@@ -52,11 +63,13 @@ namespace Seovic.Coherence.Core.Extractor
         public void ReadExternal(IPofReader reader)
         {
             m_expression = (IExpression)reader.ReadObject(0);
+            m_variables  = reader.ReadDictionary(1, new Hashtable());
         }
 
         public void WriteExternal(IPofWriter writer)
         {
             writer.WriteObject(0, m_expression);
+            writer.WriteDictionary(1, m_variables);
         }
 
         #endregion
@@ -98,6 +111,11 @@ namespace Seovic.Coherence.Core.Extractor
         /// The expression to use.
         /// </summary>
         private IExpression m_expression;
+
+        /// <summary>
+        /// The variables to use during expression evaluation.
+        /// </summary>
+        private IDictionary m_variables;
 
         #endregion
     }

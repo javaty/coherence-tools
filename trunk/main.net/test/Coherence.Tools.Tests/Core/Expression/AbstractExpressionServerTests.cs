@@ -40,17 +40,16 @@ namespace Seovic.Coherence.Core.Expression
             Assert.AreEqual("Springfield", Evaluate(exp, person.Id, null));
         }
 
-        // TODO: ExpressionExtractor needs to be able to store context map
-//        [Test]
-//        public void TestExpressionWithTargetAndVariables()
-//        {
-//            Person person = new Person(1L, "Homer");
-//            IDictionary vars = new Hashtable();
-//            vars["lastName"] = "Simpson";
-//            Store(person.Id, person);
-//            IExpression exp = CreateExpression("name + ' ' + lastName");
-//            Assert.AreEqual("Homer Simpson", Evaluate(exp, person.Id, vars));
-//        }
+        [Test]
+        public void TestExpressionWithTargetAndVariables()
+        {
+            Person person = new Person(1L, "Homer");
+            IDictionary vars = new Hashtable();
+            vars["lastName"] = "Simpson";
+            Store(person.Id, person);
+            IExpression exp = CreateExpression("name + ' ' + lastName");
+            Assert.AreEqual("Homer Simpson", Evaluate(exp, person.Id, vars));
+        }
 
         protected virtual void Store(object key, object value)
         {
@@ -59,7 +58,7 @@ namespace Seovic.Coherence.Core.Expression
 
         protected virtual object Evaluate(IExpression exp, object key, IDictionary context)
         {
-            ExtractorProcessor agent = new ExtractorProcessor(new ExpressionExtractor(exp));
+            ExtractorProcessor agent = new ExtractorProcessor(new ExpressionExtractor(exp, context));
             return _cache.Invoke(key, agent);
         }
 
