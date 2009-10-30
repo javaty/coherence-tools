@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coherence.Commons", "main.net\src\Coherence.Commons\Coherence.Commons.csproj", "{0E597BEB-9A78-4C66-891F-05FB36A2E134}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coherence.Tools", "main.net\src\Coherence.Tools\Coherence.Tools.csproj", "{0E597BEB-9A78-4C66-891F-05FB36A2E134}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coherence.Commons.Tests", "main.net\test\Coherence.Commons.Tests\Coherence.Commons.Tests.csproj", "{A8325EF3-E3EA-4A23-9E09-C7CBDAA26361}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coherence.Tools.Tests", "main.net\test\Coherence.Tools.Tests\Coherence.Tools.Tests.csproj", "{A8325EF3-E3EA-4A23-9E09-C7CBDAA26361}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

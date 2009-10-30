@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Seovic.Coherence</RootNamespace>
-    <AssemblyName>Coherence.Commons</AssemblyName>
+    <AssemblyName>Coherence.Tools</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

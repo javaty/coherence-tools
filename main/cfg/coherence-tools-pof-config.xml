@@ -168,7 +168,7 @@
       <class-name>com.seovic.test.objects.Country</class-name>
     </user-type>
     <user-type>
-      <type-id>803</type-id>
+      <type-id>1004</type-id>
       <class-name>com.seovic.test.objects.Person</class-name>
     </user-type>
     
