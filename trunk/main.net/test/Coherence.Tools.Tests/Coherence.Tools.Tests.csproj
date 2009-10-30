@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Seovic.Coherence</RootNamespace>
-    <AssemblyName>Coherence.Commons.Tests</AssemblyName>
+    <AssemblyName>Coherence.Tools.Tests</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -65,9 +65,9 @@
     <Compile Include="Util\Filter\StartsWithFilterTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Coherence.Commons\Coherence.Commons.csproj">
+    <ProjectReference Include="..\..\src\Coherence.Tools\Coherence.Tools.csproj">
       <Project>{0E597BEB-9A78-4C66-891F-05FB36A2E134}</Project>
-      <Name>Coherence.Commons</Name>
+      <Name>Coherence.Tools</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

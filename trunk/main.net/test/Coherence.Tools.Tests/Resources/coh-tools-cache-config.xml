@@ -20,7 +20,7 @@
 
           <remote-addresses>
             <socket-address>
-              <address>10.0.0.125</address>
+              <address>192.168.0.115</address>
               <port>9099</port>
             </socket-address>
           </remote-addresses>
