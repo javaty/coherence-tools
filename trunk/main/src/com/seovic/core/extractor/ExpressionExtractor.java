@@ -153,9 +153,9 @@ public class ExpressionExtractor
         ExpressionExtractor that = (ExpressionExtractor) o;
 
         return m_expression.equals(that.m_expression)
-                && !(m_variables != null
-                        ? !m_variables.equals(that.m_variables)
-                        : that.m_variables != null);
+                && (m_variables == null
+                        ? that.m_variables == null
+                        : m_variables.equals(that.m_variables));
 
         }
 
