@@ -21,6 +21,16 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
+      <library name="spring-batch-2.1">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/lib/spring-batch-2.1-M1" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/lib/spring-batch-2.1-M1" recursive="false" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
       <library name="commons-logging">
         <CLASSES>
           <root url="file://$MODULE_DIR$/lib/commons-logging" />
