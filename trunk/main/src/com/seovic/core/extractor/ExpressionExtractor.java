@@ -28,6 +28,9 @@ import com.tangosol.io.pof.PofWriter;
 import java.io.Serializable;
 import java.io.IOException;
 
+import java.util.Map;
+import java.util.HashMap;
+
 
 /**
  * An imlementation of {@link Extractor} that extracts value from a target
@@ -64,9 +67,20 @@ public class ExpressionExtractor
      */
     public ExpressionExtractor(Expression expression)
         {
-        m_expression = expression;
+        this(expression, null);
         }
 
+    /**
+     * Construct an <tt>ExpressionExtractor</tt> instance.
+     *
+     * @param expression  the expression to use
+     * @param variables   the map containing variables to be used during evaluation
+     */
+    public ExpressionExtractor(Expression expression, Map variables)
+        {
+        m_expression = expression;
+        m_variables  = variables;
+        }
 
     // ---- Extractor implementation ----------------------------------------
 
@@ -79,7 +93,7 @@ public class ExpressionExtractor
             {
             return null;
             }
-        return m_expression.evaluate(target);
+        return m_expression.evaluate(target, m_variables);
         }
 
 
@@ -96,6 +110,7 @@ public class ExpressionExtractor
             throws IOException
         {
         m_expression = (Expression) reader.readObject(0);
+        m_variables  = reader.readMap(1, new HashMap());
         }
 
     /**
@@ -109,6 +124,7 @@ public class ExpressionExtractor
             throws IOException
         {
         writer.writeObject(0, m_expression);
+        writer.writeMap(1, m_variables);
         }
 
     
@@ -134,8 +150,13 @@ public class ExpressionExtractor
             return false;
             }
 
-        ExpressionExtractor extractor = (ExpressionExtractor) o;
-        return m_expression.equals(extractor.m_expression);
+        ExpressionExtractor that = (ExpressionExtractor) o;
+
+        return m_expression.equals(that.m_expression)
+                && !(m_variables != null
+                        ? !m_variables.equals(that.m_variables)
+                        : that.m_variables != null);
+
         }
 
     /**
@@ -146,7 +167,9 @@ public class ExpressionExtractor
     @Override
     public int hashCode()
         {
-        return m_expression.hashCode();
+        int result = m_expression.hashCode();
+        result = 31 * result + (m_variables != null ? m_variables.hashCode() : 0);
+        return result;
         }
 
     /**
@@ -158,8 +181,9 @@ public class ExpressionExtractor
     public String toString()
         {
         return "ExpressionExtractor{" +
-               "expression=" + m_expression +
-               '}';
+                "m_expression=" + m_expression +
+                ", m_variables=" + m_variables +
+                '}';
         }
 
     
@@ -169,4 +193,10 @@ public class ExpressionExtractor
      * The expression to use.
      */
     private Expression m_expression;
+
+    /**
+     *  The map containing variables to use during evaluation.
+     */
+    private Map        m_variables;
+
     }
