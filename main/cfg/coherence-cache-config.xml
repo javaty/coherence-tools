@@ -39,7 +39,7 @@
         <init-params>
           <init-param>
             <param-type>java.lang.String</param-type>
-            <param-value>coherence-tools-pof-config.xml</param-value>
+            <param-value>test-coherence-tools-pof-config.xml</param-value>
           </init-param>
         </init-params>
       </serializer>
@@ -86,7 +86,7 @@
           <init-params>
             <init-param>
               <param-type>string</param-type>
-              <param-value>coherence-tools-pof-config.xml</param-value>
+              <param-value>test-coherence-tools-pof-config.xml</param-value>
             </init-param>
           </init-params>
         </serializer>

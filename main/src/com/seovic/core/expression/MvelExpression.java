@@ -20,6 +20,7 @@ package com.seovic.core.expression;
 import com.seovic.core.Expression;
 
 import org.mvel2.MVEL;
+import org.mvel2.ParserContext;
 
 import java.util.Map;
 
@@ -35,6 +36,15 @@ import java.io.Serializable;
 public class MvelExpression
         extends AbstractExpression
     {
+    // ---- static initializer ----------------------------------------------
+
+    static
+        {
+        ParserContext parserContext = new ParserContext();
+        parserContext.addPackageImport("java.util");
+        s_parserContext = parserContext;
+        }
+    
     // ---- constructors ----------------------------------------------------
 
     /**
@@ -86,7 +96,7 @@ public class MvelExpression
         if (compiledExpression == null)
             {
             m_compiledExpression = compiledExpression =
-                    MVEL.compileExpression(m_expression);
+                    MVEL.compileExpression(m_expression, s_parserContext);
             }
         return compiledExpression;
         }
@@ -102,12 +112,14 @@ public class MvelExpression
         if (compiledExpression == null)
             {
             m_compiledSetExpression = compiledExpression =
-                    MVEL.compileSetExpression(m_expression);
+                    MVEL.compileSetExpression(m_expression, s_parserContext);
             }
         return compiledExpression;
         }
 
     // ---- data members ----------------------------------------------------
+
+    private static final ParserContext s_parserContext;
 
     /**
      * Compiled expression.
