@@ -22,6 +22,15 @@
     </fileset>
   </path>
 
+  <path id="test.classpath">
+    <pathelement path="${env.COHERENCE_HOME}/lib/coherence.jar"/>
+    <pathelement location="${build.dir}/classes"/>
+    <pathelement location="${build.dir}/tests"/>
+    <fileset dir="${lib.dir}">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
   <target name="clean">
     <delete dir="${build.dir}"/>
     <delete dir="${dist.dir}"/>
@@ -46,9 +55,7 @@
         <include name="**/*.properties"/>
       </fileset>
     </copy>
-  </target>
 
-  <target name="test" depends="build">
     <mkdir dir="${build.dir}/tests"/>
     <javac compiler="javac1.5"
            srcdir="${test.dir}"
@@ -64,16 +71,11 @@
         <include name="*.csv"/>
       </fileset>
     </copy>
+  </target>
 
+  <target name="test" depends="build">
     <junit haltonfailure="yes">
-      <classpath>
-        <pathelement path="${env.COHERENCE_HOME}/lib/coherence.jar"/>
-        <pathelement location="${build.dir}/classes"/>
-        <pathelement location="${build.dir}/tests"/>
-        <fileset dir="${lib.dir}">
-          <include name="**/*.jar"/>
-        </fileset>
-      </classpath>
+      <classpath refid="test.classpath"/>
       <batchtest>
         <fileset dir="${test.dir}">
           <include name="**/*Tests.java"/>
@@ -118,5 +120,16 @@
       <exclude name="*.iws"/>
       <exclude name="*.zip"/>
     </zip>
+  </target>
+
+  <target name="cache-server" depends="build" description="Start cache server instance">
+    <java classname="com.tangosol.net.DefaultCacheServer"
+          classpathref="test.classpath"
+          fork="true" spawn="true"
+          dir="${basedir}">
+      <jvmarg value="-server"/>
+      <jvmarg value="-Xms64m"/>
+      <jvmarg value="-Xmx64m"/>
+    </java>
   </target>
 </project>
