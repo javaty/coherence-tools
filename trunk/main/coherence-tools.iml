@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module relativePaths="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset1" name="Spring Batch Integration" removed="false">
+          <file>file://$MODULE_DIR$/src/com/seovic/coherence/batch/clustered-job-launcher-context.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
+  </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
@@ -21,13 +30,14 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="spring-batch-2.1">
+      <library name="spring-batch-2.0-M1">
         <CLASSES>
-          <root url="file://$MODULE_DIR$/lib/spring-batch-2.1-M1" />
+          <root url="jar://$MODULE_DIR$/lib/spring-batch-2.1-M1/spring-batch-infrastructure-2.1.0.M1.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/spring-batch-2.1-M1/spring-batch-core-2.1.0.M1.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/spring-batch-2.1-M1/spring-batch-test-2.1.0.M1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-        <jarDirectory url="file://$MODULE_DIR$/lib/spring-batch-2.1-M1" recursive="false" />
       </library>
     </orderEntry>
     <orderEntry type="module-library">

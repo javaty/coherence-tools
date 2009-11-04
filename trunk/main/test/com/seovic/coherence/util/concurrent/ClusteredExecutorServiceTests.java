@@ -30,6 +30,8 @@ import com.tangosol.util.Base;
 
 
 /**
+ * Tests for ClusteredExecutorService.
+ * 
  * @author Aleksandar Seovic  2009.11.02
  */
 public class ClusteredExecutorServiceTests
