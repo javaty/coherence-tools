@@ -48,8 +48,8 @@
 
     <copy todir="${build.dir}/classes">
       <fileset dir="${cfg.dir}">
-        <include name="*.xml"/>
-        <include name="*.properties"/>
+        <include name="**/*.xml"/>
+        <include name="**/*.properties"/>
       </fileset>
       <fileset dir="${src.dir}">
         <include name="**/*.properties"/>
@@ -67,8 +67,8 @@
 
     <copy todir="${build.dir}/tests">
       <fileset dir="${test.dir}">
-        <include name="*.xml"/>
-        <include name="*.csv"/>
+        <include name="**/*.xml"/>
+        <include name="**/*.csv"/>
       </fileset>
     </copy>
   </target>
