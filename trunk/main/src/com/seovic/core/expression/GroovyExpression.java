@@ -18,7 +18,7 @@ package com.seovic.core.expression;
 
 
 import com.seovic.core.Expression;
-import com.seovic.util.io.InputStreamUtil;
+import com.seovic.io.InputStreamUtils;
 
 import java.util.Map;
 
@@ -69,7 +69,7 @@ public class GroovyExpression
      */
     public GroovyExpression(InputStream script)
         {
-        m_expression = InputStreamUtil.readFullyAsString(script);
+        m_expression = InputStreamUtils.readFullyAsString(script);
         }
 
 

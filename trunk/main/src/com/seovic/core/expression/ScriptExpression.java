@@ -20,7 +20,7 @@ package com.seovic.core.expression;
 import com.seovic.core.Expression;
 import com.seovic.core.Defaults;
 
-import com.seovic.util.io.InputStreamUtil;
+import com.seovic.io.InputStreamUtils;
 
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
@@ -101,7 +101,7 @@ public class ScriptExpression
      */
     public ScriptExpression(String language, InputStream script)
         {
-        super(InputStreamUtil.readFullyAsString(script));
+        super(InputStreamUtils.readFullyAsString(script));
         m_language = language;
         }
 
