@@ -6,8 +6,10 @@ import com.seovic.coherence.loader.Target;
 
 import com.seovic.core.Updater;
 import com.seovic.core.updater.MapUpdater;
+import com.seovic.io.WriterFactory;
 
 import java.io.Writer;
+import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +37,86 @@ public class XmlTarget
     /**
      * Construct XmlTarget instance.
      *
+     * @param writerFactory    writer factory that should be used to create Writer
+     * @param rootElementName  root element name
+     * @param itemElementName  item element name
+     * @param propertyNames    property names (any property prefixed with '@'
+     *                         will be written out as attribute)
+     */
+    public XmlTarget(WriterFactory writerFactory,
+                     String rootElementName,
+                     String itemElementName,
+                     String propertyNames)
+        {
+        this(writerFactory, null, rootElementName, itemElementName, propertyNames);
+        }
+
+    /**
+     * Construct XmlTarget instance.
+     *
+     * @param writerFactory    writer factory that should be used to create Writer
+     * @param rootElementName  root element name
+     * @param itemElementName  item element name
+     * @param propertyNames    property names (any property prefixed with '@'
+     *                         will be written out as attribute)
+     */
+    public XmlTarget(WriterFactory writerFactory,
+                     String rootElementName,
+                     String itemElementName,
+                     String... propertyNames)
+        {
+        this(writerFactory, null, rootElementName, itemElementName, propertyNames);
+        }
+
+    /**
+     * Construct XmlTarget instance.
+     *
+     * @param writerFactory    writer factory that should be used to create Writer
+     * @param namespaces       namespace map
+     * @param rootElementName  root element name
+     * @param itemElementName  item element name
+     * @param propertyNames    property names (any property prefixed with '@'
+     *                         will be written out as attribute)
+     */
+    public XmlTarget(WriterFactory writerFactory,
+                     Map<String, String> namespaces,
+                     String rootElementName,
+                     String itemElementName,
+                     String propertyNames)
+        {
+        this(writerFactory, namespaces, rootElementName, itemElementName,
+             propertyNames.split(","));
+        }
+
+    /**
+     * Construct XmlTarget instance.
+     *
+     * @param writerFactory    writer factory that should be used to create Writer
+     * @param namespaces       namespace map
+     * @param rootElementName  root element name
+     * @param itemElementName  item element name
+     * @param propertyNames    property names (any property prefixed with '@'
+     *                         will be written out as attribute)
+     */
+    public XmlTarget(WriterFactory writerFactory,
+                     Map<String, String> namespaces,
+                     String rootElementName,
+                     String itemElementName,
+                     String... propertyNames)
+        {
+        this((Writer) null, namespaces, rootElementName, itemElementName, propertyNames);
+        m_writerFactory = writerFactory;
+        }
+
+    /**
+     * Construct XmlTarget instance.
+     * <p/>
+     * This constructor should only be used when using XmlTarget in process.
+     * In situations where this object might be serialized and used in a
+     * remote process (as part of remote batch load job, for example), you
+     * should use the constructor that accepts {@link WriterFactory} as an
+     * argument instead.
+     *
      * @param writer           writer to use
      * @param rootElementName  root element name
      * @param itemElementName  item element name
@@ -51,6 +133,12 @@ public class XmlTarget
 
     /**
      * Construct XmlTarget instance.
+     * <p/>
+     * This constructor should only be used when using XmlTarget in process.
+     * In situations where this object might be serialized and used in a
+     * remote process (as part of remote batch load job, for example), you
+     * should use the constructor that accepts {@link WriterFactory} as an
+     * argument instead.
      *
      * @param writer           writer to use
      * @param rootElementName  root element name
@@ -68,6 +156,12 @@ public class XmlTarget
 
     /**
      * Construct XmlTarget instance.
+     * <p/>
+     * This constructor should only be used when using XmlTarget in process.
+     * In situations where this object might be serialized and used in a
+     * remote process (as part of remote batch load job, for example), you
+     * should use the constructor that accepts {@link WriterFactory} as an
+     * argument instead.
      *
      * @param writer           writer to use
      * @param namespaces       namespace map
@@ -88,6 +182,12 @@ public class XmlTarget
 
     /**
      * Construct XmlTarget instance.
+     * <p/>
+     * This constructor should only be used when using XmlTarget in process.
+     * In situations where this object might be serialized and used in a
+     * remote process (as part of remote batch load job, for example), you
+     * should use the constructor that accepts {@link WriterFactory} as an
+     * argument instead.
      *
      * @param writer           writer to use
      * @param namespaces       namespace map
@@ -102,21 +202,13 @@ public class XmlTarget
                      String itemElementName,
                      String... propertyNames)
         {
-        try
-            {
-            this.writer = XMLOutputFactory.newInstance().createXMLStreamWriter(
-                    writer);
-            this.namespacesMap = namespaces == null
-                                 ? new HashMap<String, String>()
-                                 : namespaces;
-            this.rootElementName = rootElementName;
-            this.itemElementName = itemElementName;
-            initAttributesAndElements(propertyNames);
-            }
-        catch (XMLStreamException e)
-            {
-            throw new RuntimeException(e);
-            }
+        m_writer          = writer;
+        m_namespaceMap = namespaces == null
+                            ? new HashMap<String, String>()
+                            : namespaces;
+        m_rootElementName = rootElementName;
+        m_itemElementName = itemElementName;
+        initAttributesAndElements(propertyNames);
         }
 
 
@@ -141,14 +233,20 @@ public class XmlTarget
         {
         try
             {
-            writer.writeStartDocument();
-            writer.writeStartElement(rootElementName);
-            for (Map.Entry<String, String> entry : namespacesMap.entrySet())
+            if (m_writer == null)
                 {
-                writer.writeNamespace(entry.getKey(), entry.getValue());
+                m_writer = m_writerFactory.createWriter();
+                }
+            m_xmlWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(m_writer);
+
+            m_xmlWriter.writeStartDocument();
+            m_xmlWriter.writeStartElement(m_rootElementName);
+            for (Map.Entry<String, String> entry : m_namespaceMap.entrySet())
+                {
+                m_xmlWriter.writeNamespace(entry.getKey(), entry.getValue());
                 }
             }
-        catch (XMLStreamException e)
+        catch (Exception e)
             {
             throw new RuntimeException(e);
             }
@@ -162,17 +260,20 @@ public class XmlTarget
         {
         try
             {
-            boolean hasDecendants = !elements.isEmpty();
+            XMLStreamWriter     writer = m_xmlWriter;
+            Map<String, String> nsMap  = m_namespaceMap;
+
+            boolean hasDecendants = !m_elements.isEmpty();
             if (hasDecendants)
                 {
-                writer.writeStartElement(itemElementName);
+                writer.writeStartElement(m_itemElementName);
                 }
             else
                 {
-                writer.writeEmptyElement(itemElementName);
+                writer.writeEmptyElement(m_itemElementName);
                 }
             Map<String, Object> convertedItem = (Map<String, Object>) item;
-            for (Property property : attributes)
+            for (Property property : m_attributes)
                 {
                 String prefix = property.getNamespacePrefix();
                 if (prefix == null)
@@ -180,7 +281,7 @@ public class XmlTarget
                     prefix = "";
                     }
                 String localName = property.getLocalName();
-                String namespace = namespacesMap.get(prefix);
+                String namespace = nsMap.get(prefix);
                 if (namespace == null)
                     {
                     namespace = "";
@@ -190,15 +291,15 @@ public class XmlTarget
                                       localName,
                                       convertedItem.get(localName).toString());
                 }
-            for (Property property : elements)
+            for (Property property : m_elements)
                 {
                 String prefix = property.getNamespacePrefix() == null
                                 ? ""
                                 : property.getNamespacePrefix();
                 String localName = property.getLocalName();
-                String namespace = namespacesMap.get(prefix) == null
+                String namespace = nsMap.get(prefix) == null
                                    ? ""
-                                   : namespacesMap.get(prefix);
+                                   : nsMap.get(prefix);
                 writer.writeStartElement(prefix, localName, namespace);
                 writer.writeCharacters(convertedItem.get(localName).toString());
                 writer.writeEndElement();
@@ -222,9 +323,9 @@ public class XmlTarget
         {
         try
             {
-            writer.writeEndElement();
-            writer.writeEndDocument();
-            writer.close();
+            m_xmlWriter.writeEndElement();
+            m_xmlWriter.writeEndDocument();
+            m_xmlWriter.close();
             }
         catch (XMLStreamException e)
             {
@@ -238,13 +339,13 @@ public class XmlTarget
     public String[] getPropertyNames()
         {
         String[] propertyNames =
-                new String[attributes.size() + elements.size()];
+                new String[m_attributes.size() + m_elements.size()];
         int i = 0;
-        for (Property property : attributes)
+        for (Property property : m_attributes)
             {
             propertyNames[i++] = property.getLocalName();
             }
-        for (Property property : elements)
+        for (Property property : m_elements)
             {
             propertyNames[i++] = property.getLocalName();
             }
@@ -275,11 +376,11 @@ public class XmlTarget
             Property property = new Property(propertyName);
             if (property.isAttribute())
                 {
-                attributes.add(property);
+                m_attributes.add(property);
                 }
             else
                 {
-                elements.add(property);
+                m_elements.add(property);
                 }
             }
         }
@@ -290,6 +391,7 @@ public class XmlTarget
      * Represents a single property.
      */
     private static class Property
+            implements Serializable
         {
         // ---- constructors --------------------------------------------
 
@@ -417,32 +519,42 @@ public class XmlTarget
     // ---- data members ----------------------------------------------------
 
     /**
+     * A factory that should be used to create writer.
+     */
+    private WriterFactory m_writerFactory;
+
+    /**
      * A writer to use.
      */
-    private XMLStreamWriter writer;
+    private transient Writer m_writer;
+
+    /**
+     * XML stream writer to use.
+     */
+    private transient XMLStreamWriter m_xmlWriter;
 
     /**
      * Root element name.
      */
-    private String rootElementName;
+    private String m_rootElementName;
 
     /**
      * Item element name.
      */
-    private String itemElementName;
+    private String m_itemElementName;
 
     /**
      * A list of property names that should be written as attributes.
      */
-    private List<Property> attributes = new ArrayList<Property>();
+    private List<Property> m_attributes = new ArrayList<Property>();
 
     /**
      * A list of property names that should be written as child elements.
      */
-    private List<Property> elements = new ArrayList<Property>();
+    private List<Property> m_elements = new ArrayList<Property>();
 
     /**
      * Namespace map.
      */
-    private Map<String, String> namespacesMap;
+    private Map<String, String> m_namespaceMap;
     }

@@ -15,17 +15,17 @@
   <property name="lib.dir"   value="lib"/>
 
   <path id="classpath">
-    <pathelement path="${env.COHERENCE_HOME}/lib/coherence.jar"/>
     <pathelement location="${build.dir}/classes"/>
+    <pathelement path="${env.COHERENCE_HOME}/lib/coherence.jar"/>
     <fileset dir="${lib.dir}">
       <include name="**/*.jar"/>
     </fileset>
   </path>
 
   <path id="test.classpath">
-    <pathelement path="${env.COHERENCE_HOME}/lib/coherence.jar"/>
     <pathelement location="${build.dir}/classes"/>
     <pathelement location="${build.dir}/tests"/>
+    <pathelement path="${env.COHERENCE_HOME}/lib/coherence.jar"/>
     <fileset dir="${lib.dir}">
       <include name="**/*.jar"/>
     </fileset>

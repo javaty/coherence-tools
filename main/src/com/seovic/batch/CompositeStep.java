@@ -14,22 +14,18 @@
  * limitations under the License.
  */
 
-package com.seovic.coherence.loader;
+package com.seovic.batch;
 
 
-import java.io.Serializable;
+import java.util.List;
 
 
 /**
- * An interface that all loaders have to implement.
- *
- * @author Aleksandar Seovic  2009.09.29
+ * @author Aleksandar Seovic  2009.11.05
  */
-public interface Loader
-        extends Serializable
+public interface CompositeStep
+        extends Step
     {
-    /**
-     * Load items from the Source into the Target. 
-     */
-    void load();
+    public List<Step> getSteps();
+    public CompositeStep addStep(Step step);
     }

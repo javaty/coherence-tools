@@ -21,12 +21,8 @@ import com.seovic.coherence.loader.source.XmlSource;
 import com.seovic.coherence.loader.target.CoherenceCacheTarget;
 
 import com.tangosol.net.NamedCache;
-import com.tangosol.net.CacheFactory;
 
 import java.io.Reader;
-import java.io.FileReader;
-
-import org.springframework.core.io.Resource;
 
 
 /**
@@ -43,25 +39,29 @@ public class XmlToCoherence
     /**
      * Construct XmlToCoherence loader instance.
      *
-     * @param xmlFile    XML file to read items from
-     * @param cache      Coherence cache to import objects into
-     * @param itemClass  target item class
+     * @param xmlResource  XML resource to read items from
+     * @param cacheName    the name of the Coherence cache to import objects into
+     * @param itemClass    target item class
      */
-    public XmlToCoherence(String xmlFile, NamedCache cache, Class itemClass)
+    public XmlToCoherence(String xmlResource, String cacheName, Class itemClass)
         {
-        this(getResource(xmlFile), cache, itemClass);
+        Source source = new XmlSource(xmlResource);
+        Target target = new CoherenceCacheTarget(cacheName, itemClass);
+        setLoader(new DefaultLoader(source, target));
         }
 
     /**
      * Construct XmlToCoherence loader instance.
      *
-     * @param xmlFile    XML file to read items from
-     * @param cache      Coherence cache to import objects into
-     * @param itemClass  target item class
+     * @param xmlResource  XML resource to read items from
+     * @param cache        Coherence cache to import objects into
+     * @param itemClass    target item class
      */
-    public XmlToCoherence(Resource xmlFile, NamedCache cache, Class itemClass)
+    public XmlToCoherence(String xmlResource, NamedCache cache, Class itemClass)
         {
-        this(createResourceReader(xmlFile), cache, itemClass);
+        Source source = new XmlSource(xmlResource);
+        Target target = new CoherenceCacheTarget(cache, itemClass);
+        setLoader(new DefaultLoader(source, target));
         }
 
     /**
@@ -90,10 +90,6 @@ public class XmlToCoherence
             System.exit(0);
             }
 
-        FileReader xmlReader = new FileReader(args[0]);
-        NamedCache cache     = CacheFactory.getCache(args[1]);
-        Class      itemClass = Class.forName(args[2]);
-
-        new XmlToCoherence(xmlReader, cache, itemClass).load();
+        new XmlToCoherence(args[0], args[1], Class.forName(args[2])).load();
         }
     }

@@ -14,22 +14,39 @@
  * limitations under the License.
  */
 
-package com.seovic.coherence.loader;
+package com.seovic.batch;
 
 
 import java.io.Serializable;
 
 
 /**
- * An interface that all loaders have to implement.
- *
- * @author Aleksandar Seovic  2009.09.29
+ * @author Aleksandar Seovic  2009.11.04
  */
-public interface Loader
-        extends Serializable
+public abstract class AbstractStep
+        implements Step, Serializable
     {
-    /**
-     * Load items from the Source into the Target. 
-     */
-    void load();
+    protected AbstractStep(String name)
+        {
+        m_name = name;
+        }
+
+    public String getName()
+        {
+        return m_name;
+        }
+
+    public StepResult getResult()
+        {
+        return m_result;
+        }
+
+    public void setResult(StepResult result)
+        {
+        m_result = result;
+        }
+
+    private String m_name;
+    private StepResult m_result;
+    
     }

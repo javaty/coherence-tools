@@ -21,12 +21,8 @@ import com.seovic.coherence.loader.source.CsvSource;
 import com.seovic.coherence.loader.target.CoherenceCacheTarget;
 
 import com.tangosol.net.NamedCache;
-import com.tangosol.net.CacheFactory;
 
 import java.io.Reader;
-import java.io.FileReader;
-
-import org.springframework.core.io.Resource;
 
 
 /**
@@ -43,25 +39,29 @@ public class CsvToCoherence
     /**
      * Construct CsvToCoherence loader instance.
      *
-     * @param csvFile    CSV file to read items from
-     * @param cache      Coherence cache to import objects into
-     * @param itemClass  target item class
+     * @param csvResource  CSV resource to read items from
+     * @param cacheName    the name of the Coherence cache to import objects into
+     * @param itemClass    target item class
      */
-    public CsvToCoherence(String csvFile, NamedCache cache, Class itemClass)
+    public CsvToCoherence(String csvResource, String cacheName, Class itemClass)
         {
-        this(getResource(csvFile), cache, itemClass);
+        Source source = new CsvSource(csvResource);
+        Target target = new CoherenceCacheTarget(cacheName, itemClass);
+        setLoader(new DefaultLoader(source, target));
         }
 
     /**
      * Construct CsvToCoherence loader instance.
      *
-     * @param csvFile    CSV file to read items from
-     * @param cache      Coherence cache to import objects into
-     * @param itemClass  target item class
+     * @param csvResource  CSV resource to read items from
+     * @param cache        Coherence cache to import objects into
+     * @param itemClass    target item class
      */
-    public CsvToCoherence(Resource csvFile, NamedCache cache, Class itemClass)
+    public CsvToCoherence(String csvResource, NamedCache cache, Class itemClass)
         {
-        this(createResourceReader(csvFile), cache, itemClass);
+        Source source = new CsvSource(csvResource);
+        Target target = new CoherenceCacheTarget(cache, itemClass);
+        setLoader(new DefaultLoader(source, target));
         }
 
     /**
@@ -90,10 +90,6 @@ public class CsvToCoherence
             System.exit(0);
             }
 
-        FileReader csvReader = new FileReader(args[0]);
-        NamedCache cache     = CacheFactory.getCache(args[1]);
-        Class      itemClass = Class.forName(args[2]);
-
-        new CsvToCoherence(csvReader, cache, itemClass).load();
+        new CsvToCoherence(args[0], args[1], Class.forName(args[2])).load();
         }
     }

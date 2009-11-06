@@ -45,7 +45,7 @@ public class DefaultLoader
             for (String property : propertyNames)
                 {
                 Extractor extractor = source.getExtractor(property);
-                Updater updater     = target.getUpdater(property);
+                Updater   updater   = target.getUpdater(property);
                 updater.update(targetItem, extractor.extract(sourceItem));
                 }
             target.importItem(targetItem);

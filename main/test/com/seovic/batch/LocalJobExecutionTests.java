@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-package com.seovic.coherence.loader;
+package com.seovic.batch;
 
 
-import java.io.Serializable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
- * An interface that all loaders have to implement.
- *
- * @author Aleksandar Seovic  2009.09.29
+ * Job execution tests that use local thread-pool based executor for step
+ * execution.
+ * 
+ * @author Aleksandar Seovic  2009.11.06
  */
-public interface Loader
-        extends Serializable
+public class LocalJobExecutionTests
+        extends AbstractJobExecutionTests
     {
-    /**
-     * Load items from the Source into the Target. 
-     */
-    void load();
+    protected ExecutorService getExecutor()
+        {
+        return Executors.newCachedThreadPool();
+        }
     }

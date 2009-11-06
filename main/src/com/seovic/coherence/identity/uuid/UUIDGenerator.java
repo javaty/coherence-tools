@@ -20,6 +20,7 @@ package com.seovic.coherence.identity.uuid;
 import com.seovic.coherence.identity.IdentityGenerator;
 
 import com.tangosol.util.UUID;
+import java.io.Serializable;
 
 
 /**
@@ -27,7 +28,8 @@ import com.tangosol.util.UUID;
  *
  * @author Aleksandar Seovic  2009.05.27
  */
-public class UUIDGenerator implements IdentityGenerator<UUID>
+public class UUIDGenerator
+        implements IdentityGenerator<UUID>, Serializable
     {
     /**
      * Generates a UUID-based identity.

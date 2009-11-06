@@ -5,8 +5,9 @@ import com.seovic.core.Extractor;
 import com.seovic.core.extractor.XmlExtractor;
 import com.seovic.coherence.loader.Source;
 
-import java.io.Reader;
 import java.io.StringReader;
+import java.io.Reader;
+import java.io.IOException;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,18 +35,53 @@ public class XmlSource
     // ---- constructors ----------------------------------------------------
 
     /**
-     * Construct a CsvSource instance.
+     * Construct XmlSource instance.
      *
-     * @param reader  reader to use to read CSV file with
+     * @param resourceName  the name of the XML resource to read items from
+     */
+    public XmlSource(String resourceName)
+        {
+        m_resourceName = resourceName;
+        }
+
+    /**
+     * Construct XmlSource instance.
+     * <p/>
+     * This constructor should only be used when using XmlSource in process.
+     * In situations where this object might be serialized and used in a
+     * remote process (as part of remote batch load job, for example), you
+     * should use the constructor that accepts resource name as an argument.
+     *
+     * @param reader  the reader to use
      */
     public XmlSource(Reader reader)
         {
+        m_reader = reader;
+        }
+
+    // ---- Source implementation -------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    public void beginExport()
+        {
+        if (m_reader == null)
+            {
+            m_reader = createResourceReader(getResource(m_resourceName));
+            }
+        }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void endExport()
+        {
         try
             {
-            this.reader = XMLInputFactory.newInstance().createXMLStreamReader(
-                    reader);
+            m_reader.close();
             }
-        catch (XMLStreamException e)
+        catch (IOException e)
             {
             throw new RuntimeException(e);
             }
@@ -61,7 +97,7 @@ public class XmlSource
      */
     public Iterator iterator()
         {
-        return new XmlIterator(reader);
+        return new XmlIterator(m_reader);
         }
 
 
@@ -91,31 +127,12 @@ public class XmlSource
          *
          * @param reader  reader to use
          */
-        public XmlIterator(XMLStreamReader reader)
+        public XmlIterator(Reader reader)
             {
-            this.documentFactory = DocumentBuilderFactory.newInstance();
-            this.documentFactory.setNamespaceAware(true);
-            this.reader = reader;
-            // skip document element
-            try
-                {
-                int eventType = reader.next();
-                while (eventType != XMLStreamConstants.START_ELEMENT)
-                    {
-                    eventType = reader.next();
-                    }
-                int count = reader.getNamespaceCount();
-                for (int i = 0; i < count; i++)
-                    {
-                    String prefix = reader.getNamespacePrefix(i);
-                    String nsUri = reader.getNamespaceURI(i);
-                    namespaceMap.put(prefix, nsUri);
-                    }
-                }
-            catch (XMLStreamException e)
-                {
-                throw new RuntimeException(e);
-                }
+            m_documentFactory = DocumentBuilderFactory.newInstance();
+            m_documentFactory.setNamespaceAware(true);
+            m_xmlReader = createXmlStreamReader(reader);
+            skipDocumentElement(m_xmlReader);
             }
 
         // ---- Iterator implementation ---------------------------------
@@ -129,11 +146,11 @@ public class XmlSource
             {
             try
                 {
-                int eventType = reader.next();
+                int eventType = m_xmlReader.next();
                 while (eventType != XMLStreamConstants.START_ELEMENT
                        && eventType != XMLStreamConstants.END_DOCUMENT)
                     {
-                    eventType = reader.next();
+                    eventType = m_xmlReader.next();
                     }
                 return eventType == XMLStreamConstants.START_ELEMENT;
                 }
@@ -152,8 +169,8 @@ public class XmlSource
             {
             try
                 {
-                String elementStr = getNextElement(reader);
-                return documentFactory
+                String elementStr = getNextElement(m_xmlReader);
+                return m_documentFactory
                         .newDocumentBuilder()
                         .parse(new InputSource(new StringReader(elementStr)));
                 }
@@ -176,6 +193,53 @@ public class XmlSource
         // ---- helper methods ------------------------------------------
 
         /**
+         * Create XmlStreamReader wrapper for the specified Reader.
+         *
+         * @param reader  reader to wrap
+         *
+         * @return XML stream reader
+         */
+        protected XMLStreamReader createXmlStreamReader(Reader reader)
+            {
+            try
+                {
+                return XMLInputFactory.newInstance().createXMLStreamReader(reader);
+                }
+            catch (XMLStreamException e)
+                {
+                throw new RuntimeException(e);
+                }
+            }
+
+        /**
+         * Skips document element.
+         *
+         * @param reader  XML reader to use
+         */
+        protected void skipDocumentElement(XMLStreamReader reader)
+            {
+            try
+                {
+                int eventType = reader.next();
+                while (eventType != XMLStreamConstants.START_ELEMENT)
+                    {
+                    eventType = reader.next();
+                    }
+                int count = reader.getNamespaceCount();
+                for (int i = 0; i < count; i++)
+                    {
+                    String prefix = reader.getNamespacePrefix(i);
+                    String nsUri = reader.getNamespaceURI(i);
+                    m_namespaceMap.put(prefix, nsUri);
+                    }
+                }
+            catch (XMLStreamException e)
+                {
+                throw new RuntimeException(e);
+                }
+            }
+
+        /**
          * Reads the next element from the stream.
          *
          * @param reader  reader to use
@@ -193,7 +257,7 @@ public class XmlSource
                 reader.next();
                 }
             StringBuilder content = new StringBuilder();
-            writeElement(content, namespaceMap);
+            writeElement(content, m_namespaceMap);
             return content.toString();
             }
 
@@ -206,10 +270,10 @@ public class XmlSource
          * @throws XMLStreamException  if an error occurs
          */
         protected void writeElement(StringBuilder content,
-                                  Map<String, String> nsMap)
+                                    Map<String, String> nsMap)
                 throws XMLStreamException
             {
-            QName elementName = reader.getName();
+            QName elementName = m_xmlReader.getName();
 
             writeOpeningTag(content, elementName);
             if (nsMap != null)
@@ -271,11 +335,11 @@ public class XmlSource
         protected void writeAttributes(StringBuilder content)
             {
             String prefix;// write attributes
-            int count = reader.getAttributeCount();
+            int count = m_xmlReader.getAttributeCount();
             for (int i = 0; i < count; i++)
                 {
-                QName name = reader.getAttributeName(i);
-                String value = reader.getAttributeValue(i);
+                QName name = m_xmlReader.getAttributeName(i);
+                String value = m_xmlReader.getAttributeValue(i);
                 prefix = name.getPrefix();
                 content.append(" ");
                 if (prefix != null && prefix.length() > 0)
@@ -300,17 +364,17 @@ public class XmlSource
         protected void writeContents(StringBuilder content)
                 throws XMLStreamException
             {
-            int eventType = reader.getEventType();
+            int eventType = m_xmlReader.getEventType();
             // write children
             while (eventType != XMLStreamConstants.END_ELEMENT)
                 {
-                eventType = reader.next();
+                eventType = m_xmlReader.next();
                 if (eventType == XMLStreamConstants.CHARACTERS
                     || eventType == XMLStreamConstants.CDATA
                     || eventType == XMLStreamConstants.SPACE
                     || eventType == XMLStreamConstants.ENTITY_REFERENCE)
                     {
-                    content.append(reader.getText());
+                    content.append(m_xmlReader.getText());
                     }
                 else if (eventType == XMLStreamConstants.PROCESSING_INSTRUCTION
                          || eventType == XMLStreamConstants.COMMENT)
@@ -321,7 +385,7 @@ public class XmlSource
                         {
                         throw new XMLStreamException(
                                 "unexpected end of document when reading element text content",
-                                reader.getLocation());
+                                m_xmlReader.getLocation());
                         }
                     else if (eventType == XMLStreamConstants.START_ELEMENT)
                             {
@@ -352,22 +416,29 @@ public class XmlSource
         /**
          * Reader to use.
          */
-        private XMLStreamReader reader;
+        private XMLStreamReader m_xmlReader;
 
         /**
          * Namespace map.
          */
-        private Map<String, String> namespaceMap =
-                new HashMap<String, String>();
+        private Map<String, String> m_namespaceMap = new HashMap<String, String>();
 
         /**
          * Document builder factory.
          */
-        private DocumentBuilderFactory documentFactory;
+        private DocumentBuilderFactory m_documentFactory;
         }
 
+
+    // ---- data members ----------------------------------------------------
+
     /**
-     * Reader to use.
+     * The name of the CSV resource to read items from.
      */
-    private XMLStreamReader reader;
+    private String m_resourceName;
+
+    /**
+     * The reader to use.
+     */
+    private transient Reader m_reader;
     }

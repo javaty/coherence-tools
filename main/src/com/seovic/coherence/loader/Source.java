@@ -2,6 +2,7 @@ package com.seovic.coherence.loader;
 
 
 import com.seovic.core.Extractor;
+import java.io.Serializable;
 
 
 /**
@@ -9,7 +10,8 @@ import com.seovic.core.Extractor;
  *
  * @author Aleksandar Seovic/Ivan Cikic  2009.06.15
  */
-public interface Source extends Iterable
+public interface Source
+        extends Iterable, Serializable
     {
     /**
      * Called by the loader to inform source that the loading process is

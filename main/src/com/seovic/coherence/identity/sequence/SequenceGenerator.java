@@ -20,6 +20,7 @@ package com.seovic.coherence.identity.sequence;
 import com.seovic.coherence.identity.IdentityGenerator;
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.CacheFactory;
+import java.io.Serializable;
 
 
 /**
@@ -29,7 +30,7 @@ import com.tangosol.net.CacheFactory;
  * @author Aleksandar Seovic  2009.05.27
  */
 public class SequenceGenerator
-        implements IdentityGenerator<Long>
+        implements IdentityGenerator<Long>, Serializable
     {
     // ---- constructors ----------------------------------------------------
 

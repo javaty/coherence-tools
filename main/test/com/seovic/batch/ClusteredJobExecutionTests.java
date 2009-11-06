@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-package com.seovic.coherence.loader;
+package com.seovic.batch;
 
 
-import java.io.Serializable;
+import java.util.concurrent.ExecutorService;
+
+import com.seovic.coherence.util.concurrent.ClusteredExecutorService;
 
 
 /**
- * An interface that all loaders have to implement.
+ * Job execution tests that use clustered executor for step execution.
  *
- * @author Aleksandar Seovic  2009.09.29
+ * @author Aleksandar Seovic  2009.11.06
  */
-public interface Loader
-        extends Serializable
+public class ClusteredJobExecutionTests
+        extends AbstractJobExecutionTests
     {
-    /**
-     * Load items from the Source into the Target. 
-     */
-    void load();
+    protected ExecutorService getExecutor()
+        {
+        return new ClusteredExecutorService();
+        }
     }

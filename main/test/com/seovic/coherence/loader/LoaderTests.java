@@ -45,7 +45,7 @@ import org.xml.sax.InputSource;
 @SuppressWarnings({"unchecked"})
 public class LoaderTests
     {
-    public static final NamedCache countries = CacheFactory.getCache("countries");
+    private static final NamedCache countries = CacheFactory.getCache("countries");
 
     @Before
     public void clearCache()
