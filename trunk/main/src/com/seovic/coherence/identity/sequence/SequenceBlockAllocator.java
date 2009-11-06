@@ -25,6 +25,7 @@ import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 
 /**
@@ -37,8 +38,8 @@ import java.io.IOException;
  * @author Aleksandar Seovic  2009.05.27
  */
 public class SequenceBlockAllocator
-        extends    AbstractProcessor
-        implements PortableObject
+        extends AbstractProcessor
+        implements Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
 

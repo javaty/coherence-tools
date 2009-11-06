@@ -2,6 +2,7 @@ package com.seovic.coherence.loader;
 
 
 import com.seovic.core.Updater;
+import java.io.Serializable;
 
 
 /**
@@ -10,6 +11,7 @@ import com.seovic.core.Updater;
  * @author Aleksandar Seovic/Ivan Cikic  2009.06.15
  */
 public interface Target
+        extends Serializable
     {
     /**
      * Called by the loader to inform target that the loading process is

@@ -29,13 +29,56 @@ public class CsvSource
     // ---- constructors ----------------------------------------------------
 
     /**
-     * Construct a CsvSource instance.
+     * Construct CsvSource instance.
      *
-     * @param reader  reader to use to read CSV file with
+     * @param resourceName  the name of the CSV resource to read items from
+     */
+    public CsvSource(String resourceName)
+        {
+        m_resourceName = resourceName;
+        }
+
+    /**
+     * Construct CsvSource instance.
+     * <p/>
+     * This constructor should only be used when using CsvSource in process.
+     * In situations where this object might be serialized and used in a
+     * remote process (as part of remote batch load job, for example), you
+     * should use the constructor that accepts resource name as an argument.
+     *
+     * @param reader  the reader to use
      */
     public CsvSource(Reader reader)
         {
-        this.m_reader = reader;
+        m_reader = reader;
+        }
+
+    // ---- Source implementation -------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    public void beginExport()
+        {
+        if (m_reader == null)
+            {
+            m_reader = createResourceReader(getResource(m_resourceName));
+            }
+        }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void endExport()
+        {
+        try
+            {
+            m_reader.close();
+            }
+        catch (IOException e)
+            {
+            throw new RuntimeException(e);
+            }
         }
 
 
@@ -48,7 +91,9 @@ public class CsvSource
      */
     public Iterator iterator()
         {
-        return new CsvIterator(new CsvListReader(m_reader, m_preferences));
+        CsvPreference preferences =
+                new CsvPreference(m_quoteChar, m_delimiterChar, m_endOfLineSymbols);
+        return new CsvIterator(new CsvListReader(m_reader, preferences));
         }
 
 
@@ -57,31 +102,31 @@ public class CsvSource
     /**
      * Set the delimiter character for CSV fields (default is comma).
      *
-     * @param delimiter  delimiter character
+     * @param delimiterChar  delimiter character
      */
-    public void setDelimiterChar(char delimiter)
+    public void setDelimiterChar(char delimiterChar)
         {
-        m_preferences.setDelimiterChar(delimiter);
+        m_delimiterChar = delimiterChar;
         }
 
     /**
      * Set the quote character (default is double quote).
      *
-     * @param quote  quote character
+     * @param quoteChar  quote character
      */
-    public void setQuoteChar(char quote)
+    public void setQuoteChar(char quoteChar)
         {
-        m_preferences.setQuoteChar(quote);
+        m_quoteChar = quoteChar;
         }
 
     /**
-     * Set end-of-line characters.
+     * Set the end-of-line characters.
      *
      * @param endOfLineSymbols  end-of-line characters
      */
     public void setEndOfLineSymbols(String endOfLineSymbols)
         {
-        m_preferences.setEndOfLineSymbols(endOfLineSymbols);
+        m_endOfLineSymbols = endOfLineSymbols;
         }
 
 
@@ -115,8 +160,8 @@ public class CsvSource
             {
             try
                 {
-                this.m_reader = reader;
-                this.m_header = reader.getCSVHeader(false);
+                m_reader = reader;
+                m_header = reader.getCSVHeader(false);
                 }
             catch (IOException e)
                 {
@@ -208,12 +253,30 @@ public class CsvSource
     // ---- data members ----------------------------------------------------
 
     /**
-     * Reader to use.
+     * The name of the CSV resource to read items from.
      */
-    private Reader m_reader;
+    private String m_resourceName;
 
     /**
-     * Preferences.
+     * The delimiter character for CSV fields.
      */
-    private CsvPreference m_preferences = CsvPreference.STANDARD_PREFERENCE;
+    private char m_delimiterChar =
+            (char) CsvPreference.STANDARD_PREFERENCE.getDelimiterChar();
+
+    /**
+     * The quote character.
+     */
+    private char m_quoteChar =
+            (char) CsvPreference.STANDARD_PREFERENCE.getQuoteChar();
+
+    /**
+     * The end-of-line characters.
+     */
+    private String m_endOfLineSymbols =
+            CsvPreference.STANDARD_PREFERENCE.getEndOfLineSymbols();
+
+    /**
+     * Reader to use.
+     */
+    private transient Reader m_reader;
     }

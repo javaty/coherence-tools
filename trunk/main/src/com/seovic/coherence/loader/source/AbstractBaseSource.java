@@ -6,6 +6,11 @@ import com.seovic.core.Extractor;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.io.Reader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.DefaultResourceLoader;
 
 
 /**
@@ -78,6 +83,40 @@ public abstract class AbstractBaseSource
         }
 
     
+    // ---- helper methods --------------------------------------------------
+
+    /**
+     * Return a Resource represented by the specified location.
+     *
+     * @param location  resource location
+     *
+     * @return a resource
+     */
+    protected Resource getResource(String location)
+        {
+        return new DefaultResourceLoader().getResource(location);
+        }
+
+    /**
+     * Create a reader for the specified resource.
+     *
+     * @param resource  resource to create reader for
+     *
+     * @return reader for the specified resource
+     */
+    protected Reader createResourceReader(Resource resource)
+        {
+        try
+            {
+            return new InputStreamReader(resource.getInputStream());
+            }
+        catch (IOException e)
+            {
+            throw new RuntimeException(e);
+            }
+        }
+
+
     // ---- data members ----------------------------------------------------
 
     /**

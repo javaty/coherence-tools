@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-package com.seovic.coherence.batch.repository.dao;
-
-
-import org.springframework.batch.core.repository.dao.JobInstanceDao;
+package com.seovic.batch;
 
 
 /**
- * @author Aleksandar Seovic  2009.11.03
+ * @author Aleksandar Seovic  2009.11.04
  */
-public class NamedCacheJobInstanceDaoTests extends AbstractJobInstanceDaoTests
+public interface Job
+        extends CompositeStep
     {
-    protected JobInstanceDao getJobInstanceDao()
-        {
-        return new NamedCacheJobInstanceDao();
-        }
     }

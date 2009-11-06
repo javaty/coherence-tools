@@ -7,6 +7,7 @@ import com.seovic.core.Defaults;
 import com.seovic.coherence.loader.Source;
 
 import com.tangosol.net.NamedCache;
+import com.tangosol.net.CacheFactory;
 
 import java.util.Iterator;
 
@@ -25,14 +26,42 @@ public class CoherenceCacheSource
     /**
      * Construct a CoherenceCacheSource instance.
      *
-     * @param cache  cache to read objects from
+     * @param cacheName  the name of the cache to read objects from
+     */
+    public CoherenceCacheSource(String cacheName)
+        {
+        m_cacheName = cacheName;
+        }
+
+    /**
+     * Construct a CoherenceCacheSource instance.
+     * <p/>
+     * This constructor should only be used when using CoherenceCacheSource
+     * in process. In situations where this object might be serialized and
+     * used in a remote process (as part of remote batch load job, for example),
+     * you should use the constructor that accepts resource name as an argument.
+     *
+     * @param cache  the cache to read objects from
      */
     public CoherenceCacheSource(NamedCache cache)
         {
         m_cache = cache;
         }
 
+    // ---- Source implementation -------------------------------------------
 
+    /**
+     * {@inheritDoc}
+     */
+    public void beginExport()
+        {
+        if (m_cache == null)
+            {
+            m_cache = CacheFactory.getCache(m_cacheName);
+            }
+        }
+
+    
     // ---- Iterable implementation -----------------------------------------
 
     /**
@@ -60,7 +89,12 @@ public class CoherenceCacheSource
     // ---- data members ----------------------------------------------------
 
     /**
-     * Cache to read objects from.
+     * The name of the cache to read objects from.
      */
-    private NamedCache m_cache;
+    private String m_cacheName;
+
+    /**
+     * The cache to read objects from.
+     */
+    private transient NamedCache m_cache;
     }

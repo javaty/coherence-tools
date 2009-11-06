@@ -14,46 +14,45 @@
  * limitations under the License.
  */
 
-package com.seovic.coherence.loader;
+package com.seovic.batch.steps;
+
+
+import com.seovic.batch.AbstractStep;
+import com.seovic.batch.ExecutionContext;
+
+import com.seovic.coherence.loader.Loader;
 
 
 /**
- * Base class for delegating loaders.
+ * Step implementation that uses {@link Loader} to import data from one data
+ * source into another.
  *
- * @author Aleksandar Seovic  2009.09.29
+ * @author Aleksandar Seovic  2009.11.06
  */
-public class AbstractDelegatingLoader
-        implements Loader
+public class LoaderStep
+        extends AbstractStep
     {
-    // ---- getters and setters ---------------------------------------------
+    // ---- constructors ----------------------------------------------------
 
     /**
-     * Return the loader processing should be delegated to.
+     * Construct LoaderStep instance.
      *
-     * @return the loader processing should be delegated to
+     * @param name    step name
+     * @param loader  loader to use
      */
-    public Loader getLoader()
+    public LoaderStep(String name, Loader loader)
         {
-        return m_loader;
-        }
-
-    /**
-     * Set the loader processing should be delegated to.
-     *
-     * @param loader  the loader processing should be delegated to
-     */
-    public void setLoader(Loader loader)
-        {
+        super(name);
         m_loader = loader;
         }
 
 
-    // ---- Loader implementation -------------------------------------------
+    // ---- Step implementation ---------------------------------------------
 
     /**
      * {@inheritDoc}
      */
-    public void load()
+    public void execute(ExecutionContext context)
         {
         m_loader.load();
         }
@@ -62,7 +61,7 @@ public class AbstractDelegatingLoader
     // ---- data members ----------------------------------------------------
 
     /**
-     * The loader processing should be delegated to.
+     * Loader to use.
      */
     private Loader m_loader;
     }

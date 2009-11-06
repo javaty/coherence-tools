@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package com.seovic.coherence.loader;
+package com.seovic.batch;
 
 
 import java.io.Serializable;
 
 
 /**
- * An interface that all loaders have to implement.
- *
- * @author Aleksandar Seovic  2009.09.29
+ * @author Aleksandar Seovic  2009.11.04
  */
-public interface Loader
-        extends Serializable
+public class SimpleJob
+        extends SequentialStep
+        implements Job, Serializable
     {
-    /**
-     * Load items from the Source into the Target. 
-     */
-    void load();
+    public SimpleJob(String name)
+        {
+        super(name);
+        }
     }
