@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.seovic.util.io;
+package com.seovic.io;
 
 
 import java.io.InputStream;
@@ -26,7 +26,7 @@ import java.io.IOException;
 /**
  * @author Aleksandar Seovic  2009.09.20
  */
-public class InputStreamUtil
+public class InputStreamUtils
     {
     public static String readFullyAsString(InputStream in)
         {
