@@ -68,7 +68,7 @@ public class ScriptExpression
      */
     public ScriptExpression(String expression)
         {
-        this(Defaults.getScriptLanguage(), expression);
+        this(expression, Defaults.getScriptLanguage());
         }
 
     /**
@@ -78,16 +78,16 @@ public class ScriptExpression
      */
     public ScriptExpression(InputStream script)
         {
-        this(Defaults.getScriptLanguage(), script);
+        this(script, Defaults.getScriptLanguage());
         }
 
     /**
      * Construct a <tt>ScriptExpression</tt> instance.
      *
-     * @param language   scripting language to use
-     * @param expression the script to evaluate
+     * @param expression  the script to evaluate
+     * @param language    scripting language to use
      */
-    public ScriptExpression(String language, String expression)
+    public ScriptExpression(String expression, String language)
         {
         super(expression);
         m_language = language;
@@ -96,10 +96,10 @@ public class ScriptExpression
     /**
      * Construct a <tt>ScriptExpression</tt> instance.
      *
-     * @param language scripting language to use
-     * @param script   the script to evaluate
+     * @param script    the script to evaluate
+     * @param language  scripting language to use
      */
-    public ScriptExpression(String language, InputStream script)
+    public ScriptExpression(InputStream script, String language)
         {
         super(InputStreamUtils.readFullyAsString(script));
         m_language = language;
