@@ -180,7 +180,7 @@ public class ExpressionExtractor
     @Override
     public String toString()
         {
-        return "ExpressionExtractor{" +
+        return getClass().getSimpleName() + "{" +
                 "m_expression=" + m_expression +
                 ", m_variables=" + m_variables +
                 '}';
