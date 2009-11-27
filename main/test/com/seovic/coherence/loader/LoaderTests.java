@@ -4,19 +4,14 @@ package com.seovic.coherence.loader;
 import com.seovic.coherence.loader.source.CoherenceCacheSource;
 import com.seovic.coherence.loader.source.CsvSource;
 import com.seovic.coherence.loader.source.XmlSource;
-
 import com.seovic.coherence.loader.target.CoherenceCacheTarget;
 import com.seovic.coherence.loader.target.CsvTarget;
 import com.seovic.coherence.loader.target.XmlTarget;
-
-import com.seovic.test.objects.Country;
-
-import com.seovic.core.extractor.XmlExtractor;
 import com.seovic.core.extractor.ExpressionExtractor;
-
+import com.seovic.core.extractor.XmlExtractor;
+import com.seovic.test.objects.Country;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,19 +19,17 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Set;
 import java.util.HashSet;
-
+import java.util.Set;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
+import static org.junit.Assert.assertEquals;
 
 
 /**
@@ -45,7 +38,7 @@ import org.xml.sax.InputSource;
 @SuppressWarnings({"unchecked"})
 public class LoaderTests
     {
-    private static final NamedCache countries = CacheFactory.getCache("countries");
+    protected static final NamedCache countries = CacheFactory.getCache("countries");
 
     @Before
     public void clearCache()
@@ -76,14 +69,13 @@ public class LoaderTests
         Source source = new CoherenceCacheSource(countries);
         Writer writer = new StringWriter();
         Target target = new CsvTarget(writer,
-                                      "code,formalName,capital,currencySymbol,currencyName,telephonePrefix,domain");
+            "code,formalName,capital,currencySymbol,currencyName,telephonePrefix,domain");
 
         Loader loader = new DefaultLoader(source, target);
         loader.load();
 
         // asserts
-        BufferedReader reader = new BufferedReader(new StringReader(
-                writer.toString()));
+        BufferedReader reader = new BufferedReader(new StringReader(writer.toString()));
         int count = 0;
         while (reader.readLine() != null)
             {
@@ -110,14 +102,13 @@ public class LoaderTests
     public void testXmlWithNamespacesToCoherenceLoader()
         {
         Reader countriesReader = new InputStreamReader(
-                Loader.class.getClassLoader().getResourceAsStream(
-                        "countries-ns.xml"));
+                Loader.class.getClassLoader().getResourceAsStream("countries-ns.xml"));
         Source source = new XmlSource(countriesReader);
-        source.setExtractor("code",            new XmlExtractor("code", "http://schemas.seovic.com/id"));
-        source.setExtractor("formalName",      new XmlExtractor("formalName", "http://schemas.seovic.com/config"));
-        source.setExtractor("capital",         new XmlExtractor("capital", "http://schemas.seovic.com/config"));
-        source.setExtractor("telephonePrefix", new XmlExtractor( "telephonePrefix", "http://schemas.seovic.com/validation"));
-        source.setExtractor("domain",          new XmlExtractor("domain", "http://schemas.seovic.com/validation"));
+        source.setExtractor("code", new XmlExtractor("code", "http://schemas.seovic.com/id"));
+        source.setExtractor("formalName", new XmlExtractor("formalName", "http://schemas.seovic.com/config"));
+        source.setExtractor("capital", new XmlExtractor("capital","http://schemas.seovic.com/config"));
+        source.setExtractor("telephonePrefix", new XmlExtractor("telephonePrefix", "http://schemas.seovic.com/validation"));
+        source.setExtractor("domain", new XmlExtractor("domain", "http://schemas.seovic.com/validation"));
 
         Target target = new CoherenceCacheTarget(countries, Country.class);
         Loader loader = new DefaultLoader(source, target);
@@ -139,7 +130,7 @@ public class LoaderTests
         Source source = new CoherenceCacheSource(countries);
         StringWriter writer = new StringWriter();
         Target target = new XmlTarget(writer, "countries", "country",
-                                      "@code,name,formalName,capital,currencySymbol,currencyName,telephonePrefix,domain");
+            "@code,name,formalName,capital,currencySymbol,currencyName,telephonePrefix,domain");
 
         Loader loader = new DefaultLoader(source, target);
         loader.load();
@@ -176,7 +167,8 @@ public class LoaderTests
         Source source = new CsvSource(countriesReader);
         Target target = new CoherenceCacheTarget(countries, Country.class);
         Loader loader = new DefaultLoader(source, target);
-        source.setExtractor("name", new ExpressionExtractor("code + ':' + name+ ':' + formalName"));
+        source.setExtractor("name", new ExpressionExtractor(
+                "code + ':' + name+ ':' + formalName"));
         loader.load();
 
         // asserts
