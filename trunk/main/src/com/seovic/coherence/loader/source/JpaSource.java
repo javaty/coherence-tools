@@ -146,7 +146,7 @@ public class JpaSource
      * retrieved with a single query (batch size), in order to manage memory
      * consumption vs. number od executed queries ratio.
      */
-    public class JpaIterator
+    public static class JpaIterator
             implements Iterator
         {
 
