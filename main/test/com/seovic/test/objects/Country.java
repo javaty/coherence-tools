@@ -25,6 +25,8 @@ import com.seovic.core.Entity;
 import javax.persistence.Id;
 import java.io.IOException;
 import java.io.Serializable;
+import javax.persistence.Transient;
+
 
 @javax.persistence.Entity
 public class Country
@@ -57,7 +59,7 @@ public class Country
 
     // ---- Entity implementation -------------------------------------------
 
-    @Id
+    @Transient
     public String getId()
         {
         return code;
@@ -66,10 +68,12 @@ public class Country
 
     // ---- getters and setters ---------------------------------------------
 
+
     public void setId(String code) {
         this.code = code;
     }
 
+    @Id
     public String getCode()
         {
         return code;
