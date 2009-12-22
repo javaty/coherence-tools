@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Seovic.Coherence</RootNamespace>
     <AssemblyName>Coherence.Tools</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -53,6 +53,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -98,8 +101,10 @@
     <Compile Include="Loader\Source\AbstractBaseSource.cs" />
     <Compile Include="Loader\Source\CoherenceCacheSource.cs" />
     <Compile Include="Loader\Source\CsvSource.cs" />
+    <Compile Include="Loader\Source\XmlSource.cs" />
     <Compile Include="Loader\Target\AbstractBaseTarget.cs" />
     <Compile Include="Loader\Target\CoherenceCacheTarget.cs" />
+    <Compile Include="Loader\Target\XmlTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\Objects\Address.cs" />
     <Compile Include="Test\Objects\Country.cs" />
@@ -109,9 +114,20 @@
     <Compile Include="Util\Filter\StartsWithFilter.cs" />
     <Compile Include="Util\Processor\RemoveProcessor.cs" />
     <Compile Include="Util\SerializationHelper.cs" />
+    <Compile Include="Util\StringHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Config\coh-tools-cache-config.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Config\coh-tools-pof-config.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Util\Aggregator\" />

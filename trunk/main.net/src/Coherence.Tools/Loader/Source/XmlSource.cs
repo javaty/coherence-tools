@@ -1,38 +1,38 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using LumenWorks.Framework.IO.Csv;
+using System.Xml;
+
 using Seovic.Coherence.Core;
 using Seovic.Coherence.Core.Extractor;
 
 namespace Seovic.Coherence.Loader.Source
 {
     /// <summary>
-    ///  A <see cref="ISource"/> implementation that reads items to load from a CSV file.
+    /// A <see cref="ISource"/> implementation that reads items to load from an 
+    /// XML file.
     /// </summary>
-    /// <author>Aleksandar Seovic  2009.06.15</author>
-    /// <author>Ivan Cikic  2009.10.01</author>
-    public class CsvSource : AbstractBaseSource
+    /// <author>Ivan Cikic  2009.11.16</author>
+    public class XmlSource : AbstractBaseSource
     {
         #region Constructors
 
         /// <summary>
-        /// Constructs CsvSource instance.
+        /// Constructs <b>XmlSource</b> instance.
         /// </summary>
         /// <param name="resourceName">
-        /// The name of the CSV resource to read items from.
+        /// The name of the XML resource to read items from.
         /// </param>
-        public CsvSource(string resourceName)
+        public XmlSource(string resourceName)
         {
             m_resourceName = resourceName;
         }
 
         /// <summary>
-        /// Construct a CsvSource instance.
+        /// Construct a XmlSource instance.
         /// </summary>
-        /// <param name="reader">Reader to read CSV file with</param>
-        public CsvSource (TextReader reader)
+        /// <param name="reader">Reader to read XML file with</param>
+        public XmlSource(TextReader reader)
         {
             m_reader = reader;
         }
@@ -78,7 +78,7 @@ namespace Seovic.Coherence.Loader.Source
         /// </returns>
         public override IEnumerator GetEnumerator()
         {
-            return new CsvEnumerator(m_reader);
+            return new XmlEnumerator(m_reader);
         }
 
         /// <summary>
@@ -88,29 +88,33 @@ namespace Seovic.Coherence.Loader.Source
         /// <returns>Property extractor instance</returns>
         protected override IExtractor CreateDefaultExtractor(string propertyName)
         {
-            return new MapExtractor(propertyName);
+            return new XmlExtractor(propertyName);
         }
 
         #endregion
 
-        #region Inner class: CsvEnumerator
+        #region Inner class: XmlEnumerator
 
         /// <summary>
         /// Enumerator implementation of CsvSource.
         /// </summary>
-        public class CsvEnumerator : IEnumerator
+        public class XmlEnumerator : IEnumerator
         {
             #region Constructors
 
             /// <summary>
-            /// Construct CsvEnumerator instance.
+            /// Construct XmlEnumerator instance.
             /// </summary>
             /// <param name="reader">Reader to use.</param>
-            public CsvEnumerator(TextReader reader)
+            public XmlEnumerator(TextReader reader)
             {
-                m_csv        = new CsvReader(reader, true);
-                m_header     = m_csv.GetFieldHeaders();
-                m_fieldCount = m_csv.FieldCount;
+                XmlReaderSettings settings = new XmlReaderSettings();
+                settings.IgnoreComments               = true;
+                settings.IgnoreProcessingInstructions = true;
+                settings.IgnoreWhitespace             = true;
+                m_xml = XmlReader.Create(reader, settings);
+                InitReader();
+                MoveToElement();
             }
 
             #endregion
@@ -126,7 +130,16 @@ namespace Seovic.Coherence.Loader.Source
             /// </returns>
             public bool MoveNext()
             {
-                return m_csv.ReadNextRecord();
+                // this is necessery for two reasons:
+                // 1. skipping document element
+                // 2. xml.ReadSubtree() behavior with empty elements
+                if (m_xml.NodeType != XmlNodeType.None)
+                {
+                    m_xml.Read();
+                }
+
+                MoveToElement();
+                return m_xml.NodeType != XmlNodeType.None;
             }
 
             /// <summary>
@@ -139,7 +152,7 @@ namespace Seovic.Coherence.Loader.Source
             public void Reset()
             {
                 throw new NotSupportedException(
-                    "CsvEnumerator does not support reset operation");
+                    "XmlEnumerator does not support reset operation");
             }
 
             /// <summary>
@@ -148,12 +161,23 @@ namespace Seovic.Coherence.Loader.Source
             /// <returns>
             /// The current element in the collection.
             /// </returns>
-            /// <exception cref="T:System.InvalidOperationException">The enumerator is positioned before the first element of the collection or after the last element.-or- The collection was modified after the enumerator was created.</exception><filterpriority>2</filterpriority>
             public object Current
             {
                 get 
                 {
-                    return ToDictionary();
+                    XmlReader subtree = null;
+                    try
+                    {
+                        subtree = m_xml.ReadSubtree();
+                        return ToDocument(subtree);
+                    } 
+                    finally
+                    {
+                        if (subtree != null)
+                        {
+                            subtree.Close();
+                        }
+                    }
                 }
             }
 
@@ -162,27 +186,48 @@ namespace Seovic.Coherence.Loader.Source
             #region Helper methods
 
             /// <summary>
-            /// Creates a name-value map for a single Csv line.
+            /// Positions XML reader to next element in the stream or end of stream,
+            /// whatever comes first.
             /// </summary>
-            /// <returns></returns>
-            protected IDictionary<string, string> ToDictionary()
+            private void MoveToElement()
             {
-                IDictionary<string, string> dict = new Dictionary<string, string>();
-                for (int i = 0, count = m_fieldCount; i < count; i++)
+                // move to next element or end of document
+                while (m_xml.NodeType != XmlNodeType.Element && m_xml.NodeType != XmlNodeType.None)
                 {
-                    string value = m_csv[i];
-                    dict[m_header[i]] = value.Length > 0 ? value : null;
+                    m_xml.Read();
                 }
-                return dict;
+            }
+
+            /// <summary>
+            /// Initialize XML reader.
+            /// </summary>
+            /// <remarks>
+            /// When called after XML reader creation, move reader to first node in the stream.
+            /// </remarks>
+            private void InitReader()
+            {
+                m_xml.Read();
+            }
+
+            /// <summary>
+            /// Create XML Document from provided XML stream.
+            /// </summary>
+            /// <param name="subtree">
+            /// XML stream from which XML Document is constructed.
+            /// </param>
+            /// <returns>Constructed XML Document.</returns>
+            private static XmlDocument ToDocument(XmlReader subtree)
+            {
+                XmlDocument document = new XmlDocument();
+                document.Load(subtree);
+                return document;
             }
 
             #endregion
 
             #region Data members
 
-            private CsvReader m_csv;
-            private string[]  m_header;
-            private int       m_fieldCount;
+            private readonly XmlReader m_xml;
 
             #endregion
         }
@@ -196,6 +241,5 @@ namespace Seovic.Coherence.Loader.Source
         private TextReader m_reader;
 
         #endregion
-
     }
 }

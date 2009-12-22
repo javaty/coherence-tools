@@ -5,6 +5,7 @@ using System.Reflection;
 using Seovic.Coherence.Core;
 using Seovic.Coherence.Identity;
 using Seovic.Coherence.Identity.Extractor;
+using Seovic.Coherence.Util;
 using Tangosol.Net;
 
 namespace Seovic.Coherence.Loader.Target
@@ -161,7 +162,7 @@ namespace Seovic.Coherence.Loader.Target
                 int i = 0;
                 foreach (PropertyInfo pi in properties)
                 {
-                    propertyNames[i++] = pi.Name;
+                    propertyNames[i++] = pi.Name.Decapitalize();
                 }
 
                 return propertyNames;

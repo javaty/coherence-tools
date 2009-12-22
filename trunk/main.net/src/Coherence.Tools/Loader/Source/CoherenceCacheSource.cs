@@ -23,6 +23,11 @@ namespace Seovic.Coherence.Loader.Source
             cache = CacheFactory.GetCache(cacheName);
         }
 
+        public CoherenceCacheSource(INamedCache cache)
+        {
+            this.cache = cache;
+        }
+
         #endregion
 
         #region IEnumerable implementation
