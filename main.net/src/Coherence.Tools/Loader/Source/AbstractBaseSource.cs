@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Seovic.Coherence.Core;
+using Spring.Core.IO;
 
 namespace Seovic.Coherence.Loader.Source
 {
@@ -92,6 +94,30 @@ namespace Seovic.Coherence.Loader.Source
         /// <param name="propertyName">Property to create an extractor for</param>
         /// <returns>Property extractor instance</returns>
         protected abstract IExtractor CreateDefaultExtractor(string propertyName);
+
+        #endregion
+
+        #region Helper methods
+
+        /// <summary>
+        /// Return a <b>IResource</b> represented by the specified location.
+        /// </summary>
+        /// <param name="location">A resource location</param>
+        /// <returns>Resource</returns>
+        protected IResource GetResource(string location)
+        {
+            return new ConfigurableResourceLoader().GetResource(location);
+        }
+
+        /// <summary>
+        /// Create a reader for the specified resource.
+        /// </summary>
+        /// <param name="resource">Resource to create reader for.</param>
+        /// <returns>Reader for the specified resource.</returns>
+        protected TextReader CreateResourceReader(IResource resource)
+        {
+            return new StreamReader(resource.InputStream);
+        }
 
         #endregion
 

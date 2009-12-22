@@ -110,7 +110,7 @@ namespace Seovic.Coherence.Loader.Target
         /// </returns>
         protected IList<PropertyInfo> GetWriteableProperties(Type itemType)
         {
-            PropertyInfo[] properties = itemType.GetProperties(BINDING_FLAGS);
+            PropertyInfo[]      properties          = itemType.GetProperties(BINDING_FLAGS);
             IList<PropertyInfo> writeableProperties = new List<PropertyInfo>();
             foreach (PropertyInfo property in properties)
             {

@@ -39,9 +39,11 @@ namespace Seovic.Coherence.Core.Extractor
             XmlElement  sourceElement = sourceDoc.DocumentElement;
             if (sourceElement != null)
             {
-                string uri = nsUri == null
-                               ? sourceElement.NamespaceURI
-                               : nsUri;
+                // for some reason .NET XmlElement.GetAttribute needs to be given
+                // an empty string when working with default namespace, while 
+                // XmlElement.GetElementsByTagName needs as expected default namespace
+                // to be given
+                string uri = nsUri ?? string.Empty;
                 string result = null;
                 if (sourceElement.HasAttribute(nodeName, uri))
                 {
@@ -49,6 +51,7 @@ namespace Seovic.Coherence.Core.Extractor
                 }
                 else
                 {
+                    uri = nsUri ?? sourceElement.NamespaceURI;
                     XmlNodeList candidates = sourceElement.GetElementsByTagName(nodeName, uri);
                     if (candidates.Count > 0)
                     {
