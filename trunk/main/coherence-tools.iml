@@ -12,10 +12,11 @@
       <configuration>
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="EclipseLink" />
+        <setting name="targe-facet" value="" />
         <datasource-mapping>
           <factory-entry name="coherence-tools" />
         </datasource-mapping>
-        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/test/META-INF/persistence.xml" />
+        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/test/META-INF/persistence.xml" optional="false" version="1.0" />
       </configuration>
     </facet>
   </component>
@@ -151,5 +152,6 @@
       </library>
     </orderEntry>
   </component>
+  <component name="ProjectRunConfigurationManager" />
 </module>
 
