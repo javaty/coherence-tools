@@ -33,22 +33,11 @@
     <orderEntry type="module-library">
       <library name="spring-framework-3.0">
         <CLASSES>
-          <root url="file://$MODULE_DIR$/lib/spring-framework-3.0.0-RC1" />
+          <root url="file://$MODULE_DIR$/lib/spring-framework-3.0.0" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-        <jarDirectory url="file://$MODULE_DIR$/lib/spring-framework-3.0.0-RC1" recursive="false" />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="spring-batch-2.0-M1">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/spring-batch-2.1-M1/spring-batch-infrastructure-2.1.0.M1.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/spring-batch-2.1-M1/spring-batch-core-2.1.0.M1.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/spring-batch-2.1-M1/spring-batch-test-2.1.0.M1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/lib/spring-framework-3.0.0" recursive="false" />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
@@ -79,6 +68,16 @@
         <JAVADOC />
         <SOURCES />
         <jarDirectory url="file://$MODULE_DIR$/lib/jpa-2.0" recursive="false" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="eclilpselink-2.0.0">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/lib/eclipselink-2.0.0" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/lib/eclipselink-2.0.0" recursive="false" />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
@@ -129,16 +128,6 @@
         <JAVADOC />
         <SOURCES />
         <jarDirectory url="file://$MODULE_DIR$/lib/log4j-1.2.15" recursive="false" />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="eclilpselink-2.0.0">
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/lib/eclipselink-2.0.0.v20091121" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-        <jarDirectory url="file://$MODULE_DIR$/lib/eclipselink-2.0.0.v20091121" recursive="false" />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
