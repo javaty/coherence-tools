@@ -18,6 +18,7 @@ package com.seovic.coherence.util.extractor;
 
 
 import com.seovic.coherence.io.pof.reflect.SimplePofPath;
+import com.tangosol.io.pof.reflect.PofNavigator;
 
 
 /**
@@ -32,10 +33,41 @@ public class PofExtractor
     /**
      * Construct PofExtractor instance.
      *
+     * @param index  property index
+     */
+    public PofExtractor(int index)
+        {
+        super(null, index);
+        }
+
+    /**
+     * Construct PofExtractor instance.
+     *
      * @param indices  an array of property indices
      */
     public PofExtractor(int... indices)
         {
-        super(new SimplePofPath(indices));
+        this(new SimplePofPath(indices));
+        }
+
+    /**
+     * Construct PofExtractor instance.
+     *
+     * @param navigator  property navigator
+     */
+    public PofExtractor(PofNavigator navigator)
+        {
+        super(null, navigator);
+        }
+
+    /**
+     * Construct PofExtractor instance.
+     *
+     * @param navigator  property navigator
+     * @param target     extraction target (KEY or VALUE)
+     */
+    public PofExtractor(PofNavigator navigator, int target)
+        {
+        super(null, navigator, target);
         }
     }
