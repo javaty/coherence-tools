@@ -24,13 +24,13 @@ public class ConfigurableBackingMapListener
         extends AbstractBackingMapListener {
     // ---- configuration context -------------------------------------------
 
-    private static final ApplicationContext ctx =
+    private static final ApplicationContext s_ctx =
             new ClassPathXmlApplicationContext("backing-map-listener-context.xml");
 
 
     // ---- data members ----------------------------------------------------
 
-    private ManagedBackingMapListener delegate;
+    private ManagedBackingMapListener m_listener;
 
 
     // ---- constructors ----------------------------------------------------
@@ -43,30 +43,30 @@ public class ConfigurableBackingMapListener
      */
     public ConfigurableBackingMapListener(BackingMapManagerContext context, String cacheName) {
         super(context);
-        delegate = ctx.containsBean(cacheName)
-                   ? (ManagedBackingMapListener) ctx.getBean(cacheName)
-                   : new ManagedBackingMapListener();
-        delegate.setContext(getContext());
+        m_listener = s_ctx.containsBean(cacheName)
+                     ? (ManagedBackingMapListener) s_ctx.getBean(cacheName)
+                     : new ManagedBackingMapListener();
+        m_listener.setContext(getContext());
     }
 
     /**
      * {@inheritDoc}
      */
     public void entryInserted(MapEvent event) {
-        delegate.entryInserted(event);
+        m_listener.entryInserted(event);
     }
 
     /**
      * {@inheritDoc}
      */
     public void entryUpdated(MapEvent event) {
-        delegate.entryUpdated(event);
+        m_listener.entryUpdated(event);
     }
 
     /**
      * {@inheritDoc}
      */
     public void entryDeleted(MapEvent event) {
-        delegate.entryDeleted(event);
+        m_listener.entryDeleted(event);
     }
 }
