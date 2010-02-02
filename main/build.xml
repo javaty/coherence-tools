@@ -2,7 +2,7 @@
 
   <property name="jar.name"     value="coherence-tools"/>
   <property name="jar.version"  value="1.0"/>
-  <property name="base.package" value="com.seovic.coherence"/>
+  <property name="base.package" value="com.seovic"/>
 
   <property environment="env"/>
   <property name="env.COHERENCE_HOME" value="/opt/coherence-3.5"/>
