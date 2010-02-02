@@ -20,6 +20,7 @@ package com.seovic.coherence.util;
 import com.seovic.core.Command;
 
 import com.tangosol.util.InvocableMap;
+import com.tangosol.util.WrapperException;
 
 
 /**
@@ -41,7 +42,22 @@ public class EntryProcessorCommand<T>
     @SuppressWarnings({"unchecked"})
     public T execute()
         {
-        return (T) m_targetMap.invoke(m_targetKey, m_processor);
+        try
+            {
+            return (T) m_targetMap.invoke(m_targetKey, m_processor);
+            }
+        catch (WrapperException we)
+            {
+            final Throwable original = we.getOriginalException();
+            if (original instanceof RuntimeException)
+                {
+                throw (RuntimeException) original;
+                }
+            else
+                {
+                throw we;
+                }
+            }
         }
 
     private final InvocableMap m_targetMap;

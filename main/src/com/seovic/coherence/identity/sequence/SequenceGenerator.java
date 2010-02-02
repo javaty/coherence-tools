@@ -100,7 +100,8 @@ public class SequenceGenerator
     /**
      * The name of the sequences cache.
      */
-    public static final String CACHE_NAME = "coh-tools-sequences";
+    public static final String CACHE_NAME =
+            System.getProperty("sequence.cache.name", "sequences");
 
     /**
      * Sequences cache.
