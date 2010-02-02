@@ -62,6 +62,18 @@ public class Sequence
         m_name = name;
         }
 
+    /**
+     * Sequence constructor.
+     *
+     * @param name  sequence name
+     * @param last  last assigned number 
+     */
+    public Sequence(String name, long last)
+        {
+        m_name = name;
+        m_last = last;
+        }
+
     // ---- public methods --------------------------------------------------
 
     /**
@@ -86,7 +98,7 @@ public class Sequence
      *
      * @return the last allocated sequence number
      */
-    public long peek()
+    public long getLast()
         {
         return m_last;
         }
@@ -96,7 +108,7 @@ public class Sequence
      *
      * @return the sequence name
      */
-    public String name()
+    public String getName()
         {
         return m_name;
         }

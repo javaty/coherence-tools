@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.seovic.coherence.util.persistence.jdbc;
+package com.seovic.coherence.util.persistence;
 
 
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -25,10 +25,9 @@ import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
+import java.util.List;
 import java.sql.ResultSet;
 import javax.sql.DataSource;
-
-import com.seovic.coherence.util.persistence.AbstractBatchingCacheStore;
 
 
 /**
@@ -98,8 +97,9 @@ public abstract class AbstractJdbcCacheStore<T>
     @Transactional(readOnly = true)
     public Object load(Object key)
         {
-        return getJdbcTemplate().queryForObject(
+        List<T> results = getJdbcTemplate().query(
                 getSelectSql(), getRowMapper(), getPrimaryKeyComponents(key));
+        return results.size() == 0 ? null : results.get(0);
         }
 
 

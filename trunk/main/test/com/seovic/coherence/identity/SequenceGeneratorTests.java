@@ -41,8 +41,8 @@ public class SequenceGeneratorTests
         assertEquals(100, igc.generateIdentities(10, 10).size());
 
         Sequence seq = (Sequence) sequenceCache.get("test");
-        assertEquals("test", seq.name());
-        assertEquals(300, seq.peek());
+        assertEquals("test", seq.getName());
+        assertEquals(300, seq.getLast());
         }
 
     @Test
@@ -54,8 +54,8 @@ public class SequenceGeneratorTests
         assertEquals(100, igc.generateIdentities(5, 20).size());
 
         Sequence seq = (Sequence) sequenceCache.get("test");
-        assertEquals("test", seq.name());
-        assertEquals(100, seq.peek());
+        assertEquals("test", seq.getName());
+        assertEquals(100, seq.getLast());
         }
 
     @Test
@@ -70,8 +70,8 @@ public class SequenceGeneratorTests
         assertEquals(25, igc2.generateIdentities(5, 5).size());
 
         Sequence seq = (Sequence) sequenceCache.get("test");
-        assertEquals("test", seq.name());
-        assertEquals(60, seq.peek());
+        assertEquals("test", seq.getName());
+        assertEquals(60, seq.getLast());
         }
 
     }

@@ -35,7 +35,9 @@ public class ConfigurableCacheLoader
     // ---- configuration context -------------------------------------------
 
     private static final ApplicationContext s_ctx =
-            new ClassPathXmlApplicationContext("persistence-context.xml");
+            new ClassPathXmlApplicationContext(
+                    System.getProperty("persistence.context",
+                                       "persistence-context.xml"));
 
 
     // ---- data members ----------------------------------------------------
