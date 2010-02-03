@@ -18,6 +18,10 @@ package com.seovic.coherence.util.persistence;
 
 
 import com.tangosol.net.cache.CacheStore;
+import com.tangosol.net.cache.CacheLoader;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.Map;
 import java.util.Collection;
@@ -27,14 +31,8 @@ import java.util.Collection;
  * @author Aleksandar Seovic  2010.01.22
  */
 public class ConfigurableCacheStore 
-        extends ConfigurableCacheLoader
         implements CacheStore
     {
-    // ---- data members ----------------------------------------------------
-
-    private CacheStore m_store;
-
-
     // ---- constructors ----------------------------------------------------
 
     /**
@@ -44,16 +42,31 @@ public class ConfigurableCacheStore
      */
     public ConfigurableCacheStore(String cacheName)
         {
-        super(cacheName);
-        m_store = (CacheStore) m_loader;
+        m_loader = (CacheLoader) s_ctx.getBean(cacheName);
+        m_store  = m_loader instanceof CacheStore
+                   ? (CacheStore) m_loader
+                   : new UnsupportedCacheStore();
+        }
+
+
+    // ---- CacheLoader implementation ---------------------------------------
+
+    public Object load(Object key)
+        {
+        return m_loader.load(key);
+        }
+
+    public Map loadAll(Collection collection)
+        {
+        return m_loader.loadAll(collection);
         }
 
 
     // ---- CacheStore implementation ---------------------------------------
 
-    public void store(Object o, Object o1)
+    public void store(Object key, Object value)
         {
-        m_store.store(o, o1);
+        m_store.store(key, value);
         }
 
     public void storeAll(Map map)
@@ -61,13 +74,64 @@ public class ConfigurableCacheStore
         m_store.storeAll(map);
         }
 
-    public void erase(Object o)
+    public void erase(Object key)
         {
-        m_store.erase(o);
+        m_store.erase(key);
         }
 
     public void eraseAll(Collection collection)
         {
         m_store.eraseAll(collection);
         }
+
+
+    // ---- inner class: UnsupportedCacheStore ------------------------------
+
+    private static class UnsupportedCacheStore
+            implements CacheStore
+        {
+        public void store(Object key, Object value)
+            {
+            throw new UnsupportedOperationException();
+            }
+
+        public void storeAll(Map map)
+            {
+            throw new UnsupportedOperationException();
+            }
+
+        public void erase(Object key)
+            {
+            throw new UnsupportedOperationException();
+            }
+
+        public void eraseAll(Collection collection)
+            {
+            throw new UnsupportedOperationException();
+            }
+
+        public Object load(Object key)
+            {
+            throw new UnsupportedOperationException();
+            }
+
+        public Map loadAll(Collection collection)
+            {
+            throw new UnsupportedOperationException();
+            }
+        }
+
+
+    // ---- configuration context -------------------------------------------
+
+    private static final ApplicationContext s_ctx =
+            new ClassPathXmlApplicationContext(
+                    System.getProperty("persistence.context",
+                                       "persistence-context.xml"));
+
+
+    // ---- data members ----------------------------------------------------
+
+    private CacheLoader m_loader;
+    private CacheStore  m_store;
     }

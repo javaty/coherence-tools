@@ -23,6 +23,7 @@ import com.tangosol.net.AbstractInvocable;
 import com.tangosol.net.InvocationService;
 
 import java.io.Serializable;
+import java.util.Set;
 
 
 /**
@@ -60,11 +61,15 @@ public class ClusterManager
         System.out.println(m_cluster);
         }
 
+    @SuppressWarnings({"deprecation"})
     private void kill()
         {
-        InvocationService is = (InvocationService)
-                m_cluster.getService("Management");
-        is.execute(new KillAgent(), null, null);
+        InvocationService is = CacheFactory.getInvocationService("Management");
+
+        Set members = is.getInfo().getServiceMembers();
+        members.remove(m_cluster.getLocalMember());
+
+        is.execute(new KillAgent(), members, null);
         }
 
 

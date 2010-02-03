@@ -144,6 +144,43 @@ public class Sequence
         }
 
 
+    // ---- Object methods --------------------------------------------------
+
+    @Override
+    public boolean equals(Object o)
+        {
+        if (this == o)
+            {
+            return true;
+            }
+        if (o == null || getClass() != o.getClass())
+            {
+            return false;
+            }
+
+        Sequence sequence = (Sequence) o;
+
+        return m_last == sequence.m_last
+               && m_name.equals(sequence.m_name);
+        }
+
+    @Override
+    public int hashCode()
+        {
+        int result = m_name.hashCode();
+        result = 31 * result + (int) (m_last ^ (m_last >>> 32));
+        return result;
+        }
+
+    @Override
+    public String toString()
+        {
+        return "Sequence(" +
+               "name='" + m_name + '\'' +
+               ", last=" + m_last +
+               ')';
+        }
+
     // ---- data members ----------------------------------------------------
 
     /**
