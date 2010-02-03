@@ -21,7 +21,7 @@ import com.tangosol.net.cache.AbstractCacheStore;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+import java.util.Iterator;
 
 
 /**
@@ -53,7 +53,7 @@ public abstract class AbstractBatchingCacheStore
     public void storeAll(Map mapEntries)
         {
         int batchSize = getBatchSize();
-        if (batchSize == 0)
+        if (batchSize == 0 || mapEntries.size() < batchSize)
             {
             storeBatch(mapEntries);
             }
@@ -61,19 +61,19 @@ public abstract class AbstractBatchingCacheStore
             {
             Map batch = new HashMap(batchSize);
 
-            for (Map.Entry entry : (Set <Map.Entry>) mapEntries.entrySet())
+            while (!mapEntries.isEmpty())
                 {
-                batch.put(entry.getKey(), entry.getValue());
-                if (batch.size() == batchSize)
+                Iterator iter = mapEntries.entrySet().iterator();
+                while (iter.hasNext() && batch.size() < batchSize)
                     {
-                    storeBatch(batch);
-                    batch.clear();
+                    Map.Entry entry = (Map.Entry) iter.next();
+                    batch.put(entry.getKey(), entry.getValue());
                     }
-                }
 
-            if (!batch.isEmpty())
-                {
                 storeBatch(batch);
+
+                mapEntries.keySet().removeAll(batch.keySet());
+                batch.clear();
                 }
             }
         }
