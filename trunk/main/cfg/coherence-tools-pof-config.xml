@@ -18,16 +18,98 @@
 
 <pof-config>
   <user-type-list>
-  	<include>coherence-pof-config.xml</include>
+
+    <!-- com.seovic.coherence.io.* classes -->
+    <user-type>
+      <type-id>700</type-id>
+      <class-name>com.seovic.coherence.io.pof.reflect.SimplePofPath</class-name>
+    </user-type>
+
+    <!-- com.seovic.coherence.lookup.* classes -->
+    <user-type>
+      <type-id>710</type-id>
+      <class-name>com.seovic.coherence.lookup.LookupValue</class-name>
+    </user-type>
+    <user-type>
+      <type-id>711</type-id>
+      <class-name>com.seovic.coherence.lookup.LookupValueExtractor</class-name>
+    </user-type>
+    <user-type>
+      <type-id>712</type-id>
+      <class-name>com.seovic.coherence.lookup.LookupValuesAggregator</class-name>
+    </user-type>
+
+    <!-- com.seovic.coherence.util.aggregator.* classes -->
+    <user-type>
+      <type-id>720</type-id>
+      <class-name>com.seovic.coherence.util.aggregator.TopAggregator</class-name>
+    </user-type>
+    <user-type>
+      <type-id>721</type-id>
+      <class-name>com.seovic.coherence.util.aggregator.TopAggregator$KeyValuePair</class-name>
+    </user-type>
+    <user-type>
+      <type-id>722</type-id>
+      <class-name>com.seovic.coherence.util.aggregator.TopAggregator$KeyValuePairExtractor</class-name>
+    </user-type>
+
+    <!-- com.seovic.coherence.util.extractor.* classes -->
+    <user-type>
+      <type-id>730</type-id>
+      <class-name>com.seovic.coherence.util.extractor.KeyExtractorAdapter</class-name>
+    </user-type>
+    <user-type>
+      <type-id>731</type-id>
+      <class-name>com.seovic.coherence.util.extractor.PofExtractor</class-name>
+    </user-type>
+    <user-type>
+      <type-id>732</type-id>
+      <class-name>com.seovic.coherence.util.extractor.ValueExtractorAdapter</class-name>
+    </user-type>
+
+    <!-- com.seovic.coherence.util.filter.* classes -->
+    <user-type>
+      <type-id>740</type-id>
+      <class-name>com.seovic.coherence.util.filter.StartsWithFilter</class-name>
+    </user-type>
+    <user-type>
+      <type-id>741</type-id>
+      <class-name>com.seovic.coherence.util.filter.FilterAdapter</class-name>
+    </user-type>
+
+    <!-- com.seovic.coherence.util.processor.* classes -->
+    <user-type>
+      <type-id>750</type-id>
+      <class-name>com.seovic.coherence.util.processor.BinaryExtractorProcessor</class-name>
+    </user-type>
+    <user-type>
+      <type-id>751</type-id>
+      <class-name>com.seovic.coherence.util.processor.BinaryNumberIncrementor</class-name>
+    </user-type>
+    <user-type>
+      <type-id>752</type-id>
+      <class-name>com.seovic.coherence.util.processor.BinaryPut</class-name>
+    </user-type>
+    <user-type>
+      <type-id>753</type-id>
+      <class-name>com.seovic.coherence.util.processor.BinaryVersionedPut</class-name>
+    </user-type>
+    <user-type>
+      <type-id>754</type-id>
+      <class-name>com.seovic.coherence.util.processor.Put</class-name>
+    </user-type>
+    <user-type>
+      <type-id>755</type-id>
+      <class-name>com.seovic.coherence.util.processor.Remove</class-name>
+    </user-type>
+
+    <!-- com.seovic.core.condition.* classes -->
   	<user-type>
       <type-id>800</type-id>
       <class-name>com.seovic.core.condition.ExpressionCondition</class-name>
     </user-type>
-  	<user-type>
-      <type-id>801</type-id>
-      <class-name>com.seovic.core.condition.FilterAdapter</class-name>
-    </user-type>
-    
+
+    <!-- com.seovic.core.expression.* classes -->
     <user-type>
       <type-id>810</type-id>
       <class-name>com.seovic.core.expression.GroovyExpression</class-name>
@@ -44,14 +126,19 @@
       <type-id>813</type-id>
       <class-name>com.seovic.core.expression.ScriptExpression</class-name>
     </user-type>
-    
+    <user-type>
+      <type-id>814</type-id>
+      <class-name>com.seovic.core.expression.SpelExpression</class-name>
+    </user-type>
+
+    <!-- com.seovic.core.extractor.* classes -->
     <user-type>
       <type-id>820</type-id>
       <class-name>com.seovic.core.extractor.ExpressionExtractor</class-name>
     </user-type>
     <user-type>
       <type-id>821</type-id>
-      <class-name>com.seovic.core.extractor.KeyExtractorAdapter</class-name>
+      <class-name>com.seovic.core.extractor.GroovyExtractor</class-name>
     </user-type>
     <user-type>
       <type-id>822</type-id>
@@ -59,17 +146,30 @@
     </user-type>
     <user-type>
       <type-id>823</type-id>
-      <class-name>com.seovic.core.extractor.PropertyExtractor</class-name>
+      <class-name>com.seovic.core.extractor.MvelExtractor</class-name>
     </user-type>
     <user-type>
       <type-id>824</type-id>
-      <class-name>com.seovic.core.extractor.ValueExtractorAdapter</class-name>
+      <class-name>com.seovic.core.extractor.OgnlExtractor</class-name>
     </user-type>
     <user-type>
       <type-id>825</type-id>
+      <class-name>com.seovic.core.extractor.PropertyExtractor</class-name>
+    </user-type>
+    <user-type>
+      <type-id>826</type-id>
+      <class-name>com.seovic.core.extractor.ScriptExtractor</class-name>
+    </user-type>
+    <user-type>
+      <type-id>827</type-id>
+      <class-name>com.seovic.core.extractor.SpelExtractor</class-name>
+    </user-type>
+    <user-type>
+      <type-id>828</type-id>
       <class-name>com.seovic.core.extractor.XmlExtractor</class-name>
     </user-type>
   	
+    <!-- com.seovic.core.updater.* classes -->
   	<user-type>
       <type-id>830</type-id>
       <class-name>com.seovic.core.updater.BeanWrapperUpdater</class-name>
@@ -87,73 +187,20 @@
       <class-name>com.seovic.core.updater.PropertyUpdater</class-name>
     </user-type>
 
+    <!-- com.seovic.identity.* classes -->
     <user-type>
       <type-id>840</type-id>
-      <class-name>com.seovic.coherence.identity.sequence.Sequence</class-name>
+      <class-name>com.seovic.identity.Sequence</class-name>
     </user-type>
     <user-type>
       <type-id>841</type-id>
-      <class-name>com.seovic.coherence.identity.sequence.SequenceBlock</class-name>
+      <class-name>com.seovic.identity.SequenceGenerator$SequenceBlock</class-name>
     </user-type>
     <user-type>
       <type-id>842</type-id>
-      <class-name>com.seovic.coherence.identity.sequence.SequenceBlockAllocator</class-name>
+      <class-name>com.seovic.coherence.identity.CoherenceSequenceGenerator$SequenceBlockAllocator</class-name>
     </user-type>
 
-    <user-type>
-      <type-id>845</type-id>
-      <class-name>com.seovic.coherence.lookup.LookupValue</class-name>
-    </user-type>
-    <user-type>
-      <type-id>846</type-id>
-      <class-name>com.seovic.coherence.lookup.LookupValueExtractor</class-name>
-    </user-type>
-    <user-type>
-      <type-id>847</type-id>
-      <class-name>com.seovic.coherence.lookup.LookupValuesAggregator</class-name>
-    </user-type>
-
-    <user-type>
-      <type-id>850</type-id>
-      <class-name>com.seovic.coherence.util.aggregator.TopAggregator</class-name>
-    </user-type>
-    <user-type>
-      <type-id>851</type-id>
-      <class-name>com.seovic.coherence.util.aggregator.TopAggregator$KeyValuePair</class-name>
-    </user-type>
-    <user-type>
-      <type-id>852</type-id>
-      <class-name>com.seovic.coherence.util.aggregator.TopAggregator$KeyValuePairExtractor</class-name>
-    </user-type>
-    <user-type>
-      <type-id>853</type-id>
-      <class-name>com.seovic.coherence.util.filter.StartsWithFilter</class-name>
-    </user-type>
-
-    <user-type>
-      <type-id>860</type-id>
-      <class-name>com.seovic.coherence.util.processor.BinaryExtractorProcessor</class-name>
-    </user-type>
-    <user-type>
-      <type-id>861</type-id>
-      <class-name>com.seovic.coherence.util.processor.BinaryNumberIncrementor</class-name>
-    </user-type>
-    <user-type>
-      <type-id>862</type-id>
-      <class-name>com.seovic.coherence.util.processor.BinaryPut</class-name>
-    </user-type>
-    <user-type>
-      <type-id>863</type-id>
-      <class-name>com.seovic.coherence.util.processor.BinaryVersionedPut</class-name>
-    </user-type>
-    <user-type>
-      <type-id>864</type-id>
-      <class-name>com.seovic.coherence.util.processor.Put</class-name>
-    </user-type>
-    <user-type>
-      <type-id>865</type-id>
-      <class-name>com.seovic.coherence.util.processor.Remove</class-name>
-    </user-type>
 
   </user-type-list>
 </pof-config>

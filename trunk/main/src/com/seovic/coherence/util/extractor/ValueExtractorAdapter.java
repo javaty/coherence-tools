@@ -14,61 +14,58 @@
  * limitations under the License.
  */
 
-package com.seovic.core.updater;
+package com.seovic.coherence.util.extractor;
 
 
-import com.seovic.core.Updater;
+import com.tangosol.util.ValueExtractor;
 
 import com.tangosol.io.pof.PortableObject;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
 
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
+import com.seovic.core.Extractor;
 
 import java.io.Serializable;
 import java.io.IOException;
 
 
 /**
- * Simple imlementation of {@link Updater} that updates single property of a
- * target object using Spring BeanWrapper, thus allowing for the automatic
- * conversion of String values to a target property type.
+ * Adapter that allows any class that implements <tt>com.tangosol.util.ValueExtractor</tt>
+ * to be used where {@link Extractor} instance is expected.
  *
- * @author Aleksandar Seovic  2009.06.18
+ * @author Aleksandar Seovic  2009.09.20
  */
-public class BeanWrapperUpdater
-        implements Updater, Serializable, PortableObject
+public class ValueExtractorAdapter
+    implements Extractor, Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
 
     /**
      * Deserialization constructor (for internal use only).
      */
-    public BeanWrapperUpdater()
+    public ValueExtractorAdapter()
         {
         }
 
     /**
-     * Construct a <tt>BeanWrapperUpdater</tt> instance.
+     * Construct a <tt>ValueExtractorAdapter</tt> instance.
      *
-     * @param propertyName the name of the property to update
+     * @param delegate  value extractor to delegate to
      */
-    public BeanWrapperUpdater(String propertyName)
+    public ValueExtractorAdapter(ValueExtractor delegate)
         {
-        m_propertyName = propertyName;
+        this.m_delegate = delegate;
         }
 
 
-    // ---- Updater implementation ------------------------------------------
+    // ---- Extractor implementation ----------------------------------------
 
     /**
      * {@inheritDoc}
      */
-    public void update(Object target, Object value)
+    public Object extract(Object o)
         {
-        BeanWrapper bw = new BeanWrapperImpl(target);
-        bw.setPropertyValue(m_propertyName, value);
+        return m_delegate.extract(o);
         }
 
 
@@ -84,7 +81,7 @@ public class BeanWrapperUpdater
     public void readExternal(PofReader reader)
             throws IOException
         {
-        m_propertyName = reader.readString(0);
+        m_delegate = (ValueExtractor) reader.readObject(0);
         }
 
     /**
@@ -97,7 +94,7 @@ public class BeanWrapperUpdater
     public void writeExternal(PofWriter writer)
             throws IOException
         {
-        writer.writeString(0, m_propertyName);
+        writer.writeObject(0, m_delegate);
         }
 
 
@@ -123,8 +120,8 @@ public class BeanWrapperUpdater
             return false;
             }
 
-        BeanWrapperUpdater that = (BeanWrapperUpdater) o;
-        return m_propertyName.equals(that.m_propertyName);
+        ValueExtractorAdapter adapter = (ValueExtractorAdapter) o;
+        return m_delegate.equals(adapter.m_delegate);
         }
 
     /**
@@ -135,7 +132,7 @@ public class BeanWrapperUpdater
     @Override
     public int hashCode()
         {
-        return m_propertyName.hashCode();
+        return m_delegate.hashCode();
         }
 
     /**
@@ -146,15 +143,13 @@ public class BeanWrapperUpdater
     @Override
     public String toString()
         {
-        return "BeanWrapperUpdater{" +
-               "propertyName='" + m_propertyName + '\'' +
+        return "ValueExtractorAdapter{" +
+               "delegate=" + m_delegate +
                '}';
         }
 
+    
     // ---- data members ----------------------------------------------------
 
-    /**
-     * Property name.
-     */
-    private String m_propertyName;
+    private ValueExtractor m_delegate;
     }

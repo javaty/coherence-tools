@@ -18,8 +18,7 @@ package com.seovic.core.expression;
 
 
 import com.seovic.core.Expression;
-import com.seovic.core.Defaults;
-
+import com.seovic.config.Configuration;
 import com.seovic.io.InputStreamUtils;
 
 import com.tangosol.io.pof.PofReader;
@@ -68,7 +67,7 @@ public class ScriptExpression
      */
     public ScriptExpression(String expression)
         {
-        this(expression, Defaults.getScriptLanguage());
+        this(expression, Configuration.getDefaultScriptLanguage());
         }
 
     /**
@@ -78,7 +77,7 @@ public class ScriptExpression
      */
     public ScriptExpression(InputStream script)
         {
-        this(script, Defaults.getScriptLanguage());
+        this(script, Configuration.getDefaultScriptLanguage());
         }
 
     /**
@@ -141,6 +140,11 @@ public class ScriptExpression
 
     // ---- helper methods --------------------------------------------------
 
+    /**
+     * Return script engine for this expression's language.
+     *
+     * @return script engine
+     */
     protected ScriptEngine getScriptEngine()
         {
         ScriptEngine engine = m_engine;

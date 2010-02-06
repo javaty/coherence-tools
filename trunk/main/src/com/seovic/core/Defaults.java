@@ -17,11 +17,9 @@
 package com.seovic.core;
 
 
+import com.seovic.config.Configuration;
+
 import java.lang.reflect.Constructor;
-
-import java.util.Properties;
-
-import java.io.IOException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,12 +38,18 @@ public class Defaults
      */
     private Defaults()
         {
-        Properties props = loadDefaults();
-        m_ctorExpression = getConstructor(props.getProperty(EXPRESSION_TYPE));
-        m_ctorExtractor  = getConstructor(props.getProperty(EXTRACTOR_TYPE));
-        m_ctorUpdater    = getConstructor(props.getProperty(UPDATER_TYPE));
-        m_ctorCondition  = getConstructor(props.getProperty(CONDITION_TYPE));
-        m_scriptLanguage = props.getProperty(SCRIPT_LANGUAGE);
+        try
+            {
+            m_ctorExpression = getConstructor(Configuration.getDefaultExpressionType());
+            m_ctorExtractor  = getConstructor(Configuration.getDefaultExtractorType());
+            m_ctorUpdater    = getConstructor(Configuration.getDefaultUpdaterType());
+            m_ctorCondition  = getConstructor(Configuration.getDefaultConditionType());
+            }
+        catch (ClassNotFoundException e)
+            {
+            log.error("Unable to initialize Defaults.", e);
+            throw new RuntimeException(e);
+            }
         }
 
     // ---- public methods --------------------------------------------------
@@ -126,93 +130,34 @@ public class Defaults
             }
         }
 
-    /**
-     * Return the name of the default script language.
-     *
-     * @return the name of the default script language
-     */
-    public static String getScriptLanguage()
-        {
-        return instance.m_scriptLanguage;
-        }
-
 
     // ---- helper methods --------------------------------------------------
 
     /**
-     * Loads default values from a com/seovic/lang/defaults.properties file.
-     *
-     * @return loaded Properties instance
-     */
-    protected Properties loadDefaults()
-        {
-        Properties props = new Properties();
-        try
-            {
-            props.load(getClass().getResourceAsStream("defaults.properties"));
-            }
-        catch (IOException e)
-            {
-            // should never happen
-            props.setProperty(EXPRESSION_TYPE, DEFAULT_EXPRESSION_TYPE);
-            props.setProperty(EXTRACTOR_TYPE,  DEFAULT_EXTRACTOR_TYPE);
-            props.setProperty(UPDATER_TYPE,    DEFAULT_UPDATER_TYPE);
-            props.setProperty(CONDITION_TYPE,  DEFAULT_CONDITION_TYPE);
-            props.setProperty(SCRIPT_LANGUAGE, DEFAULT_SCRIPT_LANGUAGE);
-
-            log.warn("Configuration resource com/seovic/core/defaults.properties"
-                     + " not found. Using hardcoded defaults: " + props);
-            }
-        return props;
-        }
-
-    /**
-     * Gets a constructor from the specified class that accepts a single String
+     * Gets a constructor for the specified class that accepts a single String
      * argument.
      *
-     * @param className  the name of the class to find the constructor in
+     * @param type  the class to find the constructor for
      *
      * @return a constructor for the specified class that accepts a single
      *         String argument
      */
-    protected Constructor getConstructor(String className)
+    protected Constructor getConstructor(Class type)
         {
         try
             {
-            Class cls = Class.forName(className);
-            return cls.getConstructor(String.class);
+            return type.getConstructor(String.class);
             }
-        catch (Exception e)
+        catch (NoSuchMethodException e)
             {
             throw new RuntimeException("Unable to find a constructor that accepts"
                                        + " a single String argument in the "
-                                       + className + " class.", e);
+                                       + type.getName() + " class.", e);
             }
         }
 
 
-    // ---- constants -------------------------------------------------------
-
-    /**
-     * Property names
-     */
-    private static final String EXPRESSION_TYPE = "expression.type";
-    private static final String EXTRACTOR_TYPE  = "extractor.type";
-    private static final String UPDATER_TYPE    = "updater.type";
-    private static final String CONDITION_TYPE  = "condition.type";
-    private static final String SCRIPT_LANGUAGE = "script.language";
-
-    /**
-     * Default property values
-     */
-    private static final String DEFAULT_EXPRESSION_TYPE = "com.seovic.core.expression.MvelExpression";
-    private static final String DEFAULT_EXTRACTOR_TYPE  = "com.seovic.core.extractor.ExpressionExtractor";
-    private static final String DEFAULT_UPDATER_TYPE    = "com.seovic.core.updater.ExpressionUpdater";
-    private static final String DEFAULT_CONDITION_TYPE  = "com.seovic.core.condition.ExpressionCondition";
-    private static final String DEFAULT_SCRIPT_LANGUAGE = "javascript";
-
-
-    // ---- static members --------------------------------------------------
+    // ---- data members ----------------------------------------------------
 
     /**
      * Singleton instance.
@@ -223,9 +168,6 @@ public class Defaults
      * Logger instance.
      */
     private static final Log log = LogFactory.getLog(Defaults.class);
-
-
-    // ---- data members ----------------------------------------------------
 
     /**
      * Constructor for default expression type.
@@ -246,9 +188,4 @@ public class Defaults
      * Constructor for default condition type.
      */
     private Constructor<Condition> m_ctorCondition;
-
-    /**
-     * The name of the default script language.
-     */
-    private String m_scriptLanguage;
     }

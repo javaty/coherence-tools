@@ -17,8 +17,11 @@
 package com.seovic.coherence.loader;
 
 
-import com.seovic.coherence.loader.source.XmlSource;
-import com.seovic.coherence.loader.target.CoherenceCacheTarget;
+import com.seovic.loader.AbstractDelegatingLoader;
+import com.seovic.loader.DefaultLoader;
+import com.seovic.loader.Source;
+import com.seovic.loader.Target;
+import com.seovic.loader.source.XmlSource;
 
 import com.tangosol.net.NamedCache;
 

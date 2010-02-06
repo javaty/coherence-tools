@@ -18,6 +18,7 @@ package com.seovic.core.extractor;
 
 
 import com.seovic.core.Extractor;
+import com.seovic.coherence.util.extractor.ValueExtractorAdapter;
 
 import com.tangosol.util.extractor.ReflectionExtractor;
 import com.tangosol.util.extractor.ChainedExtractor;

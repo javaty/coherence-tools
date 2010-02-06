@@ -60,7 +60,7 @@ public class FilterBuilderTests
     @Test
     public void testFilterBuilderUsingConditionalExpressions() {
         FilterBuilder fb = new FilterBuilder()
-                .condition("currencySymbol == 'EUR' || currencyName == 'Dollar'")
+                .condition("currencySymbol == 'EUR' or currencyName == 'Dollar'")
                 .like("name", "B%", false);
 
         Condition and = fb.toAnd();

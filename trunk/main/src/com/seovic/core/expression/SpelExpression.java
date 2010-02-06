@@ -31,8 +31,10 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 /**
  * An imlementation of {@link Expression} that evaluates specified expression
- * using Spring EL.
+ * using <a href="http://static.springsource.org/spring/docs/3.0.x/reference/html/expressions.html" target="_new">
+ * Spring Expression Language (SpEL)</a>.
  * 
+ * @author Aleksandar Seovic  2009.09.30
  * @author Ivan Cikic  2009.09.30
  */
 @SuppressWarnings("serial")

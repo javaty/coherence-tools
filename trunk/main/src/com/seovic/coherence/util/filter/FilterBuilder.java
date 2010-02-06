@@ -24,7 +24,6 @@ import com.tangosol.util.filter.*;
 import com.seovic.core.Extractor;
 import com.seovic.core.Defaults;
 import com.seovic.core.Condition;
-import com.seovic.core.condition.FilterAdapter;
 
 import java.util.List;
 import java.util.ArrayList;

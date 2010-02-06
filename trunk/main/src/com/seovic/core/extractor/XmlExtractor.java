@@ -30,37 +30,45 @@ import org.w3c.dom.NodeList;
 
 
 /**
+ * Implementation of {@link Extractor} that extracts the value of an attribute
+ * or a child element from the target XML node.
+ * 
  * @author Aleksandar Seovic  2009.06.18
  */
-public class XmlExtractor implements Extractor, PortableObject
+public class XmlExtractor
+        implements Extractor, PortableObject
     {
-    // ---- data members ----------------------------------------------------
-
-    private String nodeName;
-    private String namespace;
-
-
     // ---- constructors ----------------------------------------------------
 
     /**
-     * Construct <tt>XmlExtractor</tt> instance.
-     *
-     * @param nodeName  the name of attribute or child element to extract
+     * Deserialization constructor (for internal use only).
      */
-    public XmlExtractor(String nodeName) {
-        this.nodeName = nodeName;
-    }
+    public XmlExtractor()
+        {
+        }
 
     /**
      * Construct <tt>XmlExtractor</tt> instance.
      *
-     * @param nodeName  the name of attribute or child element to extract
-     * @param nsUri     namespace URI of the attribute or child element to extract
+     * @param nodeName  the name of the attribute or child element to extract
      */
-    public XmlExtractor(String nodeName, String nsUri) {
-        this.nodeName  = nodeName;
-        this.namespace = nsUri;
-    }
+    public XmlExtractor(String nodeName)
+        {
+        this.m_nodeName = nodeName;
+        }
+
+    /**
+     * Construct <tt>XmlExtractor</tt> instance.
+     *
+     * @param nodeName the name of attribute or child element to extract
+     * @param nsUri    namespace URI of the attribute or child element to
+     *                 extract
+     */
+    public XmlExtractor(String nodeName, String nsUri)
+        {
+        this.m_nodeName = nodeName;
+        this.m_namespace = nsUri;
+        }
 
 
     // ---- Extractor implementation ----------------------------------------
@@ -68,73 +76,99 @@ public class XmlExtractor implements Extractor, PortableObject
     /**
      * {@inheritDoc}
      */
-    public Object extract(Object target) {
-        if (target == null) {
+    public Object extract(Object target)
+        {
+        if (target == null)
+            {
             return null;
-        }
-
-        Document sourceDoc     = (Document) target;
-        Element  sourceElement = sourceDoc.getDocumentElement();
-        String   nsUri         = namespace == null
-                                  ? sourceElement.getNamespaceURI()
-                                  : namespace;
-
-        if (sourceElement.hasAttributeNS(nsUri, nodeName)) {
-            return sourceElement.getAttributeNS(nsUri, nodeName);
-        }
-        else {
-            NodeList candidates = sourceElement.getElementsByTagNameNS(nsUri, nodeName);
-            if (candidates.getLength() > 0) {
-                return candidates.item(0).getTextContent();
             }
-        }
+
+        Document sourceDoc    = (Document) target;
+        Element sourceElement = sourceDoc.getDocumentElement();
+        String nsUri          = m_namespace == null
+                                ? sourceElement.getNamespaceURI()
+                                : m_namespace;
+
+        if (sourceElement.hasAttributeNS(nsUri, m_nodeName))
+            {
+            return sourceElement.getAttributeNS(nsUri, m_nodeName);
+            }
+        else
+            {
+            NodeList candidates = sourceElement.getElementsByTagNameNS(nsUri,
+                                                                       m_nodeName);
+            if (candidates.getLength() > 0)
+                {
+                return candidates.item(0).getTextContent();
+                }
+            }
         return null;
-    }
+        }
 
-    
+
     // ---- PortableObject implementation -----------------------------------
-    
-	public void readExternal(PofReader reader) throws IOException {
-		nodeName  = reader.readString(0);
-		namespace = reader.readString(1);
-		
-	}
 
-	public void writeExternal(PofWriter writer) throws IOException {
-		writer.writeString(0, nodeName);
-		writer.writeString(1, namespace);
-	}
+    public void readExternal(PofReader reader)
+            throws IOException
+        {
+        m_nodeName = reader.readString(0);
+        m_namespace = reader.readString(1);
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + nodeName.hashCode();
-		result = prime * result
-		+ ((namespace == null) ? 0 : namespace.hashCode());
-		return result;
-	}
+        }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof XmlExtractor))
-			return false;
-		final XmlExtractor other = (XmlExtractor) obj;
-		if (!namespace.equals(other.namespace))
-			return false;
-		if (nodeName == null) {
-			if (other.nodeName != null)
-				return false;
-		} else if (!nodeName.equals(other.nodeName))
-			return false;
-		return true;
-	}
+    public void writeExternal(PofWriter writer)
+            throws IOException
+        {
+        writer.writeString(0, m_nodeName);
+        writer.writeString(1, m_namespace);
+        }
 
-	/**
+    @Override
+    public int hashCode()
+        {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + m_nodeName.hashCode();
+        result = prime * result
+                 + ((m_namespace == null) ? 0 : m_namespace.hashCode());
+        return result;
+        }
+
+    @Override
+    public boolean equals(Object obj)
+        {
+        if (this == obj)
+            {
+            return true;
+            }
+        if (obj == null)
+            {
+            return false;
+            }
+        if (!(obj instanceof XmlExtractor))
+            {
+            return false;
+            }
+        final XmlExtractor other = (XmlExtractor) obj;
+        if (!m_namespace.equals(other.m_namespace))
+            {
+            return false;
+            }
+        if (m_nodeName == null)
+            {
+            if (other.m_nodeName != null)
+                {
+                return false;
+                }
+            }
+        else if (!m_nodeName.equals(other.m_nodeName))
+            {
+            return false;
+            }
+        return true;
+        }
+
+    /**
      * Return string representation of this object.
      *
      * @return string representation of this object
@@ -143,8 +177,15 @@ public class XmlExtractor implements Extractor, PortableObject
     public String toString()
         {
         return "XmlExtractor{" +
-               "nodeName='" + nodeName + '\'' +
-               "namespace='" + namespace + '\'' +
+               "nodeName='" + m_nodeName + '\'' +
+               "namespace='" + m_namespace + '\'' +
                '}';
         }
-}
+
+
+    // ---- data members ----------------------------------------------------
+
+    private String m_nodeName;
+    private String m_namespace;
+    }
+
