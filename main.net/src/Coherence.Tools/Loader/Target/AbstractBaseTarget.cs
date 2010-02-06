@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Seovic.Coherence.Core;
+using Seovic.Core;
 
-namespace Seovic.Coherence.Loader.Target
+namespace Seovic.Loader.Target
 {
     /// <summary>
     /// Abstract base class for <see cref="ITarget"/> implementations.

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Threading;
+using Seovic.Identity;
 
-namespace Seovic.Coherence.Identity
+namespace Seovic.Identity
 {
     /// <summary>
     /// Multi-threaded test client for <see cref="IIdentityGenerator"/> implementations.

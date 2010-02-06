@@ -1,5 +1,5 @@
 ﻿
-namespace Seovic.Coherence.Core.Expression
+namespace Seovic.Core.Expression
 {
     public class OgnlExpressionTests : AbstractExpressionServerTests
     {

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Seovic.Coherence.Core;
+using Seovic.Core;
 using Spring.Core.IO;
 
-namespace Seovic.Coherence.Loader.Source
+namespace Seovic.Loader.Source
 {
     /// <summary>
     /// Abstract base class for <see cref="ISource"/> implementations.

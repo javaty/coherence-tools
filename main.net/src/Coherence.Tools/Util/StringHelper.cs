@@ -1,7 +1,7 @@
 ﻿
 using System.Text.RegularExpressions;
 
-namespace Seovic.Coherence.Util
+namespace Seovic.Util
 {
     /// <summary>
     /// Miscellaneous string utilities.
@@ -18,7 +18,6 @@ namespace Seovic.Coherence.Util
         /// <returns>Input value with first letter converted to lower case.</returns>
         public static string Decapitalize(this string value)
         {
-            //return char.ToLower(value[0]) + value.Substring(1);
             return Regex.Replace(value, m => m.Groups[1].Value.ToLower() + m.Groups[2]);
         }
     }

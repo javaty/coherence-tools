@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using LumenWorks.Framework.IO.Csv;
-using Seovic.Coherence.Core;
-using Seovic.Coherence.Core.Extractor;
+using Seovic.Core;
+using Seovic.Core.Extractor;
 
-namespace Seovic.Coherence.Loader.Source
+namespace Seovic.Loader.Source
 {
     /// <summary>
     ///  A <see cref="ISource"/> implementation that reads items to load from a CSV file.
@@ -88,7 +88,7 @@ namespace Seovic.Coherence.Loader.Source
         /// <returns>Property extractor instance</returns>
         protected override IExtractor CreateDefaultExtractor(string propertyName)
         {
-            return new MapExtractor(propertyName);
+            return new DictionaryExtractor(propertyName);
         }
 
         #endregion

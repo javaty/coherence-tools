@@ -1,23 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using Tangosol.IO.Pof;
 
-namespace Seovic.Coherence.Core.Updater
+namespace Seovic.Core.Updater
 {
+    /// <summary>
+    /// Simple imlementation of <see cref="IUpdater"/> that updates single 
+    /// property of a target object using reflection.
+    /// </summary>
+    /// <author>Ivan Cikic  2010.02.05</author>
+    /// <author>Aleksandar Seovic  2010.02.05</author>
     [Serializable]
     public class PropertyUpdater : IUpdater, IPortableObject
     {
         #region Constructors
 
+        /// <summary>
+        /// Deserialization constructor (for internal use only).
+        /// </summary>
         public PropertyUpdater()
         {
         }
 
-        public PropertyUpdater(string mPropertyName)
+        /// <summary>
+        /// Construct <code>PropertyUpdater</code> instance.
+        /// </summary>
+        /// <param name="propertyName">
+        /// The name of the property to update.
+        /// </param>
+        public PropertyUpdater(string propertyName)
         {
-            m_propertyName = mPropertyName;
+            m_propertyName = propertyName;
         }
 
         #endregion

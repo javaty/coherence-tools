@@ -1,8 +1,14 @@
 ﻿using System;
 using Tangosol.IO.Pof;
 
-namespace Seovic.Coherence.Core.Updater
+namespace Seovic.Core.Updater
 {
+    /// <summary>
+    /// An imlementation of <see cref="IUpdater"/> that updates the last node 
+    /// of the specified <see cref="IExpression"/>.
+    /// </summary>
+    /// <author>Ivan Cikic  2010.02.05</author>
+    /// <author>Aleksandar Seovic  2010.02.05</author>
     [Serializable]
     public class ExpressionUpdater : IUpdater, IPortableObject
     {
@@ -68,6 +74,11 @@ namespace Seovic.Coherence.Core.Updater
 
         #region Object methods
 
+        /// <summary>
+        /// Test objects for equality.
+        /// </summary>
+        /// <param name="other">Object to compare this object with.</param>
+        /// <returns>True if objects are equal, false otherwise.</returns>
         public bool Equals(ExpressionUpdater other)
         {
             if (ReferenceEquals(null, other)) return false;

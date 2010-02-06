@@ -2,17 +2,34 @@
 using Spring.Objects;
 using Tangosol.IO.Pof;
 
-namespace Seovic.Coherence.Core.Updater
+namespace Seovic.Core.Updater
 {
+    /// <summary>
+    /// Simple imlementation of <see cref="IUpdater"/> that updates single 
+    /// property of a target object using Spring.NET ObjectWrapper, thus 
+    /// allowing for the automatic conversion of string values to a target 
+    /// property type.
+    /// </summary>
+    /// <author>Ivan Cikic  2010.02.05</author>
+    /// <author>Aleksandar Seovic  2010.02.05</author>
     [Serializable]
     public class ObjectWrapperUpdater : IUpdater, IPortableObject
     {
         #region Constructors
 
+        /// <summary>
+        /// Deserialization constructor (for internal use only).
+        /// </summary>
         public ObjectWrapperUpdater()
         {
         }
 
+        /// <summary>
+        /// Construct an <code>ObjectWrapperUpdater</code> instance.
+        /// </summary>
+        /// <param name="propertyName">
+        /// The name of the property to update.
+        /// </param>
         public ObjectWrapperUpdater(string propertyName)
         {
             m_propertyName = propertyName;
@@ -46,6 +63,11 @@ namespace Seovic.Coherence.Core.Updater
 
         #region Object methods
 
+        /// <summary>
+        /// Test objects for equality.
+        /// </summary>
+        /// <param name="other">Object to compare this object with.</param>
+        /// <returns>True if objects are equal, false otherwise.</returns>
         public bool Equals(ObjectWrapperUpdater other)
         {
             if (ReferenceEquals(null, other)) return false;

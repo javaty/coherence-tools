@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace Seovic.Coherence.Core.Expression
+namespace Seovic.Core.Expression
 {
     [TestFixture]
     public class GroovyExpressionTests : AbstractExpressionServerTests

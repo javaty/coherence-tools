@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Spring.Core.IO;
 
-namespace Seovic.Coherence.Loader
+namespace Seovic.Loader
 {
     /// <summary>
     /// Base class for delegating loaders.

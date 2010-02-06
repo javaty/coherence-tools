@@ -1,11 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Configuration;
 using System.Reflection;
 
-namespace Seovic.Coherence.Core
+using Configuration=Seovic.Config.Configuration;
+
+namespace Seovic.Core
 {
+    /// <summary>
+    /// Centralized factory for creation of default expression,
+    /// extractor, updater and condition instances.
+    /// </summary>
+    /// <remarks>
+    /// You can modify these defaults by editing library configuration file.
+    /// See <see cref="Configuration"/> class for details. 
+    /// </remarks>
+    /// <seealso cref="Configuration"/>
+    /// <author>Ivan Cikic  2010.02.05</author>
+    /// <author>Aleksandar Seovic  2010.02.05</author>
     public class Defaults
     {
         #region Constructors
@@ -15,12 +25,10 @@ namespace Seovic.Coherence.Core
         /// </summary>
         private Defaults()
         {
-            IDictionary<string, string> dict = LoadDefaults();
-            m_ctorExpression = GetConstructor(dict[EXPRESSION_TYPE]);
-            m_ctorExtractor  = GetConstructor(dict[EXTRACTOR_TYPE]);
-            m_ctorUpdater    = GetConstructor(dict[UPDATER_TYPE]);
-            m_ctorCondition  = GetConstructor(dict[CONDITION_TYPE]);
-            m_scriptLanguage = dict[SCRIPT_LANGUAGE];
+            m_ctorExpression = GetConstructor(Configuration.GetDefaultExpressionType());
+            m_ctorExtractor  = GetConstructor(Configuration.GetDefaultExtractorType());
+            m_ctorUpdater    = GetConstructor(Configuration.GetDefaultUpdaterType());
+            m_ctorCondition  = GetConstructor(Configuration.GetDefaultConditionType());
         }
 
         #endregion
@@ -66,132 +74,56 @@ namespace Seovic.Coherence.Core
         {
             return (ICondition) Instance.m_ctorCondition.Invoke(new[] {expression});
         }
-    
-        /// <summary>
-        /// Return the name of the default script language.
-        /// </summary>
-        /// <returns>
-        /// The name of the default script language.
-        /// </returns>
-        public static string GetScriptLanguage()
-        {
-            return Instance.m_scriptLanguage;
-        }
 
         #endregion
 
         #region Helper methods
 
         /// <summary>
-        /// Loads default values from a application configuration file.
-        /// </summary>
-        /// <returns>
-        /// Dictinary containing configuration values.
-        /// </returns>
-        protected IDictionary<string, string> LoadDefaults()
-        {
-            IDictionary<string, string> props = new Dictionary<string, string>();
-            try
-            {
-                NameValueCollection config = ConfigurationManager.AppSettings;
-                foreach (string key in config.Keys)
-                {
-                    props.Add(key, config[key]);
-                }
-            }
-            catch (Exception)
-            {
-                // should never happen
-                props.Add(EXPRESSION_TYPE, DEFAULT_EXPRESSION_TYPE);
-                props.Add(EXTRACTOR_TYPE,  DEFAULT_EXTRACTOR_TYPE);
-                props.Add(UPDATER_TYPE,    DEFAULT_UPDATER_TYPE);
-                props.Add(CONDITION_TYPE,  DEFAULT_CONDITION_TYPE);
-                props.Add(SCRIPT_LANGUAGE, DEFAULT_SCRIPT_LANGUAGE);
-                // TODO: log
-                //log.warn("Configuration resource com/seovic/lang/defaults.properties"
-                //         + " not found. Using hardcoded defaults: " + props);
-            }
-            return props;
-        }
-
-        /// <summary>
-        /// Gets a constructor from the specified class that accepts a 
+        /// Gets a constructor for the specified type that accepts a 
         /// single String argument.
         /// </summary>
-        /// <param name="typeName">
-        /// The name of the type to find the constructor in
+        /// <param name="type">
+        /// The type to find the constructor for.
         /// </param>
         /// <returns>
-        /// A constructor for the specified class that accepts a
-        /// single String argument
+        /// A constructor for the specified type that accepts a
+        /// single String argument.
         /// </returns>
-        protected ConstructorInfo GetConstructor(string typeName)
+        private static ConstructorInfo GetConstructor(Type type)
         {
-            Type cls = Type.GetType(typeName);
-            return cls.GetConstructor(new[] {typeof(string)});
+            return type.GetConstructor(new[] {typeof(string)});
         }
-
-        #endregion
-
-        #region Constants
-        
-        #region Configuration property keys
-
-        private static readonly string EXPRESSION_TYPE = "expression.type";
-        private static readonly string EXTRACTOR_TYPE  = "extractor.type";
-        private static readonly string UPDATER_TYPE    = "updater.type";
-        private static readonly string CONDITION_TYPE  = "condition.type";
-        private static readonly string SCRIPT_LANGUAGE = "script.language";
-
-        #endregion
-
-        #region Configuration default values
-
-        // TBD
-        private static readonly string DEFAULT_EXPRESSION_TYPE = "Seovic.Coherence.Core.Expression.SpelExpression, Coherence.Commons";
-        private static readonly string DEFAULT_EXTRACTOR_TYPE  = "Seovic.Coherence.Core.Extractor.ExpressionExtractor, Coherence.Commons";
-        private static readonly string DEFAULT_UPDATER_TYPE    = "Seovic.Coherence.Core.Updater.ExpressionUpdater, Coherence.Commons";
-        private static readonly string DEFAULT_CONDITION_TYPE  = "Seovic.Coherence.Core.Condition.ExpressionCondition, Coherence.Commons";
-        private static readonly string DEFAULT_SCRIPT_LANGUAGE = "javascript";
-        
-        #endregion
-
-        #endregion
-
-        #region Static members
-
-        private static readonly Defaults Instance = new Defaults();
 
         #endregion
 
         #region Data members
 
         /// <summary>
+        /// Singleton instance.
+        /// </summary>
+        private static readonly Defaults Instance = new Defaults();
+
+        /// <summary>
         /// Constructor for default expression type.
         /// </summary>
-        private ConstructorInfo m_ctorExpression;
+        private readonly ConstructorInfo m_ctorExpression;
 
         /// <summary>
         /// Constructor for default extractor type.
         /// </summary>
-        private ConstructorInfo m_ctorExtractor;
+        private readonly ConstructorInfo m_ctorExtractor;
 
         /// <summary>
         /// Constructor for default updater type.
         /// </summary>
-        private ConstructorInfo m_ctorUpdater;
+        private readonly ConstructorInfo m_ctorUpdater;
 
         /// <summary>
         /// Constructor for default condition type.
         /// </summary>
-        private ConstructorInfo m_ctorCondition;
-
-        /// <summary>
-        /// The name of the default script language.
-        /// </summary>
-        private String m_scriptLanguage;
+        private readonly ConstructorInfo m_ctorCondition;
 
         #endregion
-
     }
 }

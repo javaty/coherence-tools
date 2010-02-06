@@ -4,11 +4,14 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml;
 
-using Seovic.Coherence.Core;
-using Seovic.Coherence.Core.Updater;
+using Seovic.Core;
+using Seovic.Core.Updater;
 
-namespace Seovic.Coherence.Loader.Target
+namespace Seovic.Loader.Target
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class XmlTarget : AbstractBaseTarget
     {
         #region Constructors
@@ -233,7 +236,7 @@ namespace Seovic.Coherence.Loader.Target
 
         protected override IUpdater CreateDefaultUpdater(string propertyName)
         {
-            return new MapUpdater(propertyName);
+            return new DictionaryUpdater(propertyName);
         }
 
         #endregion
