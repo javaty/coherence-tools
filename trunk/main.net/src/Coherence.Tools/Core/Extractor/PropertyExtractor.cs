@@ -2,28 +2,16 @@
 using System.Reflection;
 using Tangosol.IO.Pof;
 
-namespace Seovic.Coherence.Core.Extractor
+namespace Seovic.Core.Extractor
 {
     /// <summary>
-    /// A simple implementation of a ValueExtractor that uses 
+    /// A simple implementation of a <see cref="IExtractor"/> that uses 
     /// reflection to retrieve property value.
     /// </summary>
     /// <author>Aleksandar Seovic  2009.06.15</author>
     [Serializable]
     public class PropertyExtractor : IExtractor, IPortableObject
     {
-        #region Data members
-
-        private const BindingFlags BINDING_FLAGS =
-            BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase;
-
-        private String m_propertyName;
-
-        [NonSerialized]
-        private PropertyInfo m_property;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -164,6 +152,18 @@ namespace Seovic.Coherence.Core.Extractor
                    "propertyName='" + m_propertyName +
                    '}';
         }
+
+        #endregion
+
+        #region Data members
+
+        private const BindingFlags BINDING_FLAGS =
+            BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase;
+
+        private String m_propertyName;
+
+        [NonSerialized]
+        private PropertyInfo m_property;
 
         #endregion
     }

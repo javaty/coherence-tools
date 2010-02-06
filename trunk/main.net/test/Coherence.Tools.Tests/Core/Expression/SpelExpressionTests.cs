@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace Seovic.Coherence.Core.Expression
+namespace Seovic.Core.Expression
 {
     [TestFixture]
     public class SpelExpressionTests : AbstractExpressionTests

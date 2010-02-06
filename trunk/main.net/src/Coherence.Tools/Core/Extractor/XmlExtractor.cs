@@ -2,22 +2,46 @@
 using System.Xml;
 using Tangosol.IO.Pof;
 
-namespace Seovic.Coherence.Core.Extractor
+namespace Seovic.Core.Extractor
 {
+    /// <summary>
+    /// Implementation of <see cref="IExtractor"/> that extracts the value of 
+    /// an attribute or a child element from the target XML node.
+    /// </summary>
+    /// <author>Ivan Cikic  2010.02.05</author>
+    /// <author>Aleksandar Seovic  2010.02.05</author>
     [Serializable]
     public class XmlExtractor : IExtractor, IPortableObject
     {
         #region Constructors
 
+        /// <summary>
+        /// Deserialization constructor (for internal use only).
+        /// </summary>
         public XmlExtractor()
         {
         }
 
+        /// <summary>
+        /// Construct <c>XmlExtractor</c> instance.
+        /// </summary>
+        /// <param name="nodeName">
+        /// The name of the attribute or child element to extract.
+        /// </param>
         public XmlExtractor(string nodeName)
         {
             this.nodeName = nodeName;
         }
 
+        /// <summary>
+        /// Construct <c>XmlExtractor</c> instance.
+        /// </summary>
+        /// <param name="nodeName">
+        /// The name of the attribute or child element to extract.
+        /// </param>
+        /// <param name="nsUri">
+        /// Namespace URI of the attribute or child element to extract.
+        /// </param>
         public XmlExtractor(string nodeName, string nsUri)
         {
             this.nodeName = nodeName;
@@ -84,6 +108,11 @@ namespace Seovic.Coherence.Core.Extractor
 
         #region Object methods
 
+        /// <summary>
+        /// Test objects for equality.
+        /// </summary>
+        /// <param name="other">Object to compare this object with.</param>
+        /// <returns>True if objects are equal, false otherwise.</returns>
         public bool Equals(XmlExtractor other)
         {
             if (ReferenceEquals(null, other)) return false;
@@ -125,7 +154,5 @@ namespace Seovic.Coherence.Core.Extractor
         private string nsUri;
 
         #endregion
-
-
     }
 }

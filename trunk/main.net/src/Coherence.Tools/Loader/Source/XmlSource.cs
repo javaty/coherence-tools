@@ -3,10 +3,10 @@ using System.Collections;
 using System.IO;
 using System.Xml;
 
-using Seovic.Coherence.Core;
-using Seovic.Coherence.Core.Extractor;
+using Seovic.Core;
+using Seovic.Core.Extractor;
 
-namespace Seovic.Coherence.Loader.Source
+namespace Seovic.Loader.Source
 {
     /// <summary>
     /// A <see cref="ISource"/> implementation that reads items to load from an 

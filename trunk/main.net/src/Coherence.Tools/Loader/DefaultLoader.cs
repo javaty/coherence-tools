@@ -1,6 +1,6 @@
-﻿using Seovic.Coherence.Core;
+﻿using Seovic.Core;
 
-namespace Seovic.Coherence.Loader
+namespace Seovic.Loader
 {
     /// <summary>
     /// Default loader implementation.

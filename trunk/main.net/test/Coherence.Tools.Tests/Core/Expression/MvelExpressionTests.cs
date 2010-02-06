@@ -1,4 +1,4 @@
-﻿namespace Seovic.Coherence.Core.Expression
+﻿namespace Seovic.Core.Expression
 {
     /// <summary>
     /// MvelExpression tests.

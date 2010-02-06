@@ -1,12 +1,17 @@
 ﻿using System;
 using Tangosol.IO.Pof;
 
-namespace Seovic.Coherence.Core.Condition
+namespace Seovic.Core.Condition
 {
+    /// <summary>
+    /// An imlementation of <see cref="ICondition"/> that evaluates boolean expression
+    /// using one of the <see cref="IExpression"/> implementations.
+    /// </summary>
+    /// <author>Aleksandar Seovic  2010.02.05</author>
+    /// <author>Ivan Cikic  2010.02.05</author>
     [Serializable]
     public class ExpressionCondition : ICondition, IPortableObject
     {
-
         #region Constructors
 
         /// <summary>
@@ -96,8 +101,7 @@ namespace Seovic.Coherence.Core.Condition
 
         #endregion
 
-
-        #region 
+        #region Data members
 
         /// <summary>
         /// The expression to use.
@@ -105,6 +109,5 @@ namespace Seovic.Coherence.Core.Condition
         private IExpression m_expression;
 
         #endregion
-
     }
 }

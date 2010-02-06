@@ -1,5 +1,5 @@
 ﻿
-namespace Seovic.Coherence.Loader
+namespace Seovic.Loader
 {
     /// <summary>
     /// An interface that all loaders have to implement.

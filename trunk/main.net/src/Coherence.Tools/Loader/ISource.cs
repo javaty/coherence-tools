@@ -1,7 +1,7 @@
 ﻿using System.Collections;
-using Seovic.Coherence.Core;
+using Seovic.Core;
 
-namespace Seovic.Coherence.Loader
+namespace Seovic.Loader
 {
     /// <summary>
     /// An iterable source that the items can be loaded from.

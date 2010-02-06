@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
 using NUnit.Framework;
-using Seovic.Coherence.Core.Extractor;
-using Seovic.Coherence.Test.Objects;
+using Seovic.Core.Extractor;
+using Seovic.Test.Objects;
 using Tangosol.Net;
 using Tangosol.Util.Processor;
 
-namespace Seovic.Coherence.Core.Expression
+namespace Seovic.Core.Expression
 {
     [TestFixture]
     public abstract class AbstractExpressionServerTests

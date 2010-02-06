@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
 using NUnit.Framework;
-using Seovic.Coherence.Test.Objects;
+using Seovic.Test.Objects;
 
-namespace Seovic.Coherence.Core.Expression
+namespace Seovic.Core.Expression
 {
     // TODO: integrate with AbstractExpressionServerTests
     [TestFixture]

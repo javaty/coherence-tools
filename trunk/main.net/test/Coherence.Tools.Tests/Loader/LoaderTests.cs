@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+
 using NUnit.Framework;
-using Seovic.Coherence.Core.Extractor;
-using Seovic.Coherence.Loader.Source;
-using Seovic.Coherence.Loader.Target;
-using Seovic.Coherence.Test.Objects;
-using Seovic.Coherence.Util;
+using Seovic.Coherence.Loader;
+using Seovic.Core.Extractor;
+using Seovic.Loader.Source;
+using Seovic.Loader.Target;
+using Seovic.Test.Objects;
+
 using Tangosol.Net;
 
-namespace Seovic.Coherence.Loader
+namespace Seovic.Loader
 {
     [TestFixture]
     public class LoaderTests
@@ -106,7 +108,6 @@ namespace Seovic.Coherence.Loader
             expectedCodes.Add("SRB");
             expectedCodes.Add("SGP");
 
-            IList<string> actualCodes = new List<string>(3);
             foreach(XmlNode node in countryList)
             {
                 string actual = ((XmlElement) node).GetAttribute("code");

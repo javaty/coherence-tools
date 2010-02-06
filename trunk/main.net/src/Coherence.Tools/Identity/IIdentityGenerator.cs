@@ -1,5 +1,5 @@
 ﻿
-namespace Seovic.Coherence.Identity
+namespace Seovic.Identity
 {
     /// <summary>
     /// A strategy interface for identity generators.

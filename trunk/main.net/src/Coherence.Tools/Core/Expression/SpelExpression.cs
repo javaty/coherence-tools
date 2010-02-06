@@ -2,17 +2,35 @@
 using System.Collections;
 using Spel=Spring.Expressions;
 
-namespace Seovic.Coherence.Core.Expression
+namespace Seovic.Core.Expression
 {
+    /// <summary>
+    /// An imlementation of <see cref="IExpression"/> that evaluates specified expression using 
+    /// <a href="http://www.springframework.net/doc-latest/reference/html/expressions.html" target="_new">
+    /// Spring.NET Expression Language (SpEL)</a>.
+    /// </summary>
+    /// <remarks>
+    /// <b>Expressions of this type can be executed both on the client and within Coherence cluster.</b>
+    /// </remarks>
+    /// <author>Aleksandar Seovic  2010.02.05</author>
+    /// <author>Ivan Cikic  2010.02.05</author>
     public class SpelExpression : AbstractExpression
     {
         #region Constructors
 
+        /// <summary>
+        /// Deserialization constructor (for internal use only).
+        /// </summary>
         public SpelExpression()
         {
         }
 
-        public SpelExpression(string expression) : base(expression)
+        /// <summary>
+        /// Construct a <code>SpelExpression</code> instance.
+        /// </summary>
+        /// <param name="expression">The script to evaluate.</param>
+        public SpelExpression(string expression)
+            : base(expression)
         {
         }
 

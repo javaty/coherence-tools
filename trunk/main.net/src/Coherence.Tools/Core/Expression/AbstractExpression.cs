@@ -1,9 +1,14 @@
-﻿using System;
+using System;
 using System.Collections;
 using Tangosol.IO.Pof;
 
-namespace Seovic.Coherence.Core.Expression
+namespace Seovic.Core.Expression
 {
+    /// <summary>
+    /// Abstract base class for <see cref="IExpression"/> implementations.
+    /// </summary>
+    /// <author>Ivan Cikic  2010.02.05</author>
+    /// <author>Aleksandar Seovic  2010.02.05</author>
     [Serializable]
     public abstract class AbstractExpression : IExpression, IPortableObject
     {
@@ -73,6 +78,11 @@ namespace Seovic.Coherence.Core.Expression
             return Equals((AbstractExpression) obj);
         }
 
+        /// <summary>
+        /// Test objects for equality.
+        /// </summary>
+        /// <param name="other">Object to compare this object with.</param>
+        /// <returns>True if objects are equal, false otherwise.</returns>
         public bool Equals(AbstractExpression other)
         {
             if (ReferenceEquals(null, other)) return false;

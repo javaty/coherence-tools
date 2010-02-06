@@ -16,7 +16,7 @@
 
 using Tangosol.Util;
 
-namespace Seovic.Coherence.Core
+namespace Seovic.Core
 {
     /// <summary>
     /// Condition interface represents a logical condition that can be evaluated
