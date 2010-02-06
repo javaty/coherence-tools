@@ -42,9 +42,16 @@ public class PropertyUpdater
     // ---- constructors ----------------------------------------------------
 
     /**
+     * Deserialization constructor (for internal use only).
+     */
+    public PropertyUpdater()
+        {
+        }
+
+    /**
      * Construct a <tt>BeanExtractor</tt> instance.
      *
-     * @param propertyName the name of the property to extract, as defined by
+     * @param propertyName the name of the property to update, as defined by
      *                     the JavaBean specification
      */
     public PropertyUpdater(String propertyName)

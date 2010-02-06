@@ -19,6 +19,7 @@ package com.seovic.core.extractor;
 
 import com.seovic.core.Extractor;
 import com.seovic.core.expression.ScriptExpression;
+import java.io.InputStream;
 
 
 /**
@@ -52,11 +53,32 @@ public class ScriptExtractor
     /**
      * Construct an <tt>ScriptExtractor</tt> instance.
      *
+     * @param script  the script to evaluate
+     */
+    public ScriptExtractor(InputStream script)
+        {
+        super(new ScriptExpression(script));
+        }
+
+    /**
+     * Construct an <tt>ScriptExtractor</tt> instance.
+     *
      * @param expression  the expression to evaluate
      * @param language    scripting language to use
      */
     public ScriptExtractor(String expression, String language)
         {
         super(new ScriptExpression(expression, language));
+        }
+
+    /**
+     * Construct an <tt>ScriptExtractor</tt> instance.
+     *
+     * @param script    the script to evaluate
+     * @param language  scripting language to use
+     */
+    public ScriptExtractor(InputStream script, String language)
+        {
+        super(new ScriptExpression(script, language));
         }
     }

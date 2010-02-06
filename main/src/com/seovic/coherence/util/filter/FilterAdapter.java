@@ -14,89 +14,92 @@
  * limitations under the License.
  */
 
-package com.seovic.core.updater;
+package com.seovic.coherence.util.filter;
 
 
-import com.seovic.core.Updater;
+import com.tangosol.util.Filter;
 
+import com.tangosol.io.pof.PortableObject;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
-import com.tangosol.io.pof.PortableObject;
 
+import com.seovic.core.Condition;
+
+import java.io.Serializable;
 import java.io.IOException;
-
-import java.util.Map;
 
 
 /**
- * Simple imlementation of {@link Updater} that updates single map entry.
+ * Adapter that allows any class that implements <tt>com.tangosol.util.Filter</tt>
+ * to be used where {@link Condition} instance is expected.
  *
- * @author Aleksandar Seovic  2009.06.17
+ * @author Aleksandar Seovic  2009.09.28
  */
-public class MapUpdater
-        implements Updater, PortableObject
+public class FilterAdapter
+    implements Condition, Serializable, PortableObject
     {
-    // ---- data members ----------------------------------------------------
-
-    private String key;
-
-
     // ---- constructors ----------------------------------------------------
 
     /**
      * Deserialization constructor (for internal use only).
      */
-    public MapUpdater()
+    public FilterAdapter()
         {
         }
 
     /**
-     * Construct a <tt>MapUpdater</tt> instance.
+     * Construct a <tt>FilterAdapter</tt> instance.
      *
-     * @param key  the key of the entry to update
+     * @param delegate  filter to delegate to
      */
-    public MapUpdater(String key)
+    public FilterAdapter(Filter delegate)
         {
-        this.key = key;
+        this.m_delegate = delegate;
         }
 
 
-    // ---- Updater implementation ------------------------------------------
+    // ---- Condition implementation ----------------------------------------
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings({"unchecked"})
-    public void update(Object target, Object value)
+    public boolean evaluate(Object o)
         {
-        if (target == null)
-            {
-            throw new IllegalArgumentException("Updater target cannot be null");
-            }
-        if (!(target instanceof Map))
-            {
-            throw new IllegalArgumentException("Updater target is not a Map");
-            }
-
-        ((Map) target).put(key, value);
+        return m_delegate.evaluate(o);
         }
-    
-    
-    //---- PortableObject implementation -----------------------------------
 
-    public void readExternal(PofReader reader) throws IOException 
-    	{
-    	key = reader.readString(0);
-    	}
 
-    public void writeExternal(PofWriter writer) throws IOException 
-    	{
-    	writer.writeString(0, key);
-    	}
-    
-    
+    // ---- PortableObject implementation -----------------------------------
+
+    /**
+     * Deserialize this object from a POF stream.
+     *
+     * @param reader  POF reader to use
+     *
+     * @throws IOException  if an error occurs during deserialization
+     */
+    public void readExternal(PofReader reader)
+            throws IOException
+        {
+        m_delegate = (Filter) reader.readObject(0);
+        }
+
+    /**
+     * Serialize this object into a POF stream.
+     *
+     * @param writer  POF writer to use
+     *
+     * @throws IOException  if an error occurs during serialization
+     */
+    public void writeExternal(PofWriter writer)
+            throws IOException
+        {
+        writer.writeObject(0, m_delegate);
+        }
+
+
     // ---- Object methods --------------------------------------------------
-    
+
     /**
      * Test objects for equality.
      *
@@ -117,8 +120,8 @@ public class MapUpdater
             return false;
             }
 
-        MapUpdater that = (MapUpdater) o;
-        return key.equals(that.key);
+        FilterAdapter adapter = (FilterAdapter) o;
+        return m_delegate.equals(adapter.m_delegate);
         }
 
     /**
@@ -129,7 +132,7 @@ public class MapUpdater
     @Override
     public int hashCode()
         {
-        return key.hashCode();
+        return m_delegate.hashCode();
         }
 
     /**
@@ -140,8 +143,13 @@ public class MapUpdater
     @Override
     public String toString()
         {
-        return "MapUpdater{" +
-               "key='" + key + '\'' +
+        return "FilterAdapter{" +
+               "delegate=" + m_delegate +
                '}';
         }
+
+
+    // ---- data members ----------------------------------------------------
+
+    private Filter m_delegate;
     }
