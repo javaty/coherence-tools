@@ -131,7 +131,7 @@ public class Configuration
      */
     public static String getSequenceCacheName()
         {
-        return s_instance.m_config.get(SCRIPT_LANGUAGE);
+        return s_instance.m_config.get(SEQUENCE_CACHE_NAME);
         }
 
 
@@ -158,7 +158,8 @@ public class Configuration
         try
             {
             Properties config = new Properties();
-            config.load(Configuration.class.getResourceAsStream("/coherence-tools.properties"));
+            config.load(Configuration.class.getClassLoader()
+                    .getResourceAsStream("coherence-tools.properties"));
             for (String propertyName : config.stringPropertyNames())
                 {
                 props.put(propertyName, config.getProperty(propertyName));
