@@ -31,6 +31,13 @@ import com.tangosol.util.WrapperException;
 public class EntryProcessorCommand<T>
         implements Command<T>
     {
+    /**
+     * Construct <tt>EntryProcessorCommand</tt> instance.
+     *
+     * @param targetMap  target map to execute processor against
+     * @param targetKey  target key to execute processor against
+     * @param processor  processor to execute
+     */
     public EntryProcessorCommand(InvocableMap targetMap, Object targetKey,
                                  InvocableMap.EntryProcessor processor)
         {
