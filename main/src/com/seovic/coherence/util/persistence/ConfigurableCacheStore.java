@@ -126,8 +126,8 @@ public class ConfigurableCacheStore
 
     private static final ApplicationContext s_ctx =
             new ClassPathXmlApplicationContext(
-                    System.getProperty("persistence.context",
-                                       "persistence-context.xml"));
+                    System.getProperty("cache-store.context",
+                                       "cache-store-context.xml"));
 
 
     // ---- data members ----------------------------------------------------
