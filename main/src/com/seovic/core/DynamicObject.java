@@ -17,13 +17,19 @@
 package com.seovic.core;
 
 
-import java.math.BigDecimal;
+import com.seovic.util.Convert;
+import com.seovic.util.ReflectionUtils;
 
+import com.tangosol.io.pof.PortableObject;
+import com.tangosol.io.pof.PofReader;
+import com.tangosol.io.pof.PofWriter;
+
+import java.io.Serializable;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Date;
-
-import java.io.Serializable;
 
 
 /**
@@ -32,7 +38,7 @@ import java.io.Serializable;
  * @author Aleksandar Seovic  2009.11.05
  */
 public class DynamicObject
-        implements Serializable
+        implements Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
 
@@ -44,7 +50,34 @@ public class DynamicObject
         m_properties = createPropertyMap();
         }
 
+    /**
+     * Construct <tt>DynamicObject</tt> based on existing JavaBean.
+     * <p/>
+     * Constructed object will contain all readable properties of the specified
+     * JavaBean.
+     *
+     * @param bean  a JavaBean to initialize this dynamic object with
+     */
+    public DynamicObject(Object bean)
+        {
+        m_properties = createPropertyMap();
+        merge(bean);
+        }
 
+    /**
+     * Construct <tt>DynamicObject</tt> based on existing Map.
+     * <p/>
+     * Constructed object will contain all entries from the specified map.
+     *
+     * @param map  a map to initialize this dynamic object with
+     */
+    public DynamicObject(Map<String, Object> map)
+        {
+        m_properties = createPropertyMap();
+        merge(map);
+        }
+
+        
     // ---- public API ------------------------------------------------------
 
     /**
@@ -79,7 +112,7 @@ public class DynamicObject
      */
     public boolean getBoolean(String name)
         {
-        return (Boolean) getValue(name);
+        return Convert.toBoolean(getValue(name));
         }
 
     /**
@@ -102,7 +135,7 @@ public class DynamicObject
      */
     public byte getByte(String name)
         {
-        return (Byte) getValue(name);
+        return Convert.toByte(getValue(name));
         }
 
     /**
@@ -125,7 +158,7 @@ public class DynamicObject
      */
     public char getChar(String name)
         {
-        return (Character) getValue(name);
+        return Convert.toChar(getValue(name));
         }
 
     /**
@@ -148,7 +181,7 @@ public class DynamicObject
      */
     public short getShort(String name)
         {
-        return (Short) getValue(name);
+        return Convert.toShort(getValue(name));
         }
 
     /**
@@ -171,7 +204,7 @@ public class DynamicObject
      */
     public int getInt(String name)
         {
-        return (Integer) getValue(name);
+        return Convert.toInt(getValue(name));
         }
 
     /**
@@ -194,7 +227,7 @@ public class DynamicObject
      */
     public long getLong(String name)
         {
-        return (Long) getValue(name);
+        return Convert.toLong(getValue(name));
         }
 
     /**
@@ -215,9 +248,32 @@ public class DynamicObject
      *
      * @return value of the specified property
      */
+    public float getFloat(String name)
+        {
+        return Convert.toFloat(getValue(name));
+        }
+
+    /**
+     * Set value of the specified property.
+     *
+     * @param name   property name
+     * @param value  property value
+     */
+    public void setFloat(String name, float value)
+        {
+        setValue(name, value);
+        }
+
+    /**
+     * Return property value for the specified name.
+     *
+     * @param name property name
+     *
+     * @return value of the specified property
+     */
     public double getDouble(String name)
         {
-        return (Double) getValue(name);
+        return Convert.toDouble(getValue(name));
         }
 
     /**
@@ -240,7 +296,7 @@ public class DynamicObject
      */
     public BigDecimal getBigDecimal(String name)
         {
-        return (BigDecimal) getValue(name);
+        return Convert.toBigDecimal(getValue(name));
         }
 
     /**
@@ -263,7 +319,7 @@ public class DynamicObject
      */
     public String getString(String name)
         {
-        return (String) getValue(name);
+        return getValue(name).toString();
         }
 
     /**
@@ -286,7 +342,7 @@ public class DynamicObject
      */
     public Date getDate(String name)
         {
-        return (Date) getValue(name);
+        return Convert.toDate(getValue(name));
         }
 
     /**
@@ -301,7 +357,7 @@ public class DynamicObject
         }
 
     /**
-     * Merge all properties from the specified object into this one.
+     * Merge all properties from the specified dynamic object into this one.
      * <p/>
      * Any properties with the same name that already exist in this object
      * will be overwritten.
@@ -313,6 +369,35 @@ public class DynamicObject
         m_properties.putAll(obj.m_properties);
         }
 
+    /**
+     * Merge all properties from the specified object into this one.
+     * <p/>
+     * Any properties with the same name that already exist in this object
+     * will be overwritten.
+     *
+     * @param obj  object to merge into this object
+     */
+    public void merge(Object obj)
+        {
+        if (obj != null)
+            {
+            m_properties.putAll(ReflectionUtils.getPropertyMap(obj));
+            }
+        }
+
+    /**
+     * Merge all entries from the specified map into this object.
+     * <p/>
+     * Any properties with the same name that already exist in this object
+     * will be overwritten.
+     *
+     * @param map  ma[ to merge into this object
+     */
+    public void merge(Map<String, Object> map)
+        {
+        m_properties.putAll(map);
+        }
+        
 
     // ---- internal API ----------------------------------------------------
 
@@ -345,6 +430,20 @@ public class DynamicObject
         {
         m_properties = properties;
         }
+
+
+    // ---- PortableObject implementation -----------------------------------
+
+    @Override
+    @SuppressWarnings({"unchecked"})
+    public void readExternal(PofReader reader) throws IOException {
+        reader.readMap(0, m_properties);
+    }
+
+    @Override
+    public void writeExternal(PofWriter writer) throws IOException {
+        writer.writeMap(0, m_properties);
+    }
 
 
     // ---- Object methods --------------------------------------------------
