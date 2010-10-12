@@ -28,8 +28,13 @@ import java.io.Serializable;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.text.SimpleDateFormat;
+
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 
 
 /**
@@ -62,6 +67,21 @@ public class DynamicObject
         {
         m_properties = createPropertyMap();
         merge(bean);
+        }
+
+    /**
+     * Construct <tt>DynamicObject</tt> based on existing JavaBean.
+     * <p/>
+     * Constructed object will contain only specific properties of the specified
+     * JavaBean.
+     *
+     * @param bean        a JavaBean to initialize this dynamic object with
+     * @param properties  properties to extract from the specified JavaBean
+     */
+    public DynamicObject(Object bean, PropertyList properties)
+        {
+        m_properties = createPropertyMap();
+        merge(bean, properties);
         }
 
     /**
@@ -366,6 +386,11 @@ public class DynamicObject
      */
     public void merge(DynamicObject obj)
         {
+        if (obj == null)
+            {
+            throw new IllegalArgumentException("Object to merge cannot be null");
+            }
+
         m_properties.putAll(obj.m_properties);
         }
 
@@ -379,9 +404,43 @@ public class DynamicObject
      */
     public void merge(Object obj)
         {
-        if (obj != null)
+        if (obj == null)
             {
-            m_properties.putAll(ReflectionUtils.getPropertyMap(obj));
+            throw new IllegalArgumentException("Object to merge cannot be null");
+            }
+
+        m_properties.putAll(ReflectionUtils.getPropertyMap(obj));
+        }
+
+    /**
+     * Merge specified properties from the specified object into this one.
+     * <p/>
+     * Any properties with the same name that already exist in this object
+     * will be overwritten.
+     *
+     * @param obj         object to merge into this object
+     * @param properties  properties to merge
+     */
+    public void merge(Object obj, PropertyList properties)
+        {
+        if (obj == null)
+            {
+            throw new IllegalArgumentException("Object to merge cannot be null");
+            }
+
+        Map<String, Object> propertyMap = ReflectionUtils.getPropertyMap(obj);
+
+        for (PropertySpec property : properties)
+            {
+            String name = property.getName();
+            Object value = propertyMap.get(name);
+
+            if (value != null && property.getPropertyList() != null)
+                {
+                value = new DynamicObject(value, property.getPropertyList());
+                }
+
+            m_properties.put(name, value);
             }
         }
 
@@ -395,9 +454,45 @@ public class DynamicObject
      */
     public void merge(Map<String, Object> map)
         {
+        if (map == null)
+            {
+            throw new IllegalArgumentException("Map to merge cannot be null");
+            }
+
         m_properties.putAll(map);
         }
-        
+
+    /**
+     * Update specified target from this object.
+     *
+     * @param target  target object to update
+     */
+    public void update(Object target)
+        {
+        if (target == null)
+            {
+            throw new IllegalArgumentException("Target to update cannot be null");
+            }
+
+        BeanWrapper bw = new BeanWrapperImpl(target);
+        bw.registerCustomEditor(Date.class,
+                                new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true));
+        for (Map.Entry<String, Object> property : m_properties.entrySet())
+            {
+            String propertyName = property.getKey();
+            Object value = property.getValue();
+
+            if (value instanceof DynamicObject)
+                {
+                ((DynamicObject) value).update(bw.getPropertyValue(propertyName));
+                }
+            else
+                {
+                bw.setPropertyValue(propertyName, value);
+                }
+            }
+        }
+
 
     // ---- internal API ----------------------------------------------------
 
@@ -408,7 +503,7 @@ public class DynamicObject
      */
     protected Map<String, Object> createPropertyMap()
         {
-        return new HashMap<String, Object>();
+        return new LinkedHashMap<String, Object>();
         }
 
     /**

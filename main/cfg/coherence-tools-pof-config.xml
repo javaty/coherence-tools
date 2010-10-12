@@ -96,16 +96,34 @@
     </user-type>
     <user-type>
       <type-id>754</type-id>
-      <class-name>com.seovic.coherence.util.processor.Put</class-name>
+      <class-name>com.seovic.coherence.util.processor.DynamicUpdaterProcessor</class-name>
     </user-type>
     <user-type>
       <type-id>755</type-id>
+      <class-name>com.seovic.coherence.util.processor.Put</class-name>
+    </user-type>
+    <user-type>
+      <type-id>756</type-id>
       <class-name>com.seovic.coherence.util.processor.Remove</class-name>
+    </user-type>
+
+    <!-- com.seovic.core.* classes -->
+  	<user-type>
+      <type-id>800</type-id>
+      <class-name>com.seovic.core.DynamicObject</class-name>
+    </user-type>
+    <user-type>
+      <type-id>801</type-id>
+      <class-name>com.seovic.core.PropertyList</class-name>
+    </user-type>
+    <user-type>
+      <type-id>802</type-id>
+      <class-name>com.seovic.core.PropertySpec</class-name>
     </user-type>
 
     <!-- com.seovic.core.condition.* classes -->
   	<user-type>
-      <type-id>800</type-id>
+      <type-id>805</type-id>
       <class-name>com.seovic.core.condition.ExpressionCondition</class-name>
     </user-type>
 
