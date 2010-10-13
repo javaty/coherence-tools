@@ -41,15 +41,13 @@ public class PropertySpec implements Serializable, PortableObject {
     }
 
     @Override
-    public void readExternal(PofReader reader)
-            throws IOException {
+    public void readExternal(PofReader reader) throws IOException {
         m_name = reader.readString(0);
         m_propertyList = (PropertyList) reader.readObject(1);
     }
 
     @Override
-    public void writeExternal(PofWriter writer)
-            throws IOException {
+    public void writeExternal(PofWriter writer) throws IOException {
         writer.writeString(0, m_name);
         writer.writeObject(1, m_propertyList);
     }

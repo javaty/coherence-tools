@@ -35,6 +35,10 @@ import java.text.SimpleDateFormat;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlElement;
 
 
 /**
@@ -42,6 +46,8 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
  * 
  * @author Aleksandar Seovic  2009.11.05
  */
+@XmlRootElement(name = "object")
+@XmlAccessorType(XmlAccessType.NONE)
 public class DynamicObject
         implements Serializable, PortableObject
     {
@@ -592,5 +598,6 @@ public class DynamicObject
 
     // ---- data members ----------------------------------------------------
 
+    @XmlElement(name = "properties")
     private Map<String, Object> m_properties;
     }
