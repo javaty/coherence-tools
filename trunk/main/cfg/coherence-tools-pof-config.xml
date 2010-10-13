@@ -96,14 +96,10 @@
     </user-type>
     <user-type>
       <type-id>754</type-id>
-      <class-name>com.seovic.coherence.util.processor.DynamicUpdaterProcessor</class-name>
-    </user-type>
-    <user-type>
-      <type-id>755</type-id>
       <class-name>com.seovic.coherence.util.processor.Put</class-name>
     </user-type>
     <user-type>
-      <type-id>756</type-id>
+      <type-id>755</type-id>
       <class-name>com.seovic.coherence.util.processor.Remove</class-name>
     </user-type>
 
@@ -194,14 +190,21 @@
     </user-type>
     <user-type>
       <type-id>831</type-id>
-      <class-name>com.seovic.core.updater.ExpressionUpdater</class-name>
+      <class-name>com.seovic.core.updater.DynamicObjectUpdater</class-name>
+      <serializer>
+        <class-name>com.seovic.coherence.io.pof.NullPofSerializer</class-name>
+      </serializer>
     </user-type>
     <user-type>
       <type-id>832</type-id>
-      <class-name>com.seovic.core.updater.MapUpdater</class-name>
+      <class-name>com.seovic.core.updater.ExpressionUpdater</class-name>
     </user-type>
     <user-type>
       <type-id>833</type-id>
+      <class-name>com.seovic.core.updater.MapUpdater</class-name>
+    </user-type>
+    <user-type>
+      <type-id>834</type-id>
       <class-name>com.seovic.core.updater.PropertyUpdater</class-name>
     </user-type>
 

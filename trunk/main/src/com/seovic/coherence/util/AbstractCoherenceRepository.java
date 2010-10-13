@@ -18,11 +18,11 @@ package com.seovic.coherence.util;
 
 
 import com.seovic.core.Entity;
-import com.seovic.core.DynamicObject;
-import com.seovic.coherence.util.processor.DynamicUpdaterProcessor;
+import com.seovic.core.Updater;
 
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.Filter;
+import com.tangosol.util.processor.UpdaterProcessor;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -59,8 +59,8 @@ public abstract class AbstractCoherenceRepository<K, V extends Entity<K>>
         getCache().putAll(Collections.singletonMap(value.getId(), value));
         }
 
-    public V update(K key, DynamicObject updates) {
-        return (V) getCache().invoke(key, new DynamicUpdaterProcessor(updates));
+    public void update(K key, Updater updater, Object value) {
+        getCache().invoke(key, new UpdaterProcessor(updater, value));
     }
 
     public void saveAll(Collection<V> values)

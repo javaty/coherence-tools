@@ -25,9 +25,12 @@ import com.tangosol.io.pof.PofWriter;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 
 import java.io.Serializable;
 import java.io.IOException;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 
 /**
@@ -68,6 +71,11 @@ public class BeanWrapperUpdater
     public void update(Object target, Object value)
         {
         BeanWrapper bw = new BeanWrapperImpl(target);
+        if (value instanceof Date)
+            {
+            bw.registerCustomEditor(Date.class,
+                                    new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true));
+            }
         bw.setPropertyValue(m_propertyName, value);
         }
 

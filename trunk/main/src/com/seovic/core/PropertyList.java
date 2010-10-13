@@ -100,14 +100,12 @@ public class PropertyList implements Iterable<PropertySpec>, Serializable, Porta
     }
 
     @Override
-    public void readExternal(PofReader reader)
-            throws IOException {
+    public void readExternal(PofReader reader) throws IOException {
         reader.readCollection(0, m_properties);
     }
 
     @Override
-    public void writeExternal(PofWriter writer)
-            throws IOException {
-        writer.writeCollection(0, m_properties);
+    public void writeExternal(PofWriter writer) throws IOException {
+        writer.writeCollection(0, m_properties, PropertySpec.class);
     }
 }
