@@ -30,15 +30,23 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.LinkedList;
 import java.text.SimpleDateFormat;
+import java.beans.PropertyDescriptor;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAccessType;
+import org.codehaus.jackson.map.JsonSerializable;
+import org.codehaus.jackson.map.SerializerProvider;
+import org.codehaus.jackson.JsonGenerator;
+
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -46,10 +54,10 @@ import javax.xml.bind.annotation.XmlElement;
  * 
  * @author Aleksandar Seovic  2009.11.05
  */
+@SuppressWarnings({"unchecked"})
 @XmlRootElement(name = "object")
-@XmlAccessorType(XmlAccessType.NONE)
 public class DynamicObject
-        implements Serializable, PortableObject
+        implements Serializable, PortableObject, JsonSerializable
     {
     // ---- constructors ----------------------------------------------------
 
@@ -488,6 +496,14 @@ public class DynamicObject
             String propertyName = property.getKey();
             Object value = property.getValue();
 
+            if (value instanceof Map) {
+                PropertyDescriptor pd = bw.getPropertyDescriptor(propertyName);
+                if (!Map.class.isAssignableFrom(pd.getPropertyType())
+                        || pd.getWriteMethod() == null) {
+                    value = new DynamicObject((Map<String, Object>) value);
+                }
+            }
+                
             if (value instanceof DynamicObject)
                 {
                 ((DynamicObject) value).update(bw.getPropertyValue(propertyName));
@@ -547,6 +563,15 @@ public class DynamicObject
     }
 
 
+    // ---- JsonSerializable implementation ---------------------------------
+
+    @Override
+    public void serialize(JsonGenerator generator, SerializerProvider provider)
+            throws IOException {
+        generator.writeObject(m_properties);
+    }
+
+
     // ---- Object methods --------------------------------------------------
 
     /**
@@ -596,8 +621,49 @@ public class DynamicObject
         }
 
 
+    // ---- JAXB support ----------------------------------------------------
+
+    public static class ObjectType {
+        @XmlElement(name = "property")
+        public List<PropertyType> propertyList = new LinkedList<PropertyType>();
+    }
+
+    public static class PropertyType {
+        @XmlAttribute public String name;
+        @XmlElement public Object value;
+
+        public PropertyType() {
+        }
+
+        public PropertyType(String name, Object value) {
+            this.name = name;
+            this.value = value;
+        }
+    }
+
+    public static class Adapter extends XmlAdapter<ObjectType, Map<String, Object>> {
+        @Override
+        public Map<String, Object> unmarshal(ObjectType type) throws Exception {
+            Map<String, Object> result = new LinkedHashMap<String, Object>(type.propertyList.size());
+            for (PropertyType property : type.propertyList) {
+                result.put(property.name, property.value);
+            }
+            return result;
+        }
+
+        @Override
+        public ObjectType marshal(Map<String, Object> properties) throws Exception {
+            ObjectType result = new ObjectType();
+            for (Map.Entry<String, Object> property : properties.entrySet()) {
+                result.propertyList.add(new PropertyType(property.getKey(), property.getValue()));
+            }
+            return result;
+        }
+    }
+
     // ---- data members ----------------------------------------------------
 
+    @XmlJavaTypeAdapter(DynamicObject.Adapter.class)
     @XmlElement(name = "properties")
     private Map<String, Object> m_properties;
     }

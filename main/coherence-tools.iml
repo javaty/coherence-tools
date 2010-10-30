@@ -144,6 +144,20 @@
         <jarDirectory url="file://$MODULE_DIR$/lib/h2-1.2.124" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../golfoso/golfoso.com/lib/jackson-1.6.1/jackson-core-asl-1.6.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../golfoso/golfoso.com/lib/jackson-1.6.1/jackson-jaxrs-1.6.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../golfoso/golfoso.com/lib/jackson-1.6.1/jackson-mapper-asl-1.6.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../golfoso/golfoso.com/lib/jackson-1.6.1/jackson-xc-1.6.1.jar!/" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="http://jackson.codehaus.org/1.5.3/javadoc/index.html" />
+        </JAVADOC>
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 
