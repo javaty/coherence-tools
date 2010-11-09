@@ -96,11 +96,25 @@
     </user-type>
     <user-type>
       <type-id>754</type-id>
-      <class-name>com.seovic.coherence.util.processor.Put</class-name>
+      <class-name>com.seovic.coherence.util.processor.MethodInvocationProcessor</class-name>
     </user-type>
     <user-type>
       <type-id>755</type-id>
+      <class-name>com.seovic.coherence.util.processor.Put</class-name>
+    </user-type>
+    <user-type>
+      <type-id>756</type-id>
       <class-name>com.seovic.coherence.util.processor.Remove</class-name>
+    </user-type>
+
+    <!-- com.seovic.coherence.util.collections.* classes -->
+    <user-type>
+      <type-id>760</type-id>
+      <class-name>com.seovic.coherence.util.collections.PortableList</class-name>
+    </user-type>
+    <user-type>
+      <type-id>761</type-id>
+      <class-name>com.seovic.coherence.util.collections.RemoteList$RemoteListProcessor</class-name>
     </user-type>
 
     <!-- com.seovic.core.* classes -->
@@ -208,17 +222,51 @@
       <class-name>com.seovic.core.updater.PropertyUpdater</class-name>
     </user-type>
 
-    <!-- com.seovic.identity.* classes -->
-    <user-type>
+    <!-- com.seovic.core.factory.* classes -->
+  	<user-type>
       <type-id>840</type-id>
-      <class-name>com.seovic.identity.Sequence</class-name>
+      <class-name>com.seovic.core.factory.ArrayListFactory</class-name>
     </user-type>
     <user-type>
       <type-id>841</type-id>
-      <class-name>com.seovic.identity.SequenceGenerator$SequenceBlock</class-name>
+      <class-name>com.seovic.core.factory.HashMapFactory</class-name>
     </user-type>
     <user-type>
       <type-id>842</type-id>
+      <class-name>com.seovic.core.factory.HashSetFactory</class-name>
+    </user-type>
+    <user-type>
+      <type-id>843</type-id>
+      <class-name>com.seovic.core.factory.LinkedHashMapFactory</class-name>
+    </user-type>
+    <user-type>
+      <type-id>844</type-id>
+      <class-name>com.seovic.core.factory.LinkedListFactory</class-name>
+    </user-type>
+    <user-type>
+      <type-id>845</type-id>
+      <class-name>com.seovic.core.factory.ReflectionFactory</class-name>
+    </user-type>
+    <user-type>
+      <type-id>846</type-id>
+      <class-name>com.seovic.core.factory.TreeMapFactory</class-name>
+    </user-type>
+    <user-type>
+      <type-id>847</type-id>
+      <class-name>com.seovic.core.factory.TreeSetFactory</class-name>
+    </user-type>
+
+    <!-- com.seovic.identity.* classes -->
+    <user-type>
+      <type-id>890</type-id>
+      <class-name>com.seovic.identity.Sequence</class-name>
+    </user-type>
+    <user-type>
+      <type-id>891</type-id>
+      <class-name>com.seovic.identity.SequenceGenerator$SequenceBlock</class-name>
+    </user-type>
+    <user-type>
+      <type-id>892</type-id>
       <class-name>com.seovic.coherence.identity.CoherenceSequenceGenerator$SequenceBlockAllocator</class-name>
     </user-type>
 
