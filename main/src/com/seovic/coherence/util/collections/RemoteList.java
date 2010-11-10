@@ -1,27 +1,27 @@
 package com.seovic.coherence.util.collections;
 
 
-import com.seovic.coherence.util.processor.MethodInvocationProcessor;
 import com.seovic.core.Factory;
 import com.seovic.core.factory.ArrayListFactory;
+import com.seovic.coherence.util.processor.MethodInvocationProcessor;
 
-import com.tangosol.net.NamedCache;
-import com.tangosol.net.CacheFactory;
-import com.tangosol.util.InvocableMap;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
+import com.tangosol.net.CacheFactory;
+import com.tangosol.net.NamedCache;
+import com.tangosol.util.InvocableMap;
 
-import java.util.List;
-import java.util.Iterator;
-import java.util.Collection;
-import java.util.ListIterator;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 
 /**
  * @author Aleksandar Seovic  2010.11.06
  */
-@SuppressWarnings({"unchecked"})
+@SuppressWarnings({"unchecked", "SuspiciousToArrayCall"})
 public class RemoteList<E> implements List<E> {
     private final NamedCache cache;
     private final Object key;
