@@ -114,7 +114,15 @@
     </user-type>
     <user-type>
       <type-id>761</type-id>
+      <class-name>com.seovic.coherence.util.collections.PortableSet</class-name>
+    </user-type>
+    <user-type>
+      <type-id>765</type-id>
       <class-name>com.seovic.coherence.util.collections.RemoteList$RemoteListProcessor</class-name>
+    </user-type>
+    <user-type>
+      <type-id>766</type-id>
+      <class-name>com.seovic.coherence.util.collections.RemoteSet$RemoteSetProcessor</class-name>
     </user-type>
 
     <!-- com.seovic.core.* classes -->
