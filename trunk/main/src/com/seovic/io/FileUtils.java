@@ -16,7 +16,10 @@ import java.io.FileInputStream;
  */
 public class FileUtils {
     public static void writeBinary(Binary binary, String fileName) {
-        File file = new File(fileName);
+        writeBinary(binary, new File(fileName));
+    }
+
+    public static void writeBinary(Binary binary, File file) {
         try {
             if (!file.exists()) {
                 File directory = file.getParentFile();
@@ -40,7 +43,10 @@ public class FileUtils {
     }
 
     public static Binary readBinary(String fileName) {
-        File file = new File(fileName);
+        return readBinary(new File(fileName));    
+    }
+
+    public static Binary readBinary(File file) {
         if (!file.exists()) return null;
 
         try {
