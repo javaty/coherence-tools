@@ -268,7 +268,7 @@ public class RemoteList<E> implements List<E> {
 
         @Override
         public Object process(InvocableMap.Entry entry) {
-            if (!entry.isPresent() || entry.getValue() == null) {
+            if (entry.getValue() == null) {
                 entry.setValue(new PortableList(factory));
             }
             return super.process(entry);
