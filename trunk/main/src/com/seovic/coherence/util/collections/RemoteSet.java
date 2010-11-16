@@ -183,7 +183,7 @@ public class RemoteSet<E> implements Set<E> {
 
         @Override
         public Object process(InvocableMap.Entry entry) {
-            if (!entry.isPresent() || entry.getValue() == null) {
+            if (entry.getValue() == null) {
                 entry.setValue(new PortableSet(factory));
             }
             return super.process(entry);
