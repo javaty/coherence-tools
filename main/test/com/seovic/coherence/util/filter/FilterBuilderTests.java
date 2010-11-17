@@ -18,10 +18,10 @@ package com.seovic.coherence.util.filter;
 
 import com.seovic.coherence.loader.CsvToCoherence;
 import com.seovic.test.objects.Country;
-import com.seovic.core.Condition;
 
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.CacheFactory;
+import com.tangosol.util.Filter;
 
 import org.junit.Test;
 import org.junit.Before;
@@ -48,11 +48,11 @@ public class FilterBuilderTests
                 .equals("currencySymbol", "EUR")
                 .like("name", "B%", false);
 
-        Condition and = fb.toAnd();
+        Filter and = fb.all();
         Set keys = countries.keySet(and);
         assertEquals(1, keys.size());
 
-        Condition or = fb.toOr();
+        Filter or = fb.any();
         keys = countries.keySet(or);
         assertEquals(45, keys.size());
     }
@@ -60,14 +60,14 @@ public class FilterBuilderTests
     @Test
     public void testFilterBuilderUsingConditionalExpressions() {
         FilterBuilder fb = new FilterBuilder()
-                .condition("currencySymbol == 'EUR' or currencyName == 'Dollar'")
+                .filter("currencySymbol == 'EUR' or currencyName == 'Dollar'")
                 .like("name", "B%", false);
 
-        Condition and = fb.toAnd();
+        Filter and = fb.all();
         Set keys = countries.keySet(and);
         assertEquals(7, keys.size());
 
-        Condition or = fb.toOr();
+        Filter or = fb.any();
         keys = countries.keySet(or);
         assertEquals(92, keys.size());
     }
