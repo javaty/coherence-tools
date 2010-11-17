@@ -23,7 +23,6 @@ import com.tangosol.util.filter.*;
 
 import com.seovic.core.Extractor;
 import com.seovic.core.Defaults;
-import com.seovic.core.Condition;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -37,6 +36,7 @@ import java.util.Set;
  */
 public class FilterBuilder
     {
+
     // ---- constructors ----------------------------------------------------
 
     public FilterBuilder()
@@ -377,27 +377,27 @@ public class FilterBuilder
         }
 
     /**
-     * Add Condition to builder.
+     * Add Filter to builder.
      *
      * @param expression  condition to evaluate
      *
      * @return this FilterBuilder
      */
-    public FilterBuilder condition(String expression)
+    public FilterBuilder filter(String expression)
         {
-        return condition(Defaults.createCondition(expression));
+        return filter(Defaults.createCondition(expression));
         }
 
     /**
-     * Add Condition to builder.
+     * Add Filter to builder.
      *
-     * @param condition  condition to evaluate
+     * @param filter  filter to evaluate
      *
      * @return this FilterBuilder
      */
-    public FilterBuilder condition(Condition condition)
+    public FilterBuilder filter(Filter filter)
         {
-        filters.add(condition);
+        filters.add(filter);
         return this;
         }
 
@@ -406,9 +406,9 @@ public class FilterBuilder
      *
      * @return conjunction of all filters within this builder
      */
-    public Condition toAnd()
+    public Filter all()
         {
-        return new FilterAdapter(new AllFilter(getFilters()));
+        return new AllFilter(getFilters());
         }
 
     /**
@@ -416,9 +416,9 @@ public class FilterBuilder
      *
      * @return disjunction of all filters within this builder
      */
-    public Condition toOr()
+    public Filter any()
         {
-        return new FilterAdapter(new AnyFilter(getFilters()));
+        return new AnyFilter(getFilters());
         }
 
 
