@@ -29,7 +29,7 @@ import com.tangosol.util.ValueExtractor;
  * 
  * @author Aleksandar Seovic  2009.06.17
  */
-public interface Extractor extends ValueExtractor {
+public interface Extractor<T> extends ValueExtractor {
     // ---- constants -------------------------------------------------------
 
     /**
@@ -50,5 +50,5 @@ public interface Extractor extends ValueExtractor {
      *
      * @return extracted value
      */
-    Object extract(Object target);
+    T extract(Object target);
 }

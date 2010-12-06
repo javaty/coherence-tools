@@ -56,14 +56,18 @@
     <!-- com.seovic.coherence.util.extractor.* classes -->
     <user-type>
       <type-id>730</type-id>
-      <class-name>com.seovic.coherence.util.extractor.KeyExtractorAdapter</class-name>
+      <class-name>com.seovic.coherence.util.extractor.DynamicObjectExtractor</class-name>
     </user-type>
     <user-type>
       <type-id>731</type-id>
-      <class-name>com.seovic.coherence.util.extractor.PofExtractor</class-name>
+      <class-name>com.seovic.coherence.util.extractor.KeyExtractorAdapter</class-name>
     </user-type>
     <user-type>
       <type-id>732</type-id>
+      <class-name>com.seovic.coherence.util.extractor.PofExtractor</class-name>
+    </user-type>
+    <user-type>
+      <type-id>733</type-id>
       <class-name>com.seovic.coherence.util.extractor.ValueExtractorAdapter</class-name>
     </user-type>
 

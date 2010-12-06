@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Collections;
 
 
 /**
@@ -134,7 +135,8 @@ public class RemoteSet<E> implements Set<E> {
     // ---- helper methods --------------------------------------------------
 
     private Set<E> remoteSet() {
-        return (Set<E>) cache.get(key);
+        Set<E> result = (Set<E>) cache.get(key);
+        return result == null ? (Set<E>) Collections.emptySet() : result;
     }
 
     private Object remoteInvoke(String method, boolean mutator, Object... args) {

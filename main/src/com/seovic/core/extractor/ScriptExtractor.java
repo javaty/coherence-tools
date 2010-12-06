@@ -28,8 +28,8 @@ import java.io.InputStream;
  *
  * @author Aleksandar Seovic  2009.11.07
  */
-public class ScriptExtractor
-        extends ExpressionExtractor
+public class ScriptExtractor<T>
+        extends ExpressionExtractor<T>
     {
     // ---- constructors ----------------------------------------------------
 
@@ -47,7 +47,7 @@ public class ScriptExtractor
      */
     public ScriptExtractor(String expression)
         {
-        super(new ScriptExpression(expression));
+        super(new ScriptExpression<T>(expression));
         }
 
     /**
@@ -57,7 +57,7 @@ public class ScriptExtractor
      */
     public ScriptExtractor(InputStream script)
         {
-        super(new ScriptExpression(script));
+        super(new ScriptExpression<T>(script));
         }
 
     /**
@@ -68,7 +68,7 @@ public class ScriptExtractor
      */
     public ScriptExtractor(String expression, String language)
         {
-        super(new ScriptExpression(expression, language));
+        super(new ScriptExpression<T>(expression, language));
         }
 
     /**
@@ -79,6 +79,6 @@ public class ScriptExtractor
      */
     public ScriptExtractor(InputStream script, String language)
         {
-        super(new ScriptExpression(script, language));
+        super(new ScriptExpression<T>(script, language));
         }
     }

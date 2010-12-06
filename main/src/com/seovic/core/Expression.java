@@ -26,7 +26,7 @@ import java.util.Map;
  *
  * @author Aleksandar Seovic  2009.09.20
  */
-public interface Expression
+public interface Expression<T>
     {
     /**
      * Evaluates expression against the target object.
@@ -35,7 +35,7 @@ public interface Expression
      *
      * @return expression result
      */
-    public Object evaluate(Object target);
+    public T evaluate(Object target);
 
     /**
      * Evaluates expression against the target object.
@@ -45,7 +45,7 @@ public interface Expression
      *
      * @return expression result
      */
-    public Object evaluate(Object target, Map variables);
+    public T evaluate(Object target, Map variables);
 
     /**
      * Evaluates expression against the target object and sets the last element

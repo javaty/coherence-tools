@@ -40,8 +40,9 @@ import groovy.lang.Binding;
  * 
  * @author Aleksandar Seovic  2009.09.20
  */
-public class GroovyExpression
-        extends AbstractExpression
+@SuppressWarnings({"unchecked"})
+public class GroovyExpression<T>
+        extends AbstractExpression<T>
     {
     // ---- constructors ----------------------------------------------------
 
@@ -78,7 +79,7 @@ public class GroovyExpression
     /**
      * {@inheritDoc}
      */
-    public Object evaluate(Object target, Map variables)
+    public T evaluate(Object target, Map variables)
         {
         Binding binding = new Binding(variables);
         binding.setVariable("target", target);
@@ -87,7 +88,7 @@ public class GroovyExpression
             {
             Script script = getCompiledScript();
             script.setBinding(binding);
-            return script.run();
+            return (T) script.run();
             }
         }
 

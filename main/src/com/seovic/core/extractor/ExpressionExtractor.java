@@ -38,8 +38,9 @@ import java.util.HashMap;
  *
  * @author Aleksandar Seovic  2009.06.17
  */
-public class ExpressionExtractor
-        implements Extractor, Serializable, PortableObject
+@SuppressWarnings({"unchecked"})
+public class ExpressionExtractor<T>
+        implements Extractor<T>, Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
 
@@ -65,7 +66,7 @@ public class ExpressionExtractor
      *
      * @param expression  the expression to use
      */
-    public ExpressionExtractor(Expression expression)
+    public ExpressionExtractor(Expression<T> expression)
         {
         this(expression, null);
         }
@@ -76,7 +77,7 @@ public class ExpressionExtractor
      * @param expression  the expression to use
      * @param variables   the map containing variables to be used during evaluation
      */
-    public ExpressionExtractor(Expression expression, Map variables)
+    public ExpressionExtractor(Expression<T> expression, Map<String, Object> variables)
         {
         m_expression = expression;
         m_variables  = variables;
@@ -87,7 +88,7 @@ public class ExpressionExtractor
     /**
      * {@inheritDoc}
      */
-    public Object extract(Object target)
+    public T extract(Object target)
         {
         if (target == null)
             {
@@ -106,11 +107,10 @@ public class ExpressionExtractor
      *
      * @throws IOException  if an error occurs during deserialization
      */
-    public void readExternal(PofReader reader)
-            throws IOException
+    public void readExternal(PofReader reader) throws IOException
         {
-        m_expression = (Expression) reader.readObject(0);
-        m_variables  = reader.readMap(1, new HashMap());
+        m_expression = (Expression<T>) reader.readObject(0);
+        m_variables  = reader.readMap(1, new HashMap<String, Object>());
         }
 
     /**
@@ -120,11 +120,10 @@ public class ExpressionExtractor
      *
      * @throws IOException  if an error occurs during serialization
      */
-    public void writeExternal(PofWriter writer)
-            throws IOException
+    public void writeExternal(PofWriter writer) throws IOException
         {
         writer.writeObject(0, m_expression);
-        writer.writeMap(1, m_variables);
+        writer.writeMap(1, m_variables, String.class);
         }
 
     
@@ -181,8 +180,8 @@ public class ExpressionExtractor
     public String toString()
         {
         return getClass().getSimpleName() + "{" +
-                "m_expression=" + m_expression +
-                ", m_variables=" + m_variables +
+                "expression=" + m_expression +
+                ", variables=" + m_variables +
                 '}';
         }
 
@@ -192,11 +191,11 @@ public class ExpressionExtractor
     /**
      * The expression to use.
      */
-    private Expression m_expression;
+    private Expression<T> m_expression;
 
     /**
      *  The map containing variables to use during evaluation.
      */
-    private Map        m_variables;
+    private Map<String, Object> m_variables;
 
     }

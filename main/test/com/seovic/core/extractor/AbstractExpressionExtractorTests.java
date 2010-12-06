@@ -26,7 +26,8 @@ import com.seovic.core.Expression;
  *
  * @author Aleksandar Seovic  2009.09.20
  */
-public abstract class AbstractExpressionExtractorTests 
+@SuppressWarnings({"unchecked"})
+public abstract class AbstractExpressionExtractorTests
         extends AbstractExtractorTests
     {
     protected abstract Expression createExpression(String expression);

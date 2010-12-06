@@ -13,7 +13,9 @@ import java.io.IOException;
 /**
  * @author Aleksandar Seovic  2010.10.11
  */
-public class DynamicObjectExtractor implements Extractor, PortableObject {
+public class DynamicObjectExtractor
+        implements Extractor<DynamicObject>, PortableObject {
+
     private PropertyList m_properties;
 
     public DynamicObjectExtractor() {
@@ -24,21 +26,19 @@ public class DynamicObjectExtractor implements Extractor, PortableObject {
     }
 
     @Override
-    public Object extract(Object target) {
+    public DynamicObject extract(Object target) {
         return m_properties == null
                ? new DynamicObject(target)
                : new DynamicObject(target, m_properties);
     }
 
     @Override
-    public void readExternal(PofReader reader)
-            throws IOException {
+    public void readExternal(PofReader reader) throws IOException {
         m_properties = (PropertyList) reader.readObject(0);
     }
 
     @Override
-    public void writeExternal(PofWriter writer)
-            throws IOException {
+    public void writeExternal(PofWriter writer) throws IOException {
         writer.writeObject(0, m_properties);
     }
 }

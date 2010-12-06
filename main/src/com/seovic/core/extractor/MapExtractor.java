@@ -32,8 +32,9 @@ import java.io.IOException;
  *
  * @author Aleksandar Seovic  2009.06.17
  */
-public class MapExtractor
-        implements Extractor, Serializable, PortableObject
+@SuppressWarnings({"unchecked"})
+public class MapExtractor<T>
+        implements Extractor<T>, Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
 
@@ -60,7 +61,7 @@ public class MapExtractor
     /**
      * {@inheritDoc}
      */
-    public Object extract(Object target)
+    public T extract(Object target)
         {
         if (target == null)
             {
@@ -72,7 +73,7 @@ public class MapExtractor
                     "Extraction target is not a Map");
             }
 
-        return ((Map) target).get(m_key);
+        return (T) ((Map) target).get(m_key);
         }
 
 

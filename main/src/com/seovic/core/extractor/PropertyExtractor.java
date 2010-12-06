@@ -34,8 +34,8 @@ import java.io.IOException;
  * @author Aleksandar Seovic  2009.06.17
  */
 @SuppressWarnings("unchecked")
-public class PropertyExtractor
-        implements Extractor, Serializable, PortableObject
+public class PropertyExtractor<T>
+        implements Extractor<T>, Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
 
@@ -63,7 +63,7 @@ public class PropertyExtractor
     /**
      * {@inheritDoc}
      */
-    public Object extract(Object target)
+    public T extract(Object target)
         {
         if (target == null)
             {
@@ -79,7 +79,7 @@ public class PropertyExtractor
                 m_propertyAccessor = method =
                         findReadMethod(m_propertyName, target.getClass());
                 }
-            return method.invoke(target);
+            return (T) method.invoke(target);
             }
         catch (NullPointerException e)
             {

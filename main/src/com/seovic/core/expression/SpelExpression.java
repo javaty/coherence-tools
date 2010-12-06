@@ -37,8 +37,9 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
  * @author Aleksandar Seovic  2009.09.30
  * @author Ivan Cikic  2009.09.30
  */
-@SuppressWarnings("serial")
-public class SpelExpression extends AbstractExpression {
+@SuppressWarnings("unchecked")
+public class SpelExpression<T>
+        extends AbstractExpression<T> {
 	// ---- constructors ----------------------------------------------------
 	
 	/**
@@ -64,11 +65,10 @@ public class SpelExpression extends AbstractExpression {
 	/**
      * {@inheritDoc}
      */
-	@SuppressWarnings("unchecked")
-	public Object evaluate(Object target, Map variables)
+	public T evaluate(Object target, Map variables)
 		{
-		Expression                expression = getParsedExpression();
-        StandardEvaluationContext context    = m_context;
+		Expression expression = getParsedExpression();
+        StandardEvaluationContext context = m_context;
 
 		context.setRootObject(target);
 		if (variables != null) 
@@ -77,7 +77,7 @@ public class SpelExpression extends AbstractExpression {
 			}
 		try 
 			{
-			return expression.getValue(context);
+			return (T) expression.getValue(context);
 			}
 		catch (EvaluationException e) 
 			{

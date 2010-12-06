@@ -27,8 +27,8 @@ import com.seovic.core.expression.OgnlExpression;
  *
  * @author Aleksandar Seovic  2009.11.07
  */
-public class OgnlExtractor
-        extends ExpressionExtractor
+public class OgnlExtractor<T>
+        extends ExpressionExtractor<T>
     {
     // ---- constructors ----------------------------------------------------
 
@@ -46,6 +46,6 @@ public class OgnlExtractor
      */
     public OgnlExtractor(String expression)
         {
-        super(new OgnlExpression(expression));
+        super(new OgnlExpression<T>(expression));
         }
     }

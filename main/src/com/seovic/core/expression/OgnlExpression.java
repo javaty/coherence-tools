@@ -30,8 +30,9 @@ import java.util.Map;
  *
  * @author Aleksandar Seovic  2009.09.20
  */
-public class OgnlExpression
-        extends AbstractExpression
+@SuppressWarnings({"unchecked"})
+public class OgnlExpression<T>
+        extends AbstractExpression<T>
     {
     // ---- constructors ----------------------------------------------------
 
@@ -58,18 +59,18 @@ public class OgnlExpression
     /**
      * {@inheritDoc}
      */
-    public Object evaluate(Object target, Map variables)
+    public T evaluate(Object target, Map variables)
         {
         try
             {
             if (variables == null)
                 {
-                return Ognl.getValue(getCompiledExpression(), target);
+                return (T) Ognl.getValue(getCompiledExpression(), target);
                 }
             else
                 {
                 Ognl.addDefaultContext(target, variables);
-                return Ognl.getValue(getCompiledExpression(), variables, target);
+                return (T) Ognl.getValue(getCompiledExpression(), variables, target);
                 }
             }
         catch (OgnlException e)

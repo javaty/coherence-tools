@@ -27,8 +27,8 @@ import com.seovic.core.expression.GroovyExpression;
  *
  * @author Aleksandar Seovic  2009.11.07
  */
-public class GroovyExtractor
-        extends ExpressionExtractor
+public class GroovyExtractor<T>
+        extends ExpressionExtractor<T>
     {
     // ---- constructors ----------------------------------------------------
 
@@ -46,6 +46,6 @@ public class GroovyExtractor
      */
     public GroovyExtractor(String expression)
         {
-        super(new GroovyExpression(expression));
+        super(new GroovyExpression<T>(expression));
         }
     }
