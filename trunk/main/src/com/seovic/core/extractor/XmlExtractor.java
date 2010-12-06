@@ -36,7 +36,7 @@ import org.w3c.dom.NodeList;
  * @author Aleksandar Seovic  2009.06.18
  */
 public class XmlExtractor
-        implements Extractor, PortableObject
+        implements Extractor<String>, PortableObject
     {
     // ---- constructors ----------------------------------------------------
 
@@ -76,7 +76,7 @@ public class XmlExtractor
     /**
      * {@inheritDoc}
      */
-    public Object extract(Object target)
+    public String extract(Object target)
         {
         if (target == null)
             {

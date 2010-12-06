@@ -30,8 +30,8 @@ import java.io.IOException;
  *
  * @author Aleksandar Seovic  2009.09.20
  */
-public abstract class AbstractExpression
-        implements Expression, Serializable, PortableObject
+public abstract class AbstractExpression<T>
+        implements Expression<T>, Serializable, PortableObject
     {
     // ---- constructors ----------------------------------------------------
 
@@ -58,7 +58,7 @@ public abstract class AbstractExpression
     /**
      * {@inheritDoc}
      */
-    public Object evaluate(Object target)
+    public T evaluate(Object target)
         {
         return evaluate(target, null);
         }
@@ -72,8 +72,7 @@ public abstract class AbstractExpression
      *
      * @throws IOException  if an error occurs during deserialization
      */
-    public void readExternal(PofReader reader)
-            throws IOException
+    public void readExternal(PofReader reader) throws IOException
         {
         m_expression = reader.readString(0);
         }
@@ -85,8 +84,7 @@ public abstract class AbstractExpression
      *
      * @throws IOException  if an error occurs during serialization
      */
-    public void writeExternal(PofWriter writer)
-            throws IOException
+    public void writeExternal(PofWriter writer) throws IOException
         {
         writer.writeString(0, m_expression);
         }

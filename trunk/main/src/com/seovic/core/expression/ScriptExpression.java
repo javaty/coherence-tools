@@ -48,8 +48,9 @@ import javax.script.Compilable;
  *
  * @author Aleksandar Seovic  2009.09.27
  */
-public class ScriptExpression
-        extends AbstractExpression
+@SuppressWarnings({"unchecked"})
+public class ScriptExpression<T>
+        extends AbstractExpression<T>
     {
     // ---- constructors ----------------------------------------------------
 
@@ -110,7 +111,7 @@ public class ScriptExpression
     /**
      * {@inheritDoc}
      */
-    public Object evaluate(Object target, Map variables)
+    public T evaluate(Object target, Map variables)
         {
         SimpleBindings bindings = new SimpleBindings();
         bindings.put("target", target);
@@ -118,9 +119,9 @@ public class ScriptExpression
         try
             {
             CompiledScript script = getCompiledScript();
-            return script == null
-                   ? getScriptEngine().eval(m_expression, bindings)
-                   : script.eval(bindings);
+            return (T) (script == null
+                               ? getScriptEngine().eval(m_expression, bindings)
+                               : script.eval(bindings));
             }
         catch (ScriptException e)
             {

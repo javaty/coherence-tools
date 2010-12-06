@@ -27,8 +27,8 @@ import com.seovic.core.expression.MvelExpression;
  *
  * @author Aleksandar Seovic  2009.11.07
  */
-public class MvelExtractor
-        extends ExpressionExtractor
+public class MvelExtractor<T>
+        extends ExpressionExtractor<T>
     {
     // ---- constructors ----------------------------------------------------
 
@@ -46,6 +46,6 @@ public class MvelExtractor
      */
     public MvelExtractor(String expression)
         {
-        super(new MvelExpression(expression));
+        super(new MvelExpression<T>(expression));
         }
     }

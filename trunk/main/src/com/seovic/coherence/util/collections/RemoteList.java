@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Collections;
 
 
 /**
@@ -185,7 +186,8 @@ public class RemoteList<E> implements List<E> {
     // ---- helper methods --------------------------------------------------
 
     private List<E> remoteList() {
-        return (List<E>) cache.get(key);
+        List<E> result = (List<E>) cache.get(key);
+        return result == null ? (List<E>) Collections.emptyList() : result;
     }
 
     private Object remoteInvoke(String method, boolean mutator, Object... args) {

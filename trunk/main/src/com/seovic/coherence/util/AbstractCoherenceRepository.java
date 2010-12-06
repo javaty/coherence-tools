@@ -20,8 +20,8 @@ package com.seovic.coherence.util;
 import com.seovic.core.Entity;
 import com.seovic.core.Updater;
 import com.seovic.core.PropertyList;
-import com.seovic.core.DynamicObject;
 import com.seovic.coherence.util.extractor.DynamicObjectExtractor;
+import com.seovic.coherence.util.processor.MethodInvocationProcessor;
 
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.Filter;
@@ -55,16 +55,19 @@ public abstract class AbstractCoherenceRepository<K, V extends Entity<K>> {
         return getCache().getAll(keys).values();
     }
 
+    public Collection getAll(Collection<K> keys, PropertyList propertyList) {
+        return propertyList == null
+               ? getAll(keys)
+               : getCache().invokeAll(keys,
+                    new ExtractorProcessor(new DynamicObjectExtractor(propertyList))).values();
+    }
+
     public Collection find(Filter filter, PropertyList propertyList) {
         return queryForValues(filter, propertyList);    
     }
 
     public void save(V value) {
         getCache().putAll(Collections.singletonMap(value.getId(), value));
-    }
-
-    public void update(K key, Updater updater, Object value) {
-        getCache().invoke(key, new UpdaterProcessor(updater, value));
     }
 
     public void saveAll(Collection<V> values) {
@@ -76,6 +79,19 @@ public abstract class AbstractCoherenceRepository<K, V extends Entity<K>> {
         getCache().putAll(batch);
     }
 
+    public void update(K key, Updater updater, Object value) {
+        getCache().invoke(key, new UpdaterProcessor(updater, value));
+    }
+
+    public Object invoke(K key, String methodName, Object... args) {
+        return getCache().invoke(key, new MethodInvocationProcessor(methodName, true, args));
+    }
+
+    public Map<K, Object> invokeAll(Collection<K> keys, String methodName, Object... args) {
+        return getCache().invokeAll(keys, new MethodInvocationProcessor(methodName, true, args));
+    }
+
+    
     // ---- helper methods --------------------------------------------------
 
     protected BackingMap<K, V> getBackingMap() {
@@ -91,19 +107,15 @@ public abstract class AbstractCoherenceRepository<K, V extends Entity<K>> {
     }
 
     protected Collection<V> queryForValues(Filter filter) {
-        return queryForValues(filter, (PropertyList) null);
+        Set<Map.Entry<K, V>> entries = getCache().entrySet(filter);
+        return extractValues(entries);
     }
 
     protected Collection queryForValues(Filter filter, PropertyList propertyList) {
-        if (propertyList == null) {
-            Set<Map.Entry<K, V>> entries = getCache().entrySet(filter);
-            return extractValues(entries);
-        }
-        else {
-            Map<K, DynamicObject> resultMap = getCache().invokeAll(filter,
-                    new ExtractorProcessor(new DynamicObjectExtractor(propertyList)));
-            return resultMap.values();
-        }
+        return propertyList == null
+               ? queryForValues(filter)
+               : getCache().invokeAll(filter,
+                    new ExtractorProcessor(new DynamicObjectExtractor(propertyList))).values();
     }
 
     protected Collection<V> queryForValues(Filter filter, Comparator comparator) {

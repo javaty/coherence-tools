@@ -33,8 +33,9 @@ import java.io.Serializable;
  *
  * @author Aleksandar Seovic  2009.09.20
  */
-public class MvelExpression
-        extends AbstractExpression
+@SuppressWarnings({"unchecked"})
+public class MvelExpression<T>
+        extends AbstractExpression<T>
     {
     // ---- static initializer ----------------------------------------------
 
@@ -70,9 +71,9 @@ public class MvelExpression
     /**
      * {@inheritDoc}
      */
-    public Object evaluate(Object target, Map variables)
+    public T evaluate(Object target, Map variables)
         {
-        return MVEL.executeExpression(getCompiledExpression(), target, variables);
+        return (T) MVEL.executeExpression(getCompiledExpression(), target, variables);
         }
 
     /**

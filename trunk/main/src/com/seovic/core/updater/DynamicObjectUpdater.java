@@ -17,7 +17,7 @@ public class DynamicObjectUpdater implements Updater, Serializable {
             ((DynamicObject) value).update(target);
         }
         else {
-            throw new IllegalArgumentException("Value to update target with must me an instance of DynamicObject");
+            throw new IllegalArgumentException("Value to update target with must be an instance of DynamicObject");
         }
     }
 }

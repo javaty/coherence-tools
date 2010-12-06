@@ -27,8 +27,8 @@ import com.seovic.core.expression.SpelExpression;
  *
  * @author Aleksandar Seovic  2009.11.07
  */
-public class SpelExtractor
-        extends ExpressionExtractor
+public class SpelExtractor<T>
+        extends ExpressionExtractor<T>
     {
     // ---- constructors ----------------------------------------------------
 
@@ -46,6 +46,6 @@ public class SpelExtractor
      */
     public SpelExtractor(String expression)
         {
-        super(new SpelExpression(expression));
+        super(new SpelExpression<T>(expression));
         }
     }
