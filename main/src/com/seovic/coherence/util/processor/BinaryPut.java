@@ -120,6 +120,7 @@ public class BinaryPut
     public void readExternal(PofReader reader)
             throws IOException
         {
+        super.readExternal(reader);
         setBinaryValue("value", reader.readBinary(0));
         m_fReturnOld = reader.readBoolean(1);
         }
@@ -134,6 +135,7 @@ public class BinaryPut
     public void writeExternal(PofWriter writer)
             throws IOException
         {
+        super.writeExternal(writer);
         writer.writeBinary (0, toBinary(m_value));
         writer.writeBoolean(1, m_fReturnOld);
         }

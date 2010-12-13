@@ -35,7 +35,7 @@ public class DriverManagerDataSourceFactory
     {
     public DriverManagerDataSourceFactory(String url, String username, String password)
         {
-        m_url = url;
+        m_url      = url;
         m_username = username;
         m_password = password;
         }
