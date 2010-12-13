@@ -77,7 +77,7 @@ public class JdbcLoaderTests
         {
         populate(createCountries());
 
-        Source source = new JdbcSource(new DriverManagerDataSourceFactory(URL, USERNAME, PASSWORD), "Country");
+        Source source = new JdbcSource(new DriverManagerDataSourceFactory(URL, USERNAME, PASSWORD), "select * from Country");
         Target target = new CoherenceCacheTarget(countries, Country.class);
         // have to override "id" extraction from result set, since
         // id is mapped to "code" property

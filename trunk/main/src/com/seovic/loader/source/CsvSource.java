@@ -93,11 +93,21 @@ public class CsvSource
         {
         CsvPreference preferences =
                 new CsvPreference(m_quoteChar, m_delimiterChar, m_endOfLineSymbols);
-        return new CsvIterator(new CsvListReader(m_reader, preferences));
+        return new CsvIterator(new CsvListReader(m_reader, preferences), m_header);
         }
 
 
     // ---- public API ------------------------------------------------------
+
+    /**
+     * Set attribute names to use as header when one is not present in the file.
+     *
+     * @param header  an array of attribute names
+     */
+    public void setHeader(String... header)
+        {
+        m_header = header;
+        }
 
     /**
      * Set the delimiter character for CSV fields (default is comma).
@@ -155,13 +165,16 @@ public class CsvSource
          * Construct CsvIterator instance.
          *
          * @param reader  reader to use
+         * @param header  an array of attribute names, if there is no header row
+         *                in the file, or null to read attribute names from the
+         *                header row
          */
-        public CsvIterator(ICsvListReader reader)
+        public CsvIterator(ICsvListReader reader, String[] header)
             {
             try
                 {
                 m_reader = reader;
-                m_header = reader.getCSVHeader(false);
+                m_header = header != null ? header : reader.getCSVHeader(false);
                 }
             catch (IOException e)
                 {
@@ -256,6 +269,11 @@ public class CsvSource
      * The name of the CSV resource to read items from.
      */
     private String m_resourceName;
+
+    /**
+     * An array of attribute names to use as the file header.
+     */
+    private String[] m_header;
 
     /**
      * The delimiter character for CSV fields.

@@ -3,7 +3,7 @@ package com.seovic.loader.source;
 
 import com.seovic.core.Extractor;
 
-import com.seovic.core.extractor.OgnlExtractor;
+import com.seovic.core.extractor.MvelExtractor;
 
 import com.seovic.datasource.DataSourceFactory;
 import com.seovic.loader.Source;
@@ -34,13 +34,12 @@ public class JdbcSource
      * Construct JdbcSource instance.
      *
      * @param dataSourceFactory  DataSource factory
-     * @param tableName          name of the database table to read information
-     *                           from
+     * @param sql                SQL query to execute
      */
-    public JdbcSource(DataSourceFactory dataSourceFactory, String tableName)
+    public JdbcSource(DataSourceFactory dataSourceFactory, String sql)
         {
         m_dataSourceFactory = dataSourceFactory;
-        m_tableName         = tableName;
+        m_sql               = sql;
         }
 
     /**
@@ -53,12 +52,12 @@ public class JdbcSource
      * as an argument.
      *
      * @param dataSource  data source to use
-     * @param tableName   name of the database table to read information from
+     * @param sql         SQL query to execute
      */
-    public JdbcSource(DataSource dataSource, String tableName)
+    public JdbcSource(DataSource dataSource, String sql)
         {
         m_dataSource = dataSource;
-        m_tableName  = tableName;
+        m_sql        = sql;
         }
 
 
@@ -77,7 +76,7 @@ public class JdbcSource
             {
             m_connection = m_dataSource.getConnection();
             m_statement  = m_connection.createStatement();
-            m_statement.execute("select * from " + m_tableName);
+            m_statement.execute(m_sql);
             m_resultSet = m_statement.getResultSet();
             }
         catch(SQLException e)
@@ -197,7 +196,7 @@ public class JdbcSource
      * java.sql.ResultSet.
      */
     public static class ResultSetExtractor
-            extends OgnlExtractor
+            extends MvelExtractor
         {
 
         /**
@@ -215,7 +214,7 @@ public class JdbcSource
     // ---- data members ----------------------------------------------------
 
     private DataSourceFactory m_dataSourceFactory;
-    private String            m_tableName;
+    private String m_sql;
 
     private transient DataSource m_dataSource;
     private transient Connection m_connection;

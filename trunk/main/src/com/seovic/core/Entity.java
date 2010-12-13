@@ -22,12 +22,12 @@ package com.seovic.core;
  *
  * @author Aleksandar Seovic  2008.11.20
  */
-public interface Entity<TId>
+public interface Entity<T>
     {
     /**
      * Return object identifier.
      *
      * @return object identifier
      */
-    public TId getId();
+    public T getId();
     }
