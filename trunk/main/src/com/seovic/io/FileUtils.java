@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.FileInputStream;
+import java.util.Set;
+import java.util.HashSet;
 
 
 /**
@@ -60,4 +62,25 @@ public class FileUtils {
         }
     }
 
+    public static Set<String> listAllFiles(String directory) {
+        return listAllFiles(new File(directory));
+    }
+
+    public static Set<String> listAllFiles(File directory) {
+        Set<String> results = new HashSet<String>(256);
+        if (!directory.exists()) {
+            return results;
+        }
+        if (!directory.isDirectory()) {
+            throw new IllegalArgumentException("Specified file is not a directory");
+        }
+
+        for (File file : directory.listFiles()) {
+            if (!file.isDirectory()) {
+                results.add(file.getName());
+            }
+        }
+
+        return results;
+    }
 }
