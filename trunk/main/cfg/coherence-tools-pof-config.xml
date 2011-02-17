@@ -267,6 +267,10 @@
       <type-id>847</type-id>
       <class-name>com.seovic.core.factory.TreeSetFactory</class-name>
     </user-type>
+    <user-type>
+      <type-id>848</type-id>
+      <class-name>com.seovic.core.factory.LinkedHashSetFactory</class-name>
+    </user-type>
 
     <!-- com.seovic.identity.* classes -->
     <user-type>
