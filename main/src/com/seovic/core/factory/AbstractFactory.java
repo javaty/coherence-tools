@@ -35,7 +35,7 @@ public abstract class AbstractFactory<T> implements Factory<T>, PortableObject {
     }
 
     @Override
-    public void readExternal(PofReader reader)throws IOException {}
+    public void readExternal(PofReader reader) throws IOException {}
 
     @Override
     public void writeExternal(PofWriter writer) throws IOException {}
