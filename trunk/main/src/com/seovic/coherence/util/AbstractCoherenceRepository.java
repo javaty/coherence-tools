@@ -22,6 +22,7 @@ import com.seovic.core.Updater;
 import com.seovic.core.PropertyList;
 import com.seovic.coherence.util.extractor.DynamicObjectExtractor;
 import com.seovic.coherence.util.processor.MethodInvocationProcessor;
+import com.seovic.coherence.util.processor.ConditionalGet;
 
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.Filter;
@@ -53,6 +54,17 @@ public abstract class AbstractCoherenceRepository<K, V extends Entity<K>> {
 
     public Collection<V> getAll(Collection<K> keys) {
         return getCache().getAll(keys).values();
+    }
+
+    public Collection<V> getAll(Collection<K> keys, Filter condition) {
+        Collection<V> candidates = getCache().invokeAll(keys, new ConditionalGet(condition)).values();
+        ArrayList<V>  results = new ArrayList<V>(candidates.size());
+        for (V value : candidates) {
+            if (value != null) {
+                results.add(value);
+            }
+        }
+        return results;
     }
 
     public Collection getAll(Collection<K> keys, PropertyList propertyList) {
