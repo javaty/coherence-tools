@@ -159,17 +159,13 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library>
+      <library name="jackson-1.7.4">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../golfoso/golfoso.com/lib/jackson-1.6.1/jackson-core-asl-1.6.1.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../golfoso/golfoso.com/lib/jackson-1.6.1/jackson-jaxrs-1.6.1.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../golfoso/golfoso.com/lib/jackson-1.6.1/jackson-mapper-asl-1.6.1.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../golfoso/golfoso.com/lib/jackson-1.6.1/jackson-xc-1.6.1.jar!/" />
+          <root url="file://$MODULE_DIR$/lib/jackson-1.7.4" />
         </CLASSES>
-        <JAVADOC>
-          <root url="http://jackson.codehaus.org/1.5.3/javadoc/index.html" />
-        </JAVADOC>
+        <JAVADOC />
         <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/lib/jackson-1.7.4" recursive="false" />
       </library>
     </orderEntry>
   </component>

@@ -110,6 +110,10 @@
       <type-id>756</type-id>
       <class-name>com.seovic.coherence.util.processor.Remove</class-name>
     </user-type>
+    <user-type>
+      <type-id>757</type-id>
+      <class-name>com.seovic.coherence.util.processor.ConditionalGet</class-name>
+    </user-type>
 
     <!-- com.seovic.coherence.util.collections.* classes -->
     <user-type>
