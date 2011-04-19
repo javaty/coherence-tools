@@ -168,6 +168,28 @@
         <jarDirectory url="file://$MODULE_DIR$/lib/jackson-1.7.4" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library name="slf4j-1.6.1">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/lib/slf4j-1.6.1" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/lib/slf4j-1.6.1" recursive="false" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="quartz-2.0.1">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/lib/quartz-2.0.1" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="file:///opt/quartz-2.0.1/docs/api" />
+        </JAVADOC>
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/lib/quartz-2.0.1" recursive="false" />
+      </library>
+    </orderEntry>
   </component>
 </module>
 
