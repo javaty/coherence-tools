@@ -93,7 +93,7 @@ public class AnyWordStartsWithFilter
         String sWords = (String) o;
         if (sWords != null && !sWords.isEmpty())
             {
-            for (String sWord : sWords.split("\\s"))
+            for (String sWord : sWords.split("[\\s\\-/]"))
                 {
                 if (isMatch(sWord)) return true;
                 }
