@@ -17,7 +17,8 @@ import com.tangosol.net.cache.CacheEvent;
  *
  * @author Aleksandar Seovic  2009.02.27
  */
-public abstract class AbstractBackingMapListener
+@SuppressWarnings({"unchecked"})
+public abstract class AbstractBackingMapListener<K, V>
         extends AbstractMapListener {
 
     private BackingMapManagerContext context;
@@ -25,8 +26,7 @@ public abstract class AbstractBackingMapListener
     protected AbstractBackingMapListener() {
     }
 
-    protected AbstractBackingMapListener(
-            BackingMapManagerContext context) {
+    protected AbstractBackingMapListener(BackingMapManagerContext context) {
         this.context = context;
     }
 
@@ -46,19 +46,16 @@ public abstract class AbstractBackingMapListener
                 context.getValueFromInternalConverter());
     }
 
-    protected Object getKey(MapEvent event) {
-        return context.getKeyFromInternalConverter()
-                .convert(event.getKey());
+    protected K getKey(MapEvent event) {
+        return (K) context.getKeyFromInternalConverter().convert(event.getKey());
     }
 
-    protected Object getOldValue(MapEvent event) {
-        return context.getValueFromInternalConverter()
-                .convert(event.getOldValue());
+    protected V getOldValue(MapEvent event) {
+        return (V) context.getValueFromInternalConverter().convert(event.getOldValue());
     }
 
-    protected Object getNewValue(MapEvent event) {
-        return context.getValueFromInternalConverter()
-                .convert(event.getNewValue());
+    protected V getNewValue(MapEvent event) {
+        return (V) context.getValueFromInternalConverter().convert(event.getNewValue());
     }
 
     protected boolean isEviction(MapEvent event) {

@@ -134,6 +134,15 @@ public class Configuration
         return s_instance.m_config.get(SEQUENCE_CACHE_NAME);
         }
 
+    /**
+     * Get the name of the job scheduler cache.
+     *
+     * @return the name of the job scheduler cache
+     */
+    public static String getSchedulerCacheName()
+        {
+        return s_instance.m_config.get(SCHEDULER_CACHE_NAME);
+        }
 
     // ---- helper methods --------------------------------------------------
 
@@ -186,6 +195,8 @@ public class Configuration
 
     private static final String SEQUENCE_GENERATOR_TYPE = "sequence.generator.type";
     private static final String SEQUENCE_CACHE_NAME     = "sequence.cache.name";
+
+    private static final String SCHEDULER_CACHE_NAME     = "scheduler.cache.name";
 
     // default values
     private static final String DEFAULT_EXPRESSION_TYPE = "com.seovic.core.expression.SpelExpression";
