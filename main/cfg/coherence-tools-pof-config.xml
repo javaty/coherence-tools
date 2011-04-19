@@ -80,6 +80,10 @@
       <type-id>741</type-id>
       <class-name>com.seovic.coherence.util.filter.FilterAdapter</class-name>
     </user-type>
+     <user-type>
+      <type-id>742</type-id>
+      <class-name>com.seovic.coherence.util.filter.AnyWordStartsWithFilter</class-name>
+    </user-type>
 
     <!-- com.seovic.coherence.util.processor.* classes -->
     <user-type>
