@@ -90,15 +90,23 @@ public class AnyWordStartsWithFilter
      */
     protected boolean evaluateExtracted(Object o)
         {
-        String sWords = (String) o;
-        if (sWords != null && !sWords.isEmpty())
+        String sWords   = (String) o;
+        String sFilter  = getFilterString();
+        boolean matches = false;
+        if (sWords != null && !sWords.isEmpty() && sFilter != null && !sFilter.isEmpty())
             {
-            for (String sWord : sWords.split("[\\s\\-/]"))
+            String[] arrWords = sWords.split("[\\s\\-/]");
+            matches = true;
+            for (String sPart : sFilter.split("\\s"))
                 {
-                if (isMatch(sWord)) return true;
+                if (!isMatch(arrWords, sPart))
+                    {
+                        matches = false;
+                        break;
+                    }
                 }
             }
-            return false;
+        return matches;
         }
 
 
@@ -118,17 +126,19 @@ public class AnyWordStartsWithFilter
     /**
      * Return <tt>true</tt> if the specified value matches this filter.
      *
-     * @param value  value to check for a match
-     *
-     * @return <tt>true</tt> if the specified value matches this filter,
-     *         <tt>false</tt> otherwise
+     * TODO: javadoc
      */
-    protected boolean isMatch(String value)
+    protected boolean isMatch(String[] words, String filter)
         {
-        String filter = getFilterString();
-        int    len    = filter.length();
-
-        return value.regionMatches(m_ignoreCase, 0, filter, 0, len);
+        for (String word : words)
+            {
+            int len = filter.length();
+            if (word.regionMatches(m_ignoreCase, 0, filter, 0, len))
+                {
+                return true;
+                }
+            }
+        return false;
         }
 
     // ---- ExternalizableLite implementation -------------------------------
