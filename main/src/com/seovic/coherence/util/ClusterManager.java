@@ -64,7 +64,7 @@ public class ClusterManager
     @SuppressWarnings({"deprecation"})
     private void kill()
         {
-        InvocationService is = CacheFactory.getInvocationService("Management");
+        InvocationService is = (InvocationService) CacheFactory.getService("Management");
 
         Set members = is.getInfo().getServiceMembers();
         members.remove(m_cluster.getLocalMember());

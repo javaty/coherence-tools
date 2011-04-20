@@ -34,20 +34,20 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
-      <library name="Coherence Common 1.7.1">
+      <library name="Coherence Common 2.0.0">
         <CLASSES>
-          <root url="file://$MODULE_DIR$/lib/coherence-common-1.7.1" />
+          <root url="file://$MODULE_DIR$/lib/coherence-common-2.0.0" />
         </CLASSES>
         <JAVADOC>
-          <root url="file:///opt/coherence-common-1.7.1.18316/docs/api" />
+          <root url="file:///opt/coherence-common-2.0.0.23647/docs/api" />
         </JAVADOC>
         <SOURCES>
-          <root url="file:///opt/coherence-common-1.7.1.18316/src" />
+          <root url="file:///opt/coherence-common-2.0.0.23647/src" />
         </SOURCES>
-        <jarDirectory url="file://$MODULE_DIR$/lib/coherence-common-1.7.1" recursive="false" />
+        <jarDirectory url="file://$MODULE_DIR$/lib/coherence-common-2.0.0" recursive="false" />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Coherence 3.6" level="application" />
+    <orderEntry type="library" name="Coherence 3.7" level="application" />
     <orderEntry type="module-library">
       <library name="spring-framework-3.0">
         <CLASSES>
