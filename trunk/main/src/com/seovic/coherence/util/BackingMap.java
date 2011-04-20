@@ -44,7 +44,7 @@ public class BackingMap<K, V>
     public BackingMap(BackingMapManagerContext context, String cacheName)
         {
         m_backingMap = ConverterCollections.getMap(
-                context.getBackingMap(cacheName),
+                context.getBackingMapContext(cacheName).getBackingMap(),
                 context.getKeyFromInternalConverter(),
                 context.getKeyToInternalConverter(),
                 context.getValueFromInternalConverter(),

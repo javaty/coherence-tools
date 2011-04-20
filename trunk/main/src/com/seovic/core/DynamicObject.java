@@ -54,7 +54,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * 
  * @author Aleksandar Seovic  2009.11.05
  */
-@SuppressWarnings({"unchecked"})
+@SuppressWarnings({"unchecked", "deprecation"})
 @XmlRootElement(name = "object")
 public class DynamicObject
         implements Serializable, PortableObject, JsonSerializable
