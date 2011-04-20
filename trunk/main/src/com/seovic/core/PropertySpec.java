@@ -4,9 +4,11 @@ package com.seovic.core;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
 import com.tangosol.io.pof.PortableObject;
+import com.seovic.core.extractor.MvelExtractor;
 
 import java.io.IOException;
 import java.io.Serializable;
+import org.mvel2.PropertyAccessException;
 
 
 /**
@@ -15,6 +17,8 @@ import java.io.Serializable;
 public class PropertySpec implements Serializable, PortableObject {
     private String m_name;
     private PropertyList m_propertyList;
+
+    private transient Extractor m_extractor;
 
     public PropertySpec() {
     }
@@ -38,6 +42,22 @@ public class PropertySpec implements Serializable, PortableObject {
 
     public PropertyList getPropertyList() {
         return m_propertyList;
+    }
+
+    public Object getValue(Object target) {
+        try {
+            return getExtractor().extract(target);
+        }
+        catch (PropertyAccessException e) {
+            return null;
+        }
+    }
+
+    protected Extractor getExtractor() {
+        if (m_extractor == null) {
+            m_extractor = new MvelExtractor(m_name);
+        }
+        return m_extractor;
     }
 
     @Override

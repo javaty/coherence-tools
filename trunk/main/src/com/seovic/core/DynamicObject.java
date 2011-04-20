@@ -442,12 +442,10 @@ public class DynamicObject
             throw new IllegalArgumentException("Object to merge cannot be null");
             }
 
-        Map<String, Object> propertyMap = ReflectionUtils.getPropertyMap(obj);
-
         for (PropertySpec property : properties)
             {
             String name = property.getName();
-            Object value = propertyMap.get(name);
+            Object value = property.getValue(obj);
 
             if (value != null && property.getPropertyList() != null)
                 {
