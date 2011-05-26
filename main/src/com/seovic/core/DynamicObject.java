@@ -32,6 +32,8 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Collection;
+import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 import java.beans.PropertyDescriptor;
 
@@ -449,7 +451,19 @@ public class DynamicObject
 
             if (value != null && property.getPropertyList() != null)
                 {
-                value = new DynamicObject(value, property.getPropertyList());
+                if (value instanceof Collection)
+                    {
+                    List colValues = new ArrayList(((Collection) value).size());
+                    for (Object o : (Collection) value)
+                        {
+                        colValues.add(new DynamicObject(o, property.getPropertyList()));
+                        }
+                    value = colValues;
+                    }
+                else
+                    {
+                    value = new DynamicObject(value, property.getPropertyList());
+                    }
                 }
 
             m_properties.put(name, value);
