@@ -5,9 +5,12 @@ import com.seovic.config.Configuration;
 
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.CacheFactory;
+
 import org.quartz.JobDetail;
 import org.quartz.Trigger;
 import org.quartz.JobKey;
+
+import java.util.Collection;
 
 
 /**
@@ -25,8 +28,12 @@ public class JobScheduler {
     public static void schedule(JobDetail job, Trigger... schedule) {
         CACHE.put(job.getKey(), new ScheduledJob(job, schedule));
     }
-
+    
     public static void unschedule(JobKey key) {
         CACHE.remove(key);
+    }
+
+    public static Collection<ScheduledJob> getJobs() {
+        return CACHE.values();
     }
 }
