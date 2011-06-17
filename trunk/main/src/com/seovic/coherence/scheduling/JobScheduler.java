@@ -1,6 +1,8 @@
 package com.seovic.coherence.scheduling;
 
 
+import com.seovic.coherence.util.processor.MethodInvocationProcessor;
+
 import com.seovic.config.Configuration;
 
 import com.tangosol.net.NamedCache;
@@ -31,6 +33,14 @@ public class JobScheduler {
     
     public static void unschedule(JobKey key) {
         CACHE.remove(key);
+    }
+
+    public static void pause(JobKey key) {
+        CACHE.invoke(key, new MethodInvocationProcessor("setPaused", true, true));
+    }
+
+    public static void resume(JobKey key) {
+        CACHE.invoke(key, new MethodInvocationProcessor("setPaused", true, false));
     }
 
     public static Collection<ScheduledJob> getJobs() {

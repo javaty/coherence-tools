@@ -4,6 +4,7 @@ package com.seovic.coherence.scheduling;
 import com.seovic.coherence.util.listener.AbstractBackingMapListener;
 
 import com.tangosol.net.BackingMapManagerContext;
+
 import com.tangosol.util.MapEvent;
 
 import java.util.Collections;
@@ -11,11 +12,12 @@ import java.util.Collections;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
-import org.quartz.SchedulerFactory;
 import org.quartz.SchedulerException;
-import org.quartz.JobDetail;
+import org.quartz.SchedulerFactory;
+
 import org.quartz.impl.StdSchedulerFactory;
 
 
@@ -58,12 +60,18 @@ public class SchedulerBackingMapListener
 
     @Override
     public void entryUpdated(MapEvent event) {
-        ScheduledJob sj = getNewValue(event);
-        JobDetail job = sj.getJob();
+        ScheduledJob sj  = getNewValue(event);
+        JobDetail    job = sj.getJob();
 
         try {
-            scheduler.scheduleJobs(Collections.singletonMap(job, sj.getTriggers()), true);
-            LOG.info("Rescheduled job " + job);
+            if (sj.isPaused()) {
+                scheduler.pauseJob(job.getKey());
+                LOG.info("Paused job " + job);
+            }
+            else {
+                scheduler.scheduleJobs(Collections.singletonMap(job, sj.getTriggers()), true);
+                LOG.info("Rescheduled job " + job);
+            }
         }
         catch (SchedulerException e) {
             LOG.error("Failed to reschedule job " + job, e);
