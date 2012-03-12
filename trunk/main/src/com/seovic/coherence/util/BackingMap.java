@@ -44,13 +44,25 @@ public class BackingMap<K, V>
     public BackingMap(BackingMapManagerContext context, String cacheName)
         {
         m_backingMap = ConverterCollections.getMap(
-                context.getBackingMapContext(cacheName).getBackingMap(),
+                context.getBackingMap(cacheName),
                 context.getKeyFromInternalConverter(),
                 context.getKeyToInternalConverter(),
                 context.getValueFromInternalConverter(),
                 context.getValueToInternalConverter());
         }
 
+        @SuppressWarnings({"unchecked"})
+        public BackingMap(BackingMapManagerContext context, Map backingMap)
+            {
+            m_backingMap = ConverterCollections.getMap(
+                    backingMap,
+                    context.getKeyFromInternalConverter(),
+                    context.getKeyToInternalConverter(),
+                    context.getValueFromInternalConverter(),
+                    context.getValueToInternalConverter());
+            }
+
+        
     // ---- Map implementation --------------------------------------
 
     public int size()

@@ -150,7 +150,7 @@ public class Configuration
     /// Loads default values from a application configuration file.
     /// </summary>
     /// <returns>
-    /// Dictinary containing configuration values.
+    /// Dictionary containing configuration values.
     /// </returns>
     private static Map<String, String> loadConfiguration()
         {
