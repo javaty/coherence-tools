@@ -47,7 +47,7 @@
         <jarDirectory url="file://$MODULE_DIR$/lib/coherence-common-2.0.0" recursive="false" />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Coherence 3.7" level="application" />
+    <orderEntry type="library" name="Coherence 3.7.1" level="application" />
     <orderEntry type="module-library">
       <library name="spring-framework-3.0">
         <CLASSES>
@@ -188,6 +188,16 @@
         </JAVADOC>
         <SOURCES />
         <jarDirectory url="file://$MODULE_DIR$/lib/quartz-2.0.1" recursive="false" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jersey-1.7">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/lib/jersey-1.7" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/lib/jersey-1.7" recursive="false" />
       </library>
     </orderEntry>
   </component>

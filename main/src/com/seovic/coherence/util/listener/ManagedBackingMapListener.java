@@ -9,7 +9,15 @@ import com.tangosol.net.BackingMapManagerContext;
  *
  * @author Aleksandar Seovic  2009.06.30
  */
-public class ManagedBackingMapListener extends AbstractBackingMapListener {
+public class ManagedBackingMapListener<K,V> extends AbstractBackingMapListener<K,V> {
+
+    public ManagedBackingMapListener() {
+    }
+
+    public ManagedBackingMapListener(BackingMapManagerContext context) {
+        super(context);
+    }
+
     /**
      * Set backing map manager context for this listener.
      *
