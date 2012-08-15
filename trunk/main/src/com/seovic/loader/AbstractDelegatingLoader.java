@@ -23,8 +23,7 @@ package com.seovic.loader;
  * @author Aleksandar Seovic  2009.09.29
  */
 public class AbstractDelegatingLoader
-        implements Loader
-    {
+        implements Loader {
     // ---- getters and setters ---------------------------------------------
 
     /**
@@ -32,20 +31,18 @@ public class AbstractDelegatingLoader
      *
      * @return the loader processing should be delegated to
      */
-    public Loader getLoader()
-        {
+    public Loader getLoader() {
         return m_loader;
-        }
+    }
 
     /**
      * Set the loader processing should be delegated to.
      *
-     * @param loader  the loader processing should be delegated to
+     * @param loader the loader processing should be delegated to
      */
-    public void setLoader(Loader loader)
-        {
+    public void setLoader(Loader loader) {
         m_loader = loader;
-        }
+    }
 
 
     // ---- Loader implementation -------------------------------------------
@@ -53,10 +50,25 @@ public class AbstractDelegatingLoader
     /**
      * {@inheritDoc}
      */
-    public void load()
-        {
+    public void load() {
         m_loader.load();
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MappingMode getMappingMode() {
+        return m_loader.getMappingMode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMappingMode(MappingMode mode) {
+        m_loader.setMappingMode(mode);
+    }
 
 
     // ---- data members ----------------------------------------------------
@@ -65,4 +77,4 @@ public class AbstractDelegatingLoader
      * The loader processing should be delegated to.
      */
     private Loader m_loader;
-    }
+}

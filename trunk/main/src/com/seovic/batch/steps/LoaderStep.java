@@ -20,7 +20,10 @@ package com.seovic.batch.steps;
 import com.seovic.batch.AbstractStep;
 import com.seovic.batch.ExecutionContext;
 
+import com.seovic.loader.DefaultLoader;
 import com.seovic.loader.Loader;
+import com.seovic.loader.Source;
+import com.seovic.loader.Target;
 
 
 /**
@@ -46,6 +49,17 @@ public class LoaderStep
         m_loader = loader;
         }
 
+    /**
+     * Construct LoaderStep instance.
+     *
+     * @param name    step name
+     * @param source  loader source to use
+     * @param target  loader target to use
+     */
+    public LoaderStep(String name, Source source, Target target)
+        {
+        this(name, new DefaultLoader(source, target));
+        }
 
     // ---- Step implementation ---------------------------------------------
 
