@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -336,18 +338,17 @@ public class XmlTarget
     /**
      * {@inheritDoc}
      */
-    public String[] getPropertyNames()
+    public Set<String> getPropertyNames()
         {
-        String[] propertyNames =
-                new String[m_attributes.size() + m_elements.size()];
-        int i = 0;
+        Set<String> propertyNames =
+                new HashSet<String>(m_attributes.size() + m_elements.size());
         for (Property property : m_attributes)
             {
-            propertyNames[i++] = property.getLocalName();
+            propertyNames.add(property.getLocalName());
             }
         for (Property property : m_elements)
             {
-            propertyNames[i++] = property.getLocalName();
+            propertyNames.add(property.getLocalName());
             }
         return propertyNames;
         }

@@ -3,6 +3,7 @@ package com.seovic.loader;
 
 import com.seovic.core.Updater;
 import java.io.Serializable;
+import java.util.Set;
 
 
 /**
@@ -41,13 +42,13 @@ public interface Target
     /**
      * Return target property names.
      * <p/>
-     * Because it is ultimately the target that determines what needs to be
-     * loaded, this method provides target implementations a way to control
-     * which properties from the source they care about.
+     * This method will be called if the {@link Loader} mapping mode is set to
+     * {@link MappingMode#AUTO} to determine a list of properties that should
+     * be copied from source to target.
      *
      * @return the names of the properties that should be mapped to target
      */
-    String[] getPropertyNames();
+    Set<String> getPropertyNames();
 
     /**
      * Create an instance of a target object.

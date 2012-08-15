@@ -14,35 +14,13 @@
  * limitations under the License.
  */
 
-package com.seovic.loader;
-
-
-import java.io.Serializable;
-
+import com.tangosol.net.DefaultCacheServer;
 
 /**
- * An interface that all loaders have to implement.
- *
- * @author Aleksandar Seovic  2009.09.29
+ * @author Aleksandar Seovic  2012.07.19
  */
-public interface Loader
-        extends Serializable {
-    /**
-     * Load items from the Source into the Target.
-     */
-    void load();
-
-    /**
-     * Return mapping mode for the loader.
-     *
-     * @return mapping mode
-     */
-    MappingMode getMappingMode();
-
-    /**
-     * Set mapping mode for the loader.
-     *
-     * @param mode  mapping mode
-     */
-    void setMappingMode(MappingMode mode);
+public class TestCacheServer {
+    public static void main(String[] args) {
+        DefaultCacheServer.main(args);
+    }
 }

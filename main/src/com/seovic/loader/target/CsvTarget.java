@@ -13,6 +13,9 @@ import java.io.Writer;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Arrays;
 
 import org.supercsv.io.CsvMapWriter;
 import org.supercsv.io.ICsvMapWriter;
@@ -157,9 +160,9 @@ public class CsvTarget
     /**
      * {@inheritDoc}
      */
-    public String[] getPropertyNames()
+    public Set<String> getPropertyNames()
         {
-        return m_propertyNames;
+        return new HashSet<String>(Arrays.asList(m_propertyNames));
         }
 
     /**
